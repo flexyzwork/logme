@@ -1,0 +1,23 @@
+{
+  "name": "saas",
+  "private": true,
+  "packageManager": "pnpm@10.6.2",
+  "scripts": {
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "db": "pnpm --filter @repo/db",
+    "db:init": "pnpm db migrate dev --name init",
+    "db:reset": "pnpm docker-dev db:reset && pnpm db migrate dev",
+    "dev": "turbo run dev",
+    "docker-dev": "pnpm --filter @repo/docker-dev",
+    "format": "prettier --write .",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.3"
+  }
+}
