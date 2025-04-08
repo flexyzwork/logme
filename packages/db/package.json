@@ -15,11 +15,14 @@
     "lint": "eslint .",
     "build:prisma": "prisma generate",
     "migrate": "prisma migrate",
-    "push": "prisma db push"
+    "push": "prisma db push",
+    "seed:build": "tsup ./src/seed.ts",
+    "seed": "pnpm seed:build && node ./dist/seed.js" 
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:^",
     "@repo/typescript-config": "workspace:^",
+    "@types/node": "^22.14.0",
     "prisma": "^6.5.0",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"

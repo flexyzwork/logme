@@ -8,11 +8,11 @@ export const QUEUE_NAME = "queue";
 export const queue = new Queue(QUEUE_NAME, { connection: redis });
 
 export enum JobType {
-  GeneratePosts = "generate-posts",
+  GenerateSite = "generate-site",
 }
 
 export type JobData = {
-  [JobType.GeneratePosts]: { count: number };
+  [JobType.GenerateSite]: {}; // Add an empty object for GenerateSite
 };
 
 export async function enqueue<T extends JobType>(type: T, data: JobData[T]) {
