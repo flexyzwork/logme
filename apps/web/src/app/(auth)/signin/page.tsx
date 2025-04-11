@@ -18,7 +18,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-[calc(100vh-110px)] items-center justify-center px-4">
       <Card className="w-full max-w-sm p-4 shadow-lg">
         <CardContent className="flex flex-col gap-4">
           <h1 className="text-xl font-semibold text-center">로그인</h1>
