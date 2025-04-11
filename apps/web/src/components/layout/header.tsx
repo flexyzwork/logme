@@ -25,13 +25,16 @@ export async function Header() {
   return (
     <header className="flex justify-between items-center px-4 py-3 border-b">
       <Link href="/" className="text-xl font-bold">
-        logme
+        FLEXYZ
       </Link>
 
       <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+        <Link href="/about">소개</Link>
+        <Link href="/tools">시리즈</Link>
         {user ? (
           <>
-            <Link href="/dashboard">대시보드</Link>
+            <Link href="/dashboard">내 도구들</Link>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 {user.image ? (

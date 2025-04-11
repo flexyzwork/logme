@@ -19,5 +19,7 @@ new Worker(
     await runner(job.data)
     console.log(`[${job.id}] ${job.name} - Completed`)
   },
-  { connection: redis }
+  {
+    connection: redis,
+  }
 )

@@ -1,0 +1,8 @@
+# .dockerignore
+**/.git
+**/.next
+**/.turbo
+**/node_modules
+**/out
+.vscode
+*.log

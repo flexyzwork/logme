@@ -1,3 +1,20 @@
+# services:
+#   postgres:
+#     image: postgres:16
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: saas_dev
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - /var/lib/postgresql/data
+
+#   redis:
+#     image: redis:6.2-alpine
+#     ports:
+#       - "6379:6379"
+
 services:
   postgres:
     image: postgres:16
@@ -6,11 +23,32 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: saas_dev
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - /var/lib/postgresql/data
+    networks:
+      - app-network
 
   redis:
     image: redis:6.2-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
+    networks:
+      - app-network
+
+  worker:
+    build:
+      context: ../../   
+      dockerfile: apps/worker/Dockerfile
+    container_name: worker
+    env_file:
+      - ../../apps/worker/.env
+    volumes:
+      - ../../output:/app/output
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,30 +1,38 @@
-import { Queue, QueueEvents } from "bullmq";
-import Redis from "ioredis";
+import 'dotenv/config'
+import { Queue, QueueEvents } from 'bullmq'
+import Redis from 'ioredis'
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
-export const redis = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
+const REDIS_URL = process.env.REDIS_URL || 'redis://redis:6379'
+console.log('REDIS_URL', REDIS_URL)
+export const redis = new Redis(REDIS_URL, { maxRetriesPerRequest: null })
 
-export const QUEUE_NAME = "queue";
-export const queue = new Queue(QUEUE_NAME, { connection: redis });
+export const QUEUE_NAME = 'queue'
+export const queue = new Queue(QUEUE_NAME, { connection: redis })
 
 export enum JobType {
-  GenerateSite = "generate-site",
+  GenerateSite = 'generate-site',
 }
 
 export type JobData = {
-  [JobType.GenerateSite]: {}; // Add an empty object for GenerateSite
-};
-
-export async function enqueue<T extends JobType>(type: T, data: JobData[T]) {
-  return queue.add(type, data);
+  [JobType.GenerateSite]: {
+    siteId: string
+    buildId: string
+    userId: string
+    slug: string
+    siteTitle: string | null
+    siteDescription: string | null
+    contentSourceId: string | null
+  }
 }
 
-const queueEvents = new QueueEvents(QUEUE_NAME);
-export async function enqueueAndWait<T extends JobType>(
-  type: T,
-  data: JobData[T],
-) {
-  const job = await enqueue(type, data);
-  await job.waitUntilFinished(queueEvents);
-  return job;
+export async function enqueue<T extends JobType>(type: T, data: JobData[T]) {
+  return queue.add(type, data)
+}
+
+const queueEvents = new QueueEvents(QUEUE_NAME, { connection: redis })
+
+export async function enqueueAndWait<T extends JobType>(type: T, data: JobData[T]) {
+  const job = await enqueue(type, data)
+  await job.waitUntilFinished(queueEvents)
+  return job
 }
