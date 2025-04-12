@@ -1,0 +1,21 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Site } from '@prisma/client'
+
+// UPDATE
+export function useUpdateSite() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...updates }: Partial<Site>) => {
+      const res = await fetch(`/api/logme/sites/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      })
+      if (!res.ok) throw new Error('사이트 수정 실패')
+      return res.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    },
+  })
+}

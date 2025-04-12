@@ -1,5 +1,5 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import { type NextAuthOptions } from 'next-auth'
+import { getServerSession, type NextAuthOptions } from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import Email from 'next-auth/providers/email'
@@ -44,4 +44,8 @@ export const authConfig: NextAuthOptions = {
       return session
     },
   },
+}
+
+export async function getAuthSession() {
+  return await getServerSession(authConfig)
 }

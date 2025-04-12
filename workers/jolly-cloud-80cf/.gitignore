@@ -8,7 +8,7 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+# Diagnostic reports (https://nodejs.org/api/logme/report.html)
 
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
@@ -44,7 +44,7 @@ bower_components
 
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
+# Compiled binary addons (https://nodejs.org/api/logme/addons.html)
 
 build/Release
 

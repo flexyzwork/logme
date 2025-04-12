@@ -52,6 +52,7 @@ model User {
   userPlans     UserPlan[]
 
   sites         Site[]
+  providers     Provider[]
 
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -129,17 +130,28 @@ model Site {
   domainType      DomainType      @default(sub)
   domain          String?
   status          SiteStatus      @default(draft)
+
+  // contentSourceId String?         @unique
+  repoId          String?         @unique
+  deployTargetId  String?         @unique
+
+
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
   user            User            @relation(fields: [userId], references: [id])
   template        Template?       @relation(fields: [templateId], references: [id])
+  // contentSource   ContentSource?  @relation(fields: [contentSourceId], references: [id])
+  repo            Repo?           @relation(fields: [repoId], references: [id])
+  deployTarget    DeployTarget?   @relation(fields: [deployTargetId], references: [id])
   builds          Build[]
-
 
   @@index([slug])
   @@index([userId])
   @@index([templateId])
+  @@index([contentSourceId])
+  @@index([repoId])
+  @@index([deployTargetId])
 }
 
 
@@ -159,6 +171,100 @@ model Build {
 
   site        Site        @relation(fields: [siteId], references: [id])
 }
+
+/// 배포 이력
+model Deployment {
+  id              String      @id @default(cuid())
+  deployTargetId  String
+  status          DeployStatus?    /// enum
+  logUrl          String?
+  triggeredAt     DateTime     @default(now())
+  completedAt     DateTime?
+
+  deployTarget    DeployTarget  @relation(fields: [deployTargetId], references: [id])
+  @@index([deployTargetId])
+}
+
+
+
+/// (외부 서비스) 제공자
+model Provider {
+  id              String   @id @default(cuid())
+  providerType    ProviderType
+  providerUserId  String                        /// 각 서비스의 유저 ID
+  name            String                        /// 사용자 이름
+  email           String?                       /// 사용자 이메일
+  avatarUrl       String?                       /// 아바타 URL
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  
+  providerExtended  ProviderExtended[]
+
+  @@unique([providerType, providerUserId])
+}
+
+
+model ProviderExtended {
+  id             String   @id @default(cuid())
+  providerType   ProviderType
+  extendedKey    String
+  extendedValue  String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  provider       Provider  @relation(fields: [providerId], references: [id])
+  providerId     String
+
+  @@unique([providerId, extendedKey])
+}
+
+/// 컨텐츠 소스 - 노션 페이지
+model ContentSource {
+  id           String      @id @default(cuid())
+  sourceType   SourceType  @default(notion)
+  sourceId     String      @unique
+  sourceUrl    String?
+  // templateId   String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // site         Site?
+  // template   Template? @relation(fields: [templateId], references: [id])
+}
+
+
+/// 저장소 - GitHub 레포
+model Repo {
+  id         String   @id @default(cuid())
+  repoType   RepoType @default(github)
+  repoId     String   @unique
+  repoName   String
+  repoUrl    String?
+  repoOwner  String
+  repoBranch String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  site       Site?
+}
+
+/// 배포 대상 - Vercel 프로젝트
+model DeployTarget {
+  id           String        @id @default(cuid())
+  targetType   TargetType    @default(vercel)
+  targetId     String        @unique
+  targetName   String
+  targetUrl    String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  site          Site?
+  deployments   Deployment[]
+}
+
 
 //
 // ENUM 정의
@@ -225,4 +331,39 @@ enum Language {
   en
   ja
   zh
+}
+
+
+/// 배포 상태
+enum DeployStatus {
+  pending
+  // deploying
+  success
+  error
+  cancelled
+}
+
+/// 제공자 타입
+enum ProviderType {
+  github
+  notion
+  vercel
+  google
+}
+
+
+/// 저장소 타입
+enum RepoType {
+  github
+  gitlab
+  bitbucket
+}
+
+/// 타겟 타입
+enum TargetType {
+  vercel
+  netlify
+  aws
+  cloudflare
+  custom
 }

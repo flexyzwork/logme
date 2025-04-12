@@ -1,27 +1,28 @@
 'use server'
 
-import { authConfig } from '@/lib/auth'
+import { getAuthSession } from '@/lib/auth'
 import { getUniqueSlug } from '@/lib/utils'
-import { getServerSession } from 'next-auth'
+import { NextResponse } from 'next/server'
 
-export const handleGenerateSite = async () => {
+export const handleGenerateSite = async (formData: FormData): Promise<void> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-  const session = await getServerSession(authConfig)
+  const session = await getAuthSession()
   if (!session) {
-    console.error('User not authenticated')
-    return
+    new NextResponse('Unauthorized', { status: 401 })
   }
-  const userId = session.user.id
-  const notionPageId = 'xxx'
-  let siteSlug = 'my-site-slug'
-  const siteTitle = 'site-title'
-  const siteDescription = 'site-description'
+  const userId = session?.user.id
+  const notionPageId = formData.get('notionPageId') as string
+  const siteSlugInput = formData.get('siteSlug') as string
+  const siteTitle = formData.get('siteTitle') as string
+  const siteDescription = formData.get('siteDescription') as string
+
+  let siteSlug = siteSlugInput || 'my-site-slug'
 
   siteSlug = await getUniqueSlug(siteSlug)
 
   console.log('siteSlug', siteSlug)
 
-  const newSite = await fetch(`${baseUrl}/api/site/create`, {
+  const newSite = await fetch(`${baseUrl}/api/logme/site/create`, {
     method: 'POST',
     body: JSON.stringify({
       notionPageId: notionPageId,

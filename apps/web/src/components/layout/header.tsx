@@ -1,7 +1,4 @@
-// 'use client'
-
-import { getServerSession } from 'next-auth/next'
-import { authConfig } from '@/lib/auth'
+import { getAuthSession } from '@/lib/auth'
 import Link from 'next/link'
 import {
   DropdownMenu,
@@ -11,9 +8,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Image from 'next/image'
 import { LogoutButton } from '@/components/LogoutButton'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export async function Header() {
-  const session = await getServerSession(authConfig)
+  const session = await getAuthSession()
   const user = session?.user
 
   const getInitial = (nameOrEmail: string | null | undefined) => {
@@ -66,6 +64,7 @@ export async function Header() {
         ) : (
           <Link href="/signin">로그인</Link>
         )}
+        <ThemeToggle />
       </nav>
     </header>
   )

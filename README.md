@@ -58,7 +58,7 @@ To learn more about the technologies used in this project:
 - [Turborepo](https://turbo.build/repo)
 - [pnpm](https://pnpm.io)
 - [Next.js](https://nextjs.org/docs)
-- [Prisma](https://www.prisma.io/docs/)
+- [Prisma](https://www.db.io/docs/)
 - [BullMQ](https://docs.bullmq.io/)
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)

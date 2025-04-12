@@ -21,3 +21,18 @@ export async function getUniqueSlug(title: string): Promise<string> {
 
   return slug
 }
+
+// ✅ 이메일 없을 때 자동 생성
+export function generateFallbackEmail(providerType: string, providerUserId: string) {
+  return `${providerType}-${providerUserId}@generated.email`
+}
+
+// ✅ 에러 로깅 + 변환 유틸
+export function formatError(error: unknown): string {
+  if (error instanceof Error) return error.message
+  return String(error)
+}
+
+export function generateOAuthState(stateType: string = 'state'): string {
+  return `${stateType}${crypto.randomUUID()}`
+}

@@ -4,10 +4,10 @@ const prisma = new PrismaClient()
 
 async function main() {
   console.log('Seeding database...')
-  const users = await prisma.user.findMany()
+  const users = await db.user.findMany()
 
   for (const user of users) {
-    await prisma.userSettings.upsert({
+    await db.userSettings.upsert({
       where: { userId: user.id },
       update: {},
       create: {
@@ -17,7 +17,7 @@ async function main() {
       },
     })
 
-    await prisma.userPlan.upsert({
+    await db.userPlan.upsert({
       where: { userId: user.id },
       update: {},
       create: {
@@ -36,5 +36,5 @@ main()
     process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect()
+    await db.$disconnect()
   })

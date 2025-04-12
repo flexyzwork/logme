@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
 
-const About = () => {
+const Tools = () => {
   return (
     <div className="flex flex-col justify-center items-center bg-customgreys-primarybg text-white-50 px-6 py-12">
       {/* Hero Section */}
@@ -15,8 +15,8 @@ const About = () => {
       {/* Mission, Vision, Values */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-12">
         <a
-          href="https://logme.flexyz.work"
-          target="_blank"
+          href="/logme"
+          // target="_blank"
           rel="noopener noreferrer"
           className="cursor-pointer"
         >
@@ -31,8 +31,8 @@ const About = () => {
         </a>
 
         <a
-          href="https://page.flexyz.work"
-          target="_blank"
+          href="/page"
+          // target="_blank"
           rel="noopener noreferrer"
           className="cursor-pointer"
         >
@@ -62,4 +62,4 @@ const About = () => {
   )
 }
 
-export default About
+export default Tools
