@@ -31,7 +31,11 @@ export async function GET() {
       where: { userId },
       select: {
         id: true,
+        siteType: true,
         siteTitle: true,
+        siteDescription: true,
+        domainType: true,
+        domain: true,
         status: true,
         createdAt: true,
         template: {
@@ -52,6 +56,9 @@ export async function GET() {
             targetUrl: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     })
 

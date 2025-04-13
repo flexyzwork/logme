@@ -13,17 +13,14 @@ import { createId } from '@paralleldrive/cuid2'
 
 export default function Step0_SelectTemplate() {
   const { createSite } = useSiteStore()
-  // const { github } = useAuthStore()
   const { setSiteId, userId } = useBuilderStore()
   const { mutateAsync: createSiteDB } = useCreateSite()
 
-  // const userId = github.user?.id
 
   const handleSelect = (id: string, clientId: string, redirectUri: string) => {
     const siteId = createId()
 
     const { setNotionAuthState } = useAuthStore.getState()
-    // const { setSiteId } = useSiteStore.getState()
 
     console.log('선택된 템플릿:', { id, clientId, redirectUri })
 

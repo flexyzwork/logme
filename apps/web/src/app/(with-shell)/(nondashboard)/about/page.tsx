@@ -7,16 +7,12 @@ import Image from 'next/image'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export default function Home() {
-  const getCurrentYear = () => {
-    return new Date().getFullYear()
-  }
   return (
     <main className="flex flex-col px-4 py-20 max-w-4xl mx-auto">
       {/* Hero Section */}
       <section className="text-center mb-32">
         <h1 className="text-4xl font-bold mb-6">
-          📝 누구나 만드는 블로그 <br />
-          <br />
+          📝 누구나 만드는 블로그 <br /><br />
           Logme
         </h1>
         <p className="text-muted-foreground text-base mb-10">
@@ -81,65 +77,64 @@ export default function Home() {
       <section className="mb-32 text-center">
         <h2 className="text-xl font-semibold mb-6">🚀 주요 특징</h2>
         <TooltipProvider>
-          <div className="grid sm:grid-cols-3 gap-6 text-left text-sm text-muted-foreground">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <p className="text-base font-bold mb-1">📱 모바일 완벽 대응</p>
-                  <p>모든 템플릿은 모바일에서도 깔끔하게 보여집니다.</p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <Image
-                  src="/examples/blog-mobile.png"
-                  alt="모바일 완벽 대응"
-                  width={300}
-                  height={200}
-                  className="rounded border"
-                />
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <p className="text-base font-bold mb-1">🔍 프리뷰 자동 생성</p>
-                  <p>
-                    공유 시 썸네일(OG 이미지)이 자동으로 생성되어, 링크를 붙이기만 해도 예쁘게
-                    보여요.
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <Image
-                  src="/examples/blog-og.png"
-                  alt="프리뷰 자동 생성"
-                  width={300}
-                  height={200}
-                  className="rounded border"
-                />
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <p className="text-base font-bold mb-1">🖼️ 이미지 완전 지원</p>
-                  <p>
-                    Notion에 첨부된 이미지가 블로그에 그대로 반영됩니다. 해상도나 비율도 자동으로
-                    최적화돼요.
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <Image
-                  src="/examples/blog-preview.png"
-                  alt="이미지 완전 지원"
-                  width={300}
-                  height={200}
-                  className="rounded border"
-                />
-              </TooltipContent>
-            </Tooltip>
-          </div>
+        <div className="grid sm:grid-cols-3 gap-6 text-left text-sm text-muted-foreground">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <p className="text-base font-bold mb-1">📱 모바일 완벽 대응</p>
+                <p>모든 템플릿은 모바일에서도 깔끔하게 보여집니다.</p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <Image
+                src="/examples/blog-mobile.png"
+                alt="모바일 완벽 대응"
+                width={300}
+                height={200}
+                className="rounded border"
+              />
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <p className="text-base font-bold mb-1">🔍 프리뷰 자동 생성</p>
+                <p>
+                  공유 시 썸네일(OG 이미지)이 자동으로 생성되어, 링크를 붙이기만 해도 예쁘게 보여요.
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <Image
+                src="/examples/blog-og.png"
+                alt="프리뷰 자동 생성"
+                width={300}
+                height={200}
+                className="rounded border"
+              />
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <p className="text-base font-bold mb-1">🖼️ 이미지 완전 지원</p>
+                <p>
+                  Notion에 첨부된 이미지가 블로그에 그대로 반영됩니다. 해상도나 비율도 자동으로
+                  최적화돼요.
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <Image
+                src="/examples/blog-preview.png"
+                alt="이미지 완전 지원"
+                width={300}
+                height={200}
+                className="rounded border"
+              />
+            </TooltipContent>
+          </Tooltip>
+        </div>
         </TooltipProvider>
       </section>
       {/* Pricing Section */}
@@ -163,9 +158,6 @@ export default function Home() {
       <section className="text-center">
         <p className="mt-12 text-xs text-muted-foreground">
           Logme는 Flexyz가 만든 블로그 자동화 도구입니다.
-        </p>
-        <p className="text-xs text-muted-foreground">
-          © {getCurrentYear()} Flexyz. All rights reserved.
         </p>
       </section>
     </main>

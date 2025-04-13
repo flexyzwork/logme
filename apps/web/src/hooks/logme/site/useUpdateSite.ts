@@ -14,8 +14,11 @@ export function useUpdateSite() {
       if (!res.ok) throw new Error('사이트 수정 실패')
       return res.json()
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    onSuccess: (updatedSite) => {
+      queryClient.setQueryData(['sites'], (old: Site[] | undefined) =>
+        old ? old.map(site => site.id === updatedSite.id ? { ...site, ...updatedSite } : site) : []
+      )
+      queryClient.invalidateQueries({ queryKey: ['sites'] }) // optional fallback
     },
   })
 }

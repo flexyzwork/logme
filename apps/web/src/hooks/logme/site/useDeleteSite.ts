@@ -12,7 +12,7 @@ export function useDeleteSite() {
       return res.json()
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['sites'] })
     },
   })
 }

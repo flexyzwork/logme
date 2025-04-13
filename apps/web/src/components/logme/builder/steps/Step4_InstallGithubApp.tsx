@@ -79,16 +79,16 @@ export default function Step4_InstallGithubApp() {
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="text-center text-gray-700 text-sm">
-        Github App 설치 완료 (Vercel + Logme) 후 배포를 진행해 주세요.
+        Github App 설치 후 배포를 진행해 주세요.
       </p>
 
       {!(installedVercel && isLogmeAppInstalled) && (
         <div className="flex items-center justify-center gap-2">
           <Button onClick={() => handleAppInstall('vercel')} variant="outline" size="sm">
-            Vercel App 설치 열기
+            Vercel App 설치
           </Button>
           <Button onClick={() => handleAppInstall('logme')} variant="outline" size="sm">
-            Logme App 설치 열기
+            Logme App 설치
           </Button>
         </div>
       )}

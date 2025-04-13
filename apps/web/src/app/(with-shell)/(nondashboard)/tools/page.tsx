@@ -13,7 +13,7 @@ const Tools = () => {
       </div>
 
       {/* Mission, Vision, Values */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-4xl mt-12">
         <a
           href="/logme"
           // target="_blank"
@@ -30,7 +30,7 @@ const Tools = () => {
           </Card>
         </a>
 
-        <a
+        {/* <a
           href="/page"
           // target="_blank"
           rel="noopener noreferrer"
@@ -44,16 +44,16 @@ const Tools = () => {
               </p>
             </CardContent>
           </Card>
-        </a>
+        </a> */}
 
-        <Card className="h-full transition-transform hover:scale-[1.02] hover:shadow-xl cursor-default">
+        {/* <Card className="h-full transition-transform hover:scale-[1.02] hover:shadow-xl cursor-default">
           <CardContent className="p-6 text-center">
             <h2 className="text-lg font-semibold text-primary-700 mb-2">💡 More...</h2>
             <p className="text-sm text-gray-300">
               flexyz는 계속 확장 중입니다. <br />더 많은 도구들이 곧 찾아갑니다.
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Footer */}

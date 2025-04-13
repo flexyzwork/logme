@@ -1,0 +1,48 @@
+[
+  {
+    "id": "notion",
+    "title": "📝 Notion 연결 가이드",
+    "steps": [
+      {
+        "text": "1. Notion OAuth 인증을 통해 워크스페이스 권한을 요청합니다.",
+        "image": "/guide/notion-step1.png"
+      },
+      {
+        "text": "2. 아래처럼 권한 요청 화면이 뜨면 허용을 눌러주세요.",
+        "image": "/guide/notion-step2.png"
+      }
+    ],
+    "link": {
+      "text": "Notion 가입하기",
+      "url": "https://www.notion.so/signup"
+    }
+  },
+  {
+    "id": "github",
+    "title": "🐱 GitHub 연결 가이드",
+    "steps": [
+      {
+        "text": "1. 개인 토큰 발급 없이 OAuth만으로 안전하게 연결됩니다.",
+        "image": "/guide/github-step1.png"
+      }
+    ],
+    "link": {
+      "text": "GitHub 가입하기",
+      "url": "https://github.com/signup"
+    }
+  },
+  {
+    "id": "vercel",
+    "title": "▲ Vercel 연결 가이드",
+    "steps": [
+      {
+        "text": "1. Vercel은 배포를 위해 프로젝트를 생성해야 합니다.",
+        "image": "/guide/vercel-step1.png"
+      }
+    ],
+    "link": {
+      "text": "Vercel 가입하기",
+      "url": "https://vercel.com/signup"
+    }
+  }
+]

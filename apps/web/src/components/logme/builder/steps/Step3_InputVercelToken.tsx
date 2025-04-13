@@ -9,22 +9,14 @@ import { useFetchProviderVercel } from '@/hooks/logme/provider/useFetchProviderV
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useSession } from 'next-auth/react'
-// import { useMutation } from '@tanstack/react-query'
-// import { useCreateSession } from '@/hooks/session/useCreateSession'
 
 export default function Step3_InputVercelToken() {
   const { mutateAsync: fetchUser } = useFetchProviderVercel()
-  // const { mutate: createSession } = useCreateSession()
   const storeProviderUser = useCreateProvider()
   const storeProviderExtended = useCreateProviderExtended()
   const { showToken, setShowToken, setBuilderStep } = useBuilderStore()
   const { data: token } = useFetchProviderExtended('vercel', 'token')
   const { data: session, status } = useSession()
-
-  const [loading, setLoading] = useState(true)
-
-
-  // const mutation = useMutation({ mutationFn: saveVercelToken })
   const [input, setInput] = useState('')
 
   const openPopup = (url: string, name: string) => {
@@ -46,7 +38,6 @@ export default function Step3_InputVercelToken() {
 
   const handleSave = async () => {
     console.log('🔹 vercelToken:', input) // ✅ vercelToken 값 확인
-
 
     console.log('🔹 userId:', session?.user?.id) // ✅ userId 값 확인
 
@@ -81,7 +72,6 @@ export default function Step3_InputVercelToken() {
     setBuilderStep(4)
   }
 
-  // if (status === 'loading' || loading) return <p className="text-center">🔄 인증 중...</p>
   if (!session) return <p className="text-center text-red-500">로그인이 필요합니다</p>
 
   return (
@@ -89,22 +79,12 @@ export default function Step3_InputVercelToken() {
       <span className="text-center text-gray-700 text-sm">
         🎉 Notion 템플릿 게시가 완료되었습니다. <br />
         <br />
-        📌 Vercel 로그인 후 API 토큰을 생성해 주세요.
+        📌 Vercel 후 API 토큰을 생성 후 입력해 주세요.
+        <br />
+        (EXPIRATION: <strong>No Expiration</strong>)
       </span>
 
       <div className="flex items-center justify-center gap-2 mt-2 mb-4">
-        <Button
-          onClick={() =>
-            openPopup(
-              'https://vercel.com/signup?next=%2Faccount%2Fsettings%2Ftokens',
-              'vercel-signup'
-            )
-          }
-          variant="outline"
-          size="sm"
-        >
-          Vercel 가입
-        </Button>
         <Button
           onClick={() =>
             openPopup(
@@ -117,9 +97,6 @@ export default function Step3_InputVercelToken() {
         >
           로그인
         </Button>
-        <p className="text-xs text-gray-500 text-right">
-          EXPIRATION: <strong>No Expiration</strong>
-        </p>
       </div>
 
       <div>

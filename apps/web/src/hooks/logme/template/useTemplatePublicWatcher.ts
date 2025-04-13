@@ -39,7 +39,7 @@ export const useTemplatePublicWatcher = ({
           clearInterval(interval)
 
           if (notionPopup) notionPopup.close()
-          setBuilderStep(2)
+          // setBuilderStep(2)
           onComplete?.()
         }
       } catch (error) {
