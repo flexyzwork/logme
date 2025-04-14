@@ -1,4 +1,3 @@
-// app/(with-shell)/contact/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -7,14 +6,39 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 
 export default function ContactPage() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [result, setResult] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO: Send to your API or 3rd party service
-    setSubmitted(true)
+  const accessKey = process.env.NEXT_PUBLIC_SEND_MAIL_ACCESS_KEY
+
+  if (!accessKey) {
+    throw new Error('NEXT_PUBLIC_SEND_MAIL_ACCESS_KEY is not defined')
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setResult('Sending....')
+    const formData = new FormData(event.currentTarget)
+    formData.append('access_key', accessKey)
+
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData,
+    })
+
+    const data = await response.json()
+
+    if (data.success) {
+      setName('')
+      setEmail('')
+      setMessage('')
+      setResult('Form Submitted Successfully')
+      setTimeout(() => setResult(''), 2000)
+    } else {
+      console.log('Error', data)
+    }
   }
 
   return (
@@ -27,8 +51,8 @@ export default function ContactPage() {
       <div className="space-y-4 text-sm">
         <p>
           📧 Email:{' '}
-          <a href="mailto:hello@flexyz.work" className="underline">
-            hello@flexyz.work
+          <a href="mailto:flexyzwork@gmail.com" className="underline">
+            flexyzwork@gmail.com
           </a>
         </p>
         <p>
@@ -57,31 +81,37 @@ export default function ContactPage() {
 
       <br />
 
-      {submitted ? (
-        <div className="text-center text-green-600 font-medium">
-          Thank you! We'll get back to you soon.
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            type="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Textarea
-            placeholder="Your message"
-            rows={6}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          />
-          <Button type="submit" className="w-full">
-            Send Message
-          </Button>
-        </form>
-      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          type="text"
+          name="name"
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+
+        <Input
+          type="email"
+          name="email"
+          placeholder="Your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Textarea
+          placeholder="Your message"
+          name="message"
+          rows={6}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
+        <Button type="submit" className="w-full">
+          Send Message
+        </Button>
+      </form>
+      <p className="mt-4">{result}</p>
     </main>
   )
 }
