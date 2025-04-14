@@ -27,11 +27,13 @@ export async function Header() {
       </Link>
 
       <nav className="flex items-center gap-4 text-sm text-muted-foreground">
-        <Link href="/about">소개</Link>
-        {/* <Link href="/tools">시리즈</Link> */}
+        <Link href="/about">서비스 소개</Link>
+        <Link href="/faq">자주 묻는 질문</Link>
+        <Link href="/contact">연락하기</Link>
+        
         {user ? (
           <>
-            <Link href="/dashboard">대시보드</Link>
+            <Link href="/dashboard">내 블로그 관리</Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

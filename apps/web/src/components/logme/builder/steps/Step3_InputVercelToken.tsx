@@ -16,7 +16,7 @@ export default function Step3_InputVercelToken() {
   const storeProviderExtended = useCreateProviderExtended()
   const { showToken, setShowToken, setBuilderStep } = useBuilderStore()
   const { data: token } = useFetchProviderExtended('vercel', 'token')
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const [input, setInput] = useState('')
 
   const openPopup = (url: string, name: string) => {

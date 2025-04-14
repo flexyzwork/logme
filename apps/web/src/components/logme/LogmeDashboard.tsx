@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+
 import Image from 'next/image'
 import { useState } from 'react'
-
 import { useFetchSites } from '@/hooks/logme/site/useFetchSites'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useDeleteSite } from '@/hooks/logme/site/useDeleteSite'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'

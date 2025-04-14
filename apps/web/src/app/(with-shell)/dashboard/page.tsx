@@ -10,7 +10,8 @@ export default function Dashboard() {
   )
 }
 
-function DashboardLayout({ app, children }: { app: string; children: React.ReactNode }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function DashboardLayout({ children, app }: { children: React.ReactNode; app: string }) {
   return (
     <div className="px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 max-w-screen-xl mx-auto">
       {children}

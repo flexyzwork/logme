@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 
 
 export const useGithubAppInstall = () => {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const storeProviderExtended = useCreateProviderExtended()
   const [installedVercel, setInstalledVercel] = useState(false)
   const [isLogmeAppInstalled, setIsLogmeAppInstalled] = useState(false)

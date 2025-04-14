@@ -7,20 +7,19 @@ import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useSiteBuilderUI } from '@/hooks/logme/site/useSiteBuilderUI'
 import { Button } from '@/components/ui/button'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getAllTokens } from '@/lib/redis/tokenStore'
 import { useSession } from 'next-auth/react'
 
 export default function Step4_InstallGithubApp() {
   const { data: logmeInstallationId } = useFetchProviderExtended('github', 'logmeInstallationId')
   const { data: vercelInstallation } = useFetchProviderExtended('github', 'vercelInstallation')
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   const { startDeploy } = useDeploymentActions()
   const { siteId, notionPageId, setBuilderStep, setDeploymentUrl } = useBuilderStore()
   const { github } = useAuthStore()
 
-  // const vercelToken = useAuthStore.getState().vercel.accessToken
   const {
     handleAppInstall,
     isLogmeAppInstalled,
@@ -29,7 +28,6 @@ export default function Step4_InstallGithubApp() {
     setInstalledVercel,
   } = useGithubAppInstall()
   const { setIsDeploying } = useSiteBuilderUI()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (logmeInstallationId) setIsLogmeAppInstalled(true)
@@ -78,9 +76,7 @@ export default function Step4_InstallGithubApp() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="text-center text-gray-700 text-sm">
-        Github App 설치 후 배포를 진행해 주세요.
-      </p>
+      <p className="text-center text-gray-700 text-sm">Github App 설치 후 배포를 진행해 주세요.</p>
 
       {!(installedVercel && isLogmeAppInstalled) && (
         <div className="flex items-center justify-center gap-2">

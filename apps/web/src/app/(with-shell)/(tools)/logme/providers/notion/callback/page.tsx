@@ -161,6 +161,7 @@ export default function NotionCallbackPage() {
     createContentSourceDB,
     siteId,
     updateSiteDB,
+    setNotionPageId
   ])
 
   if (status === 'loading' || loading) return <p>Loading...</p>

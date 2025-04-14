@@ -1,8 +1,6 @@
 import React from 'react'
 import { ZustandProvider } from '@/context/ZustandProvider'
 import { Suspense } from 'react'
-import { Shell } from '@/components/layout/shell'
-// Removed usePathname import as it's no longer needed
 import QueryProvider from '@/context/QueryProvider'
 import SessionProvider from '@/context/SessionProvider'
 import { Toaster } from 'sonner'
