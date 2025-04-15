@@ -33,11 +33,11 @@ export const useDeploymentActions = () => {
           if (siteId) {
             await updateSiteDB({
               id: siteId,
-              domain: data.url,
+              domain: `https://${data.url}`,
               status: SiteStatus.published,
             })
             console.log('✅ 사이트 도메인 업데이트 완료:', data.url)
-            setBuilderStep(0)
+            // setBuilderStep(0)
           }
           // alert('✅ 배포가 완료되었습니다. 🚀')
           return
@@ -89,7 +89,9 @@ export const useDeploymentActions = () => {
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
           repoName: params.githubRepoName,
+          repoUrl: `https://github.com/${params.githubOwner}/${params.githubRepoName}`,
           repoOwner: params.githubOwner,
+          repoBranch: data.repoBranch,
         })
         console.log('✅ Repo DB 생성:', repo)
 

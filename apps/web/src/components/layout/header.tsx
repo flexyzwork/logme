@@ -54,8 +54,13 @@ export async function Header() {
 
               <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem asChild>
+                  <Link href="/account" className="w-full text-left">
+                    계정 관리
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/settings" className="w-full text-left">
-                    내 계정
+                    설정
                   </Link>
                 </DropdownMenuItem>
 

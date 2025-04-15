@@ -21,10 +21,10 @@ export const useTemplatePageOpener = () => {
   }) => {
     const notionAccessToken = await getProviderToken(userId!, 'notion')
     console.log('notionAccessToken:', notionAccessToken)
-    if (!notionAccessToken || !notionPageId) {
-      alert('❌ Notion 인증 정보가 없습니다.')
-      return
-    }
+    // if (!notionAccessToken || !notionPageId) {
+    //   alert('❌ Notion 인증 정보가 없습니다.')
+    //   return
+    // }
 
     try {
       const res = await fetch(`/api/logme/templates/get-url?notionPageId=${notionPageId}`, {

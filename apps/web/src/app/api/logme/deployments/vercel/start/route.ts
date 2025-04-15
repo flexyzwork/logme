@@ -206,6 +206,7 @@ export async function POST(req: NextRequest) {
         url: `https://${deployData.url}`,
         id: deployData.id,
         repoId,
+        repoBranch: deployData.gitSource.ref,
         targetId: deployData.project.id,
         targetName: deployData.project.name,
       },

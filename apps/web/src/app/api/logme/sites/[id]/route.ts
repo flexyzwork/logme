@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 
 // GET /api/logme/sites/[id] - 사이트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -9,9 +8,15 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   if (!session) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
+  const userId = session.user.id
   const { id } = await context.params
   const site = await db.site.findFirst({
-    where: { id },
+    where: {
+      id, 
+      ...(userId && { userId }),
+      deletedAt: null
+     },
+
   })
 
   if (!site) return new NextResponse('Not Found', { status: 404 })
@@ -25,14 +30,15 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     if (!session) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
-    // const userId = session.user.id
+    const userId = session.user.id
     const { id } = await context.params
     const data = await req.json()
 
     const updated = await db.site.update({
       where: {
         id,
-        // userId,
+        ...(userId && { userId }),
+        deletedAt: null
       },
       data,
     })
@@ -44,7 +50,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
   }
 }
 
-// DELETE /api/logme/sites/[id] - 사이트 삭제
+
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await getAuthSession()
@@ -54,10 +60,14 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     const userId = session.user.id
     const { id } = await context.params
 
-    const deleted = await db.site.delete({
+    const deleted = await db.site.update({
       where: {
         id,
-        userId,
+        ...(userId && { userId }),
+        deletedAt: null
+      },
+      data: {
+        deletedAt: new Date(),
       },
     })
 

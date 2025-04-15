@@ -34,20 +34,41 @@ export const authConfig: NextAuthOptions = {
   ],
   pages: {
     signIn: '/signin',
+    
   },
   callbacks: {
     async session({ session, user }) {
       if (session.user) {
+        if (session.user.deletedAt) {
+          return session
+        }
         session.user.id = user.id
         session.user.email = user.email
+        session.user.name = user.name
       }
       return session
     },
     async redirect({ url, baseUrl }) {
+      if (url === baseUrl) return `${baseUrl}/logme`
+      if (url === `${baseUrl}/`) return `${baseUrl}/logme`
       if (url.startsWith(baseUrl)) return url
       if (url.startsWith('/')) return `${baseUrl}${url}`
-      return baseUrl
-    }
+      return `${baseUrl}/logme`
+    },
+    async signIn({ user }) {
+      const existing = await db.user.findUnique({
+        where: { email: user.email ?? '' },
+      });
+
+      if (existing?.deletedAt) {
+        await db.user.update({
+          where: { id: existing.id },
+          data: { deletedAt: null },
+        });
+      }
+
+      return true;
+    },
   },
 }
 

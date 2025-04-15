@@ -28,7 +28,7 @@ export async function GET() {
     }
     const userId = session.user.id
     const sites = await db.site.findMany({
-      where: { userId },
+      where: { userId, deletedAt: null },
       select: {
         id: true,
         siteType: true,
@@ -43,7 +43,13 @@ export async function GET() {
             templateTitle: true,
           },
         },
-        contentSourceId: true,
+        contentSource: {
+          select: {
+            sourceType: true,
+            sourceId: true,
+            sourceUrl: true,
+          },
+        },
         repo: {
           select: {
             repoName: true,

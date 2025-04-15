@@ -79,23 +79,23 @@ export default function Step3_InputVercelToken() {
       <span className="text-center text-gray-700 text-sm">
         🎉 Notion 템플릿 게시가 완료되었습니다. <br />
         <br />
-        📌 Vercel 후 API 토큰을 생성 후 입력해 주세요.
+        📌 Vercel API 토큰을 생성 후 입력해 주세요.
         <br />
         (EXPIRATION: <strong>No Expiration</strong>)
       </span>
 
-      <div className="flex items-center justify-center gap-2 mt-2 mb-4">
+      <div className="flex items-start justify-around gap-2 mt-2 mb-4">
         <Button
           onClick={() =>
             openPopup(
               'https://vercel.com/login?next=%2Faccount%2Fsettings%2Ftokens',
-              'vercel-login'
+              'vercel-token'
             )
           }
           variant="outline"
           size="sm"
         >
-          로그인
+          토큰 생성하러 가기
         </Button>
       </div>
 

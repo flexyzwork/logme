@@ -9,6 +9,9 @@ export async function GET() {
       return new NextResponse('Unauthorized', { status: 401 })
     }
     const templates = await db.template.findMany({
+      where: {
+        deletedAt: null
+       },
       select: {
         id: true,
         templateTitle: true,

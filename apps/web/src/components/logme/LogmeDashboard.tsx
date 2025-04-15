@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import Image from 'next/image'
@@ -7,8 +6,19 @@ import { useFetchSites } from '@/hooks/logme/site/useFetchSites'
 import { Button } from '@/components/ui/button'
 import { useDeleteSite } from '@/hooks/logme/site/useDeleteSite'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
-import { GuideDialogTriggerButton } from '@/components/logme/GuideDialogTriggerButton'
-import GithubButton from '@/components/logme/GithubButton'
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog'
+import ConnectionStatus from '@/components/logme/common/ConnectionStatus'
+import { useRouter } from 'next/navigation'
 
 export default function LogmeDashboard() {
   const { data: sites, isLoading, error } = useFetchSites()
@@ -19,27 +29,12 @@ export default function LogmeDashboard() {
   const [editingSite, setEditingSite] = useState<string | null>(null)
   const [editingTitle, setEditingTitle] = useState('')
   const [editingDescription, setEditingDescription] = useState('')
+  const router = useRouter()
 
   return (
-    <div className="p-6">
+    <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-3xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">대시보드</h1>
-
-      <div className="mb-4 flex gap-4 items-center">
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-green-500" />
-          <span className="text-sm text-muted-foreground">Notion 연결됨</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-green-500" />
-          <span className="text-sm text-muted-foreground">GitHub 연결됨</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-yellow-400" />
-          <span className="text-sm text-muted-foreground">Vercel 미연결</span>
-        </div>
-
-        <GuideDialogTriggerButton />
-      </div>
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2"></div>
 
       {isLoading ? (
         <div className="text-center">Loading...</div>
@@ -64,10 +59,14 @@ export default function LogmeDashboard() {
                 목록 보기
               </Button>
             </div>
-            <GithubButton text="+ 새 블로그 만들기" stateType="github:builder:" />
+            <div className="flex items-center justify-end">
+              <Button className="text-sm mt-1" onClick={() => router.push('/logme')}>
+                + 새 블로그 만들기
+              </Button>
+            </div>
           </div>
           {viewMode === 'card' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               {sites.map((site: any) => (
                 <div
                   key={site.id}
@@ -125,12 +124,25 @@ export default function LogmeDashboard() {
                     )}
                     {editingSite !== site.id && (
                       <>
-                        <p className="mt-2">상태: {site.status}</p>
+                        <p className="mt-2 text-sm">상태: {site.status}</p>
                         {site.template && (
-                          <p className="mt-1">템플릿: {site.template.templateTitle}</p>
+                          <p className="mt-1 text-sm">템플릿: {site.template.templateTitle}</p>
+                        )}
+                        {site.contentSource && (
+                          <p className="mt-1 text-sm">
+                            컨텐츠:{' '}
+                            <a
+                              href={site.contentSource.sourceUrl}
+                              className="text-blue-500 underline"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {site.contentSource.sourceId}
+                            </a>
+                          </p>
                         )}
                         {site.repo && (
-                          <p className="mt-1">
+                          <p className="mt-1 text-sm">
                             저장소:{' '}
                             <a
                               href={site.repo.repoUrl}
@@ -143,7 +155,7 @@ export default function LogmeDashboard() {
                           </p>
                         )}
                         {site.deployTarget && (
-                          <p className="mt-1">
+                          <p className="mt-1 text-sm">
                             배포:{' '}
                             <a
                               href={site.deployTarget.targetUrl}
@@ -156,8 +168,8 @@ export default function LogmeDashboard() {
                           </p>
                         )}
                         {site.contentSourceId && (
-                          <p className="mt-1">
-                            콘텐츠:{' '}
+                          <p className="mt-1 text-sm">
+                            컨텐츠:{' '}
                             <a
                               href={`https://www.notion.so/${site.contentSourceId}`}
                               className="text-blue-500 underline"
@@ -168,7 +180,8 @@ export default function LogmeDashboard() {
                             </a>
                           </p>
                         )}
-                        <div className="mt-2 flex gap-2">
+
+                        <div className="mt-2 flex gap-2 ">
                           <Button
                             size="sm"
                             onClick={() => {
@@ -179,13 +192,28 @@ export default function LogmeDashboard() {
                           >
                             수정
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => deleteSite.mutate(site.id)}
-                          >
-                            삭제
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" variant="destructive">
+                                삭제
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  이 작업은 되돌릴 수 없습니다. 사이트와 관련된 모든 정보가
+                                  삭제됩니다.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>취소</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => deleteSite.mutate(site.id)}>
+                                  삭제
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </>
                     )}
@@ -241,12 +269,12 @@ export default function LogmeDashboard() {
                   )}
                   {editingSite !== site.id && (
                     <>
-                      <p className="mt-2">상태: {site.status}</p>
+                      <p className="mt-2 text-sm">상태: {site.status}</p>
                       {site.template && (
                         <p className="mt-1">템플릿: {site.template.templateTitle}</p>
                       )}
                       {site.repo && (
-                        <p className="mt-1">
+                        <p className="mt-1 text-sm">
                           저장소:{' '}
                           <a
                             href={site.repo.repoUrl}
@@ -259,7 +287,7 @@ export default function LogmeDashboard() {
                         </p>
                       )}
                       {site.deployTarget && (
-                        <p className="mt-1">
+                        <p className="mt-1 text-sm">
                           배포:{' '}
                           <a
                             href={site.deployTarget.targetUrl}
@@ -272,7 +300,7 @@ export default function LogmeDashboard() {
                         </p>
                       )}
                       {site.contentSourceId && (
-                        <p className="mt-1">
+                        <p className="mt-1 text-sm">
                           콘텐츠:{' '}
                           <a
                             href={`https://www.notion.so/${site.contentSourceId}`}
@@ -295,13 +323,28 @@ export default function LogmeDashboard() {
                         >
                           수정
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => deleteSite.mutate(site.id)}
-                        >
-                          삭제
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="destructive">
+                              삭제
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                이 작업은 되돌릴 수 없습니다. 사이트와 관련된 모든 정보가
+                                삭제됩니다.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>취소</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => deleteSite.mutate(site.id)}>
+                                삭제
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </>
                   )}

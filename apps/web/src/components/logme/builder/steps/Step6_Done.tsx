@@ -6,7 +6,7 @@ import { useTemplatePageOpener } from '@/hooks/logme/template/useTemplatePageOpe
 import { useRouter } from 'next/navigation'
 
 export default function Step6_Done() {
-  const { siteId, notionPageId, deploymentUrl } = useBuilderStore()
+  const { siteId, notionPageId, deploymentUrl, setBuilderStep } = useBuilderStore()
   const { openNotionPageUrl } = useTemplatePageOpener()
   const router = useRouter()
 
@@ -42,7 +42,10 @@ export default function Step6_Done() {
 
       <Button
         className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm"
-        onClick={() => router.push('/dashboard')}
+        onClick={() => {
+          setBuilderStep(0)
+          router.push('/dashboard')
+        }}
       >
         🔙 대시보드로 가기
       </Button>

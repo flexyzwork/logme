@@ -18,7 +18,7 @@ export function GuideDialogTriggerButton() {
 
   return (
     <button onClick={handleClick} className="text-sm text-muted-foreground mt-1 underline">
-      연결가이드
+      가입가이드
     </button>
   )
 }

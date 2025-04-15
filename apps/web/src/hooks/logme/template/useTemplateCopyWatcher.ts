@@ -24,10 +24,10 @@ export const useTemplateCopyWatcher = ({
       try {
         const notionAccessToken = await getProviderToken(userId!, 'notion')
         console.log('notionAccessToken:', notionAccessToken)
-        if (!notionAccessToken) {
-          alert('❌ Notion 인증 정보가 없습니다.')
-          return
-        }
+        // if (!notionAccessToken) {
+        //   alert('❌ Notion 인증 정보가 없습니다.')
+        //   return
+        // }
 
         const response = await fetch(
           `/api/logme/templates/check-copy?notionPageId=${notionPageId}`,
