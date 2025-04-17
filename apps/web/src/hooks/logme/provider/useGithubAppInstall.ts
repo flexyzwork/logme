@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAuthStore } from '@/stores/logme/authStore'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
@@ -14,6 +14,7 @@ export const useGithubAppInstall = () => {
   const [vercelPopup, setVercelPopup] = useState<Window | null>(null)
   const [logmePopup, setLogmePopup] = useState<Window | null>(null)
   const [hasOpenedAppInstall, setHasOpenedAppInstall] = useState(false)
+  const isFetching = useRef(false)
 
   const handleAppInstall = (app: 'vercel' | 'logme') => {
 
@@ -67,9 +68,11 @@ export const useGithubAppInstall = () => {
 
         console.log('✅ 설치 완료! installation_id:', installationId)
 
+        if (isFetching.current) return
+        isFetching.current = true
+
         try {
           const userId = session?.user?.id
-
 
           const providerExtended = {
             providerType: 'github',
@@ -88,6 +91,8 @@ export const useGithubAppInstall = () => {
           setIsLogmeAppInstalled(true)
         } catch (err) {
           console.error('❌ 설치 토큰 저장 실패:', err)
+        } finally {
+          isFetching.current = false
         }
       }
     }

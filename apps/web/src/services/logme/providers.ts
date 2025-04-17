@@ -3,15 +3,16 @@ import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import { Octokit } from '@octokit/rest'
 import { createAppAuth } from '@octokit/auth-app'
-import { getAuthSession } from '@/lib/auth'
+// import { getAuthSession } from '@/lib/auth'
 import { ProviderType } from '@prisma/client'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
 const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n') // PEM 포맷 복구
 
-export async function handleGithub(req: Request) {
+export async function handleGithub(req: Request, userId: string) {
   try {
     const { installationId } = await req.json()
+
 
     console.log('installationId:', installationId)
 
@@ -19,14 +20,15 @@ export async function handleGithub(req: Request) {
       return NextResponse.json({ error: 'installationId 누락' }, { status: 400 })
     }
 
-    const session = await getAuthSession()
-    if (!session) {
-      return new NextResponse('Unauthorized', { status: 401 })
-    }
-    const userId = session.user.id
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
-    }
+    // 이 부분이 문제였음!!!!
+    // const session = await getAuthSession()
+    // if (!session) {
+    //   return new NextResponse('Unauthorized', { status: 401 })
+    // }
+    // const userId = session.user.id
+    // if (!userId) {
+    //   return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
+    // }
     console.log('userId:', userId)
     const octokit = new Octokit({
       authStrategy: createAppAuth,
@@ -47,34 +49,36 @@ export async function handleGithub(req: Request) {
     // account.login, account.id, account.type 등
     console.log('account:', account)
 
-    if (!account) {
-      return NextResponse.json({ error: 'Account not found' }, { status: 404 })
-    }
+    // if (!account) {
+    //   return NextResponse.json({ error: 'Account not found' }, { status: 404 })
+    // }
 
-    const provider = await db.provider.upsert({
+    await db.provider.upsert({
       where: {
         providerType_providerUserId: {
           providerType: ProviderType.github,
-          providerUserId: account?.id?.toString()
+          providerUserId: account?.id?.toString() || '', // Fallback to an empty string if account or id is null
         },
       },
       update: {
-        name: 'login' in account ? account.login : 'unknown',
+        name: account && 'login' in account ? account.login : 'unknown',
         email: null, // OAuth가 아니므로 null
-        avatarUrl: account.avatar_url, // 필요 시 REST API로 추가 fetch 가능
+        avatarUrl: account?.avatar_url || null, // 필요 시 REST API로 추가 fetch 가능
         updatedAt: new Date(),
-        providerExtended: {
-          deleteMany: {
-            extendedKey: 'logmeInstallationId',
-          },
-        },
+
+        // 이 부분도 문제였음!!!!
+        // providerExtended: {
+        //   deleteMany: {
+        //     extendedKey: 'logmeInstallationId',
+        //   },
+        // },
       },
       create: {
         providerType: ProviderType.github,
-        providerUserId: account?.id?.toString(), // Fallback to an empty string if account or id is null
-        name: 'login' in account ? account.login : 'unknown',
+        providerUserId: account?.id?.toString() || '', // Fallback to an empty string if account or id is null
+        name: account && 'login' in account ? account.login : 'unknown',
         email: null,
-        avatarUrl: account.avatar_url,
+        avatarUrl: account?.avatar_url || null,
         user: {
           connect: {
             id: userId, 
@@ -90,24 +94,6 @@ export async function handleGithub(req: Request) {
       },
     })
 
-    await db.providerExtended.upsert({
-      where: {
-        providerId_extendedKey: {
-          providerId: provider.id,
-          extendedKey: 'logmeInstallationId',
-        },
-      },
-      update: {
-        extendedValue: installationId.toString(),
-        updatedAt: new Date(),
-      },
-      create: {
-        providerId: provider.id,
-        providerType: ProviderType.github,
-        extendedKey: 'logmeInstallationId',
-        extendedValue: installationId.toString(),
-      },
-    })
 
     // 1️⃣ JWT 생성
     const now = Math.floor(Date.now() / 1000)
@@ -131,7 +117,7 @@ export async function handleGithub(req: Request) {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github+json',
         },
-      }
+      },
     )
 
     const data = await res.json()
@@ -139,7 +125,7 @@ export async function handleGithub(req: Request) {
     if (!res.ok) {
       return NextResponse.json(
         { error: 'Installation token 요청 실패', detail: data },
-        { status: res.status }
+        { status: res.status },
       )
     }
 
@@ -147,6 +133,25 @@ export async function handleGithub(req: Request) {
       token: data.token,
       expires_at: data.expires_at,
     })
+    // 2️⃣ 설치 토큰 요청
+    // const res = (await octokit.auth({
+    //   type: 'installation',
+    //   installationId,
+    // })) as { token: string }
+
+    // const data = res.token
+
+    // if (!data) {
+    //   return NextResponse.json(
+    //     { error: 'Installation token 요청 실패' },
+    //     { status: 400 }
+    //   )
+    // }
+
+    // return NextResponse.json({
+    //   token: data,
+    //   expires_at: null, // No expiration info available
+    // })
   } catch (error) {
     console.error('GitHub App 토큰 발급 실패:', error)
     return NextResponse.json({ error: '서버 오류', detail: String(error) }, { status: 500 })

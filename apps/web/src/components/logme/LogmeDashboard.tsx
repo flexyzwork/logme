@@ -17,7 +17,6 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
-import ConnectionStatus from '@/components/logme/common/ConnectionStatus'
 import { useRouter } from 'next/navigation'
 
 export default function LogmeDashboard() {
@@ -202,8 +201,8 @@ export default function LogmeDashboard() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  이 작업은 되돌릴 수 없습니다. 사이트와 관련된 모든 정보가
-                                  삭제됩니다.
+                                  이 작업은 되돌릴 수 없습니다. GitHub 저장소, Vercel 배포 프로젝트
+                                  등 사이트와 관련된 모든 정보가 삭제됩니다.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
@@ -333,8 +332,8 @@ export default function LogmeDashboard() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                이 작업은 되돌릴 수 없습니다. 사이트와 관련된 모든 정보가
-                                삭제됩니다.
+                                이 작업은 되돌릴 수 없습니다. GitHub 저장소, Vercel 배포 프로젝트 등
+                                사이트와 관련된 모든 정보가 삭제됩니다.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

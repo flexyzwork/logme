@@ -5,7 +5,7 @@ import ConnectionStatus from '@/components/logme/common/ConnectionStatus'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useDeleteProvider } from '@/hooks/logme/provider/useDeleteProvider'
 import { useGithubAppInstall } from '@/hooks/logme/provider/useGithubAppInstall'
@@ -75,6 +75,7 @@ export default function AccountPage() {
   } = useGithubAppInstall()
 
   const [vercelTokenInput, setVercelTokenInput] = useState(vercelTokenData ?? '')
+  const isFetching = useRef(false)
 
   useEffect(() => {
     setIsLogmeAppInstalled(!!logmeInstallationIdData)

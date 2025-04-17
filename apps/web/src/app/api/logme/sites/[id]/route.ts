@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
+import { deleteVercelProject, deleteGithubRepo } from '@/services/logme/deleteExternals'
+import { fetchGithubInstallationToken } from '@/services/logme/auth'
 
 // GET /api/logme/sites/[id] - 사이트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -12,11 +14,10 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   const { id } = await context.params
   const site = await db.site.findFirst({
     where: {
-      id, 
+      id,
       ...(userId && { userId }),
-      deletedAt: null
-     },
-
+      deletedAt: null,
+    },
   })
 
   if (!site) return new NextResponse('Not Found', { status: 404 })
@@ -38,7 +39,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
       where: {
         id,
         ...(userId && { userId }),
-        deletedAt: null
+        deletedAt: null,
       },
       data,
     })
@@ -50,7 +51,6 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
   }
 }
 
-
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await getAuthSession()
@@ -60,11 +60,75 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     const userId = session.user.id
     const { id } = await context.params
 
+    const site = await db.site.findFirst({
+      where: {
+        id,
+        ...(userId && { userId }),
+        deletedAt: null,
+      },
+      include: {
+        deployTarget: true,
+        repo: true,
+      },
+    })
+
+    if (!site) return new NextResponse('Not Found', { status: 404 })
+
+    // vercel 토큰 가져오기
+    const vercelTokenData = await db.providerExtended.findFirst({
+      where: {
+        provider: {
+          userId: site.userId,
+          providerType: 'vercel',
+        },
+        extendedKey: 'token',
+      },
+    })
+
+    const vercelToken = vercelTokenData?.extendedValue
+
+    console.log('vercelToken:', vercelToken)
+    try {
+      // Vercel 프로젝트 삭제
+      if (site.deployTarget?.targetId && vercelToken) {
+        await deleteVercelProject(vercelToken, site.deployTarget.targetId)
+      }
+
+      // gitbub app installationId 가져와서 토큰 발급받기
+      const logmeInstallationIdData = await db.providerExtended.findFirst({
+        where: {
+          provider: {
+            userId: site.userId,
+            providerType: 'github',
+          },
+          extendedKey: 'logmeInstallationId',
+        },
+      })
+
+      const githubInstallationId = logmeInstallationIdData?.extendedValue
+      console.log('githubInstallationId:', githubInstallationId)
+
+      // GitHub 저장소 삭제
+      if (site.repo?.repoOwner && site.repo?.repoName && githubInstallationId) {
+        const installationToken = await fetchGithubInstallationToken(
+          // req,
+          Number(githubInstallationId)
+        )
+        await deleteGithubRepo({
+          installationToken,
+          owner: site.repo.repoOwner,
+          repo: site.repo.repoName,
+        })
+      }
+    } catch (externalError) {
+      console.warn('⚠️ 외부 리소스 삭제 실패 (무시하고 진행)', externalError)
+    }
+
     const deleted = await db.site.update({
       where: {
         id,
         ...(userId && { userId }),
-        deletedAt: null
+        deletedAt: null,
       },
       data: {
         deletedAt: new Date(),

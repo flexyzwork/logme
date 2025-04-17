@@ -2,7 +2,10 @@ export const fetchGithubInstallationToken = async (installationId: number) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' // 또는 서버의 실제 baseURL
   const res = await fetch(`${baseUrl}/api/logme/providers/github`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      // cookie: req.headers.get('cookie') || '', // 여기서 전달
+    },
     body: JSON.stringify({ installationId }),
   })
 

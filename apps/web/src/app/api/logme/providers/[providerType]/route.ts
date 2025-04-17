@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthSession } from '@/lib/auth'
 import { handleGithub, handleNotion, handleVercel } from '@/services/logme/providers'
 
+const providerLocks = new Map<string, boolean>()
+
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ providerType: string }> }
@@ -16,14 +18,30 @@ export async function POST(
       return NextResponse.json({ error: 'providerType is required' }, { status: 400 })
     }
 
-    if (providerType === 'notion') {
-      return await handleNotion(req)
-    } else if (providerType === 'github') {
-      return await handleGithub(req)
-    } else if (providerType === 'vercel') {
-      return await handleVercel(req)
-    } else {
-      return NextResponse.json({ error: 'Unsupported provider type' }, { status: 400 })
+    const session = await getAuthSession()
+    const sessionId = session?.user?.id || 'anonymous'
+    const lockKey = `${sessionId}-${providerType}`
+
+    console.log('sessionId:', sessionId)
+
+    if (providerLocks.get(lockKey)) {
+      return NextResponse.json({ error: 'Request already in progress' }, { status: 429 })
+    }
+
+    providerLocks.set(lockKey, true)
+
+    try {
+      if (providerType === 'notion') {
+        return await handleNotion(req)
+      } else if (providerType === 'github') {
+        return await handleGithub(req, sessionId)
+      } else if (providerType === 'vercel') {
+        return await handleVercel(req)
+      } else {
+        return NextResponse.json({ error: 'Unsupported provider type' }, { status: 400 })
+      }
+    } finally {
+      providerLocks.delete(lockKey)
     }
   } catch (error) {
     return NextResponse.json({ message: 'Internal Server Error', error }, { status: 500 })
@@ -74,7 +92,6 @@ export async function DELETE(
       return NextResponse.json({ error: 'providerType is required' }, { status: 400 })
     }
 
-    // const { userId } = await req.json()
     const session = await getAuthSession()
     if (!session) {
       return new NextResponse('Unauthorized', { status: 401 })
