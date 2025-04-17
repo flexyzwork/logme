@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export function useDisconnectProvider(
+export function useDeleteProvider(
   providerType: 'notion' | 'github' | 'vercel',
   config?: { onSuccess?: () => void }
 ) {
@@ -14,9 +14,12 @@ export function useDisconnectProvider(
       })
       if (!res.ok) throw new Error('연결 해제 실패')
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(`${providerType} 연결이 해제되었습니다`)
-      queryClient.invalidateQueries({ queryKey: ['provider', providerType] })
+      await queryClient.invalidateQueries({ queryKey: ['provider', providerType] })
+      await queryClient.refetchQueries({ queryKey: ['provider', providerType] })
+      await queryClient.invalidateQueries({ queryKey: ['providerExtended', providerType, 'token'] })
+      await queryClient.refetchQueries({ queryKey: ['providerExtended', providerType, 'token'] })
       config?.onSuccess?.()
     },
     onError: () => {

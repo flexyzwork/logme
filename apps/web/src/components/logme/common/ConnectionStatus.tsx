@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 
 import { useState } from 'react'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'

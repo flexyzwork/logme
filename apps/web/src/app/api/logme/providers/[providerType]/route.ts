@@ -45,6 +45,9 @@ export async function GET(
 
     const provider = await db.provider.findFirst({
       where: { providerType },
+      include: {
+        providerExtended: true,
+      },
     })
 
     if (!provider) {

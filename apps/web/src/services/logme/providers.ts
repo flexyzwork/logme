@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import { Octokit } from '@octokit/rest'
 import { createAppAuth } from '@octokit/auth-app'
 import { getAuthSession } from '@/lib/auth'
+import { ProviderType } from '@prisma/client'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
 const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n') // PEM 포맷 복구
@@ -46,18 +47,21 @@ export async function handleGithub(req: Request) {
     // account.login, account.id, account.type 등
     console.log('account:', account)
 
-    // DB 저장 예시
+    if (!account) {
+      return NextResponse.json({ error: 'Account not found' }, { status: 404 })
+    }
+
     const provider = await db.provider.upsert({
       where: {
         providerType_providerUserId: {
-          providerType: 'github',
-          providerUserId: account?.id?.toString() ?? '', // Int → String, fallback to empty string
+          providerType: ProviderType.github,
+          providerUserId: account?.id?.toString()
         },
       },
       update: {
-        name: account && 'login' in account ? account.login : 'not-found',
+        name: 'login' in account ? account.login : 'unknown',
         email: null, // OAuth가 아니므로 null
-        avatarUrl: null, // 필요 시 REST API로 추가 fetch 가능
+        avatarUrl: account.avatar_url, // 필요 시 REST API로 추가 fetch 가능
         updatedAt: new Date(),
         providerExtended: {
           deleteMany: {
@@ -66,11 +70,11 @@ export async function handleGithub(req: Request) {
         },
       },
       create: {
-        providerType: 'github',
-        providerUserId: account?.id?.toString() ?? '', // Fallback to an empty string if account or id is null
-        name: account && 'login' in account ? account.login : 'not-found',
+        providerType: ProviderType.github,
+        providerUserId: account?.id?.toString(), // Fallback to an empty string if account or id is null
+        name: 'login' in account ? account.login : 'unknown',
         email: null,
-        avatarUrl: null,
+        avatarUrl: account.avatar_url,
         user: {
           connect: {
             id: userId, 
@@ -78,7 +82,7 @@ export async function handleGithub(req: Request) {
         },
         providerExtended: {
           create: {
-            providerType: 'github',
+            providerType: ProviderType.github,
             extendedKey: 'logmeInstallationId',
             extendedValue: installationId.toString(),
           },
@@ -99,7 +103,7 @@ export async function handleGithub(req: Request) {
       },
       create: {
         providerId: provider.id,
-        providerType: 'github',
+        providerType: ProviderType.github,
         extendedKey: 'logmeInstallationId',
         extendedValue: installationId.toString(),
       },
