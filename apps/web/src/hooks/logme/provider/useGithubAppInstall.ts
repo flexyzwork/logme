@@ -39,8 +39,8 @@ export const useGithubAppInstall = () => {
             extendedValue: 'true',
           }
           await storeProviderExtended.mutateAsync(providerExtended)
-        } else {
-          setIsLogmeAppInstalled(true)
+        // } else {
+        //   setIsLogmeAppInstalled(true)
         }
       }
     }, 500)

@@ -5,21 +5,104 @@ import ConnectionStatus from '@/components/logme/common/ConnectionStatus'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useDisconnectProvider } from '@/hooks/logme/provider/useDisconnectProvider'
+import { useGithubAppInstall } from '@/hooks/logme/provider/useGithubAppInstall'
+import { useCreateProvider } from '@/hooks/logme/provider/useCreateProvider'
+import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
+import { useSession } from 'next-auth/react'
+import { useFetchProviderVercel } from '@/hooks/logme/provider/useFetchProviderVercel'
+import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 
 export default function SettingsPage() {
   const [isMasked, setIsMasked] = useState(true)
-  const [isNotionConnected, setIsNotionConnected] = useState(true)
-  const [isGithubInstalled, setIsGithubInstalled] = useState(true)
-  const [vercelToken, setVercelToken] = useState<string>('')
-  const { mutate: notionDelete, isPending: notionDeletePending } = useDisconnectProvider('notion')
-  const { mutate: githubDelete, isPending: githubDeletePending } = useDisconnectProvider('notion')
-  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDisconnectProvider('vercel')
+  const { data: session } = useSession()
+  const storeProviderUser = useCreateProvider()
+  const storeProviderExtended = useCreateProviderExtended()
+  const { mutateAsync: fetchUser } = useFetchProviderVercel()
 
-  const handleSave = () => {
-    // 저장 로직
-    console.log('Saved settings!')
+  const { data: vercelTokenData } = useFetchProviderExtended('vercel', 'token')
+  const { data: notionTokenData } = useFetchProviderExtended('notion', 'token')
+  const { data: logmeInstallationIdData } = useFetchProviderExtended(
+    'github',
+    'logmeInstallationId'
+  )
+  const { data: vercelInstallation } = useFetchProviderExtended('github', 'vercelInstallation')
+  const { mutate: notionDelete, isPending: notionDeletePending } = useDisconnectProvider('notion')
+  const { mutate: githubDelete, isPending: githubDeletePending } = useDisconnectProvider('github')
+  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDisconnectProvider('vercel')
+  const [vercelToken, setVercelToken] = useState<string>('')
+  // const [logmeInstallation, setLogmeInstallation] = useState<boolean>(false)
+  const [isNotionConnected, setIsNotionConnected] = useState<boolean>(
+    notionTokenData ? true : false
+  )
+  const [hasInitialized, setHasInitialized] = useState(false)
+  const {
+    handleAppInstall,
+    isLogmeAppInstalled,
+    installedVercel,
+    setIsLogmeAppInstalled,
+    setInstalledVercel,
+  } = useGithubAppInstall()
+
+  useEffect(() => {
+    if (vercelTokenData && !hasInitialized) {
+      setVercelToken(vercelTokenData)
+      console.log('🔹 vercelTokenData:', vercelTokenData)
+      setHasInitialized(true)
+    }
+  }, [vercelTokenData, hasInitialized])
+
+  useEffect(() => {
+    if (logmeInstallationIdData) setIsLogmeAppInstalled(true)
+    console.log('🔹 logmeInstallationIdData:', logmeInstallationIdData)
+    if (vercelInstallation) setInstalledVercel(true)
+  }, [logmeInstallationIdData, vercelInstallation, setInstalledVercel, setIsLogmeAppInstalled])
+
+  useEffect(() => {
+    if (notionTokenData) setIsNotionConnected(true)
+  }, [notionTokenData])
+
+  useEffect(() => {
+    if (logmeInstallationIdData) setIsLogmeAppInstalled(true)
+    if (vercelInstallation) setInstalledVercel(true)
+    // if (logmeInstallationIdData && vercelInstallation) setIsGithubInstalled(true)
+  }, [logmeInstallationIdData, vercelInstallation, setInstalledVercel, setIsLogmeAppInstalled])
+
+  const handleSave = async () => {
+    console.log('🔹 vercelToken:', vercelToken) // ✅ vercelToken 값 확인
+
+    console.log('🔹 userId:', session?.user?.id) // ✅ userId 값 확인
+
+    const { user } = await fetchUser(vercelToken)
+
+    const userId = session?.user?.id
+
+    console.log('🔐 Vercel 사용자 정보:', user.uid)
+    const providerUser = {
+      providerType: 'vercel',
+      providerUserId: user.uid,
+      name: user.username || '',
+      email: user.email,
+      image: user.avatar || '',
+      userId,
+    }
+
+    console.log('🔐 providerUser:', providerUser)
+
+    await storeProviderUser.mutateAsync(providerUser)
+
+    const providerExtended = {
+      providerType: 'vercel',
+      extendedKey: 'token',
+      extendedValue: vercelToken,
+    }
+    await storeProviderExtended.mutateAsync(providerExtended)
+
+    storeProviderToken(userId!, 'vercel', vercelToken)
+
+    setIsMasked(false)
   }
 
   return (
@@ -30,13 +113,16 @@ export default function SettingsPage() {
         <GuideDialogTriggerButton path="/guide/join" label="가입" />
         <GuideDialogTriggerButton path="/guide/connect" label="연결" />
       </div>
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+      {/* <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
         <div className="flex flex-wrap gap-3 items-center">
           <ConnectionStatus provider="notion" connected={isNotionConnected} />
-          <ConnectionStatus provider="github" connected={isGithubInstalled} />
+          <ConnectionStatus
+            provider="github"
+            connected={!!logmeInstallationId && !!installedVercel}
+          />
           <ConnectionStatus provider="vercel" connected={vercelToken !== ''} />
         </div>
-      </div>
+      </div> */}
 
       {/* Notion 연결 */}
 
@@ -52,28 +138,13 @@ export default function SettingsPage() {
               ❌ 연결 끊기
             </Button>
           )}
+          <br />
+          <br />
+          <p className="text-xs text-muted-foreground">
+            Notion 연결은 빌더에서 템플릿 선택 후 반영됩니다.
+          </p>
         </CardContent>
       </Card>
-
-      {/* GitHub App */}
-      <Card>
-        <CardHeader>
-          <CardTitle>GitHub App</CardTitle>
-        </CardHeader>
-        <CardContent className="flex gap-2">
-          {!isGithubInstalled ? (
-            <>
-              <GuideDialogTriggerButton path="/guide/connect#github-1" label="Logme App 설치" />
-              <GuideDialogTriggerButton path="/guide/connect#github-2" label="Vercel App 설치" />
-            </>
-          ) : (
-            <Button variant="outline" onClick={() => githubDelete()} disabled={githubDeletePending}>
-              ❌ 연결 끊기
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
       {/* Vercel Token */}
       <Card>
         <CardHeader>
@@ -104,6 +175,62 @@ export default function SettingsPage() {
           <div className="text-right">
             <Button onClick={handleSave}>✨ 저장하기</Button>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* GitHub App */}
+      <Card>
+        <CardHeader>
+          <CardTitle>GitHub App</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-col gap-2">
+          {!installedVercel ? (
+            <div className="flex-col items-center gap-2">
+              <div className="flex items-center gap-2">
+                <GuideDialogTriggerButton path="/guide/connect#github-2" label="설치 가이드" />
+                <Button onClick={() => handleAppInstall('vercel')} variant="outline" size="sm">
+                  Vercel App 설치
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              {/* <input
+                type="checkbox"
+                checked={installedVercel}
+                onClick={(e) => e.preventDefault()}
+                readOnly
+              />
+              <label className="text-sm text-gray-700">Vercel App 설치완료</label> */}
+              <span>Vercel App 설치완료</span>
+            </div>
+          )}
+
+          {!isLogmeAppInstalled ? (
+            <div className="flex items-center gap-2">
+              <GuideDialogTriggerButton path="/guide/connect#github-1" label="설치 가이드" />
+              <Button onClick={() => handleAppInstall('logme')} variant="outline" size="sm">
+                Logme App 설치
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              {/* <input
+                type="checkbox"
+                checked={isLogmeAppInstalled}
+                onClick={(e) => e.preventDefault()}
+                readOnly
+              />
+              <label className="text-sm text-gray-700">Logme App 설치완료</label> */}
+              <span>Logme App 설치완료</span>
+            </div>
+          )}
+
+          {isLogmeAppInstalled && installedVercel && (
+            <Button variant="outline" onClick={() => githubDelete()} disabled={githubDeletePending}>
+              ❌ 연결 끊기
+            </Button>
+          )}
         </CardContent>
       </Card>
     </div>

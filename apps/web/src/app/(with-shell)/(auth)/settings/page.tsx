@@ -15,20 +15,20 @@ export default function Settings() {
           <ConnectionStatus
             provider="notion"
             connected={true}
-            onConnect={() => router.push('/logme/providers/notion')}
-            onDisconnect={() => console.log('Notion 해제')}
+            // onConnect={() => router.push('/logme/providers/notion')}
+            // onDisconnect={() => console.log('Notion 해제')}
           />
           <ConnectionStatus
             provider="github"
             connected={true}
-            onConnect={() => router.push('/logme/providers/github')}
-            onDisconnect={() => console.log('GitHub 해제')}
+            // onConnect={() => router.push('/logme/providers/github')}
+            // onDisconnect={() => console.log('GitHub 해제')}
           />
           <ConnectionStatus
             provider="vercel"
             connected={false}
-            onConnect={() => router.push('/logme/providers/vercel')}
-            onDisconnect={() => console.log('Vercel 해제')}
+            // onConnect={() => router.push('/logme/providers/vercel')}
+            // onDisconnect={() => console.log('Vercel 해제')}
           />
         </div>
         <div className="flex gap-2">

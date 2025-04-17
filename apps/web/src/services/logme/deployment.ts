@@ -5,7 +5,6 @@ import { useCreateRepo } from '@/hooks/logme/repo/useCreateRepo'
 import { useCreateDeployTarget } from '@/hooks/logme/deployTarget/useCreateDeployTarget'
 import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeployment'
 import { SiteStatus } from '@prisma/client'
-import { db } from '@repo/db'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 
 export const useDeploymentActions = () => {
