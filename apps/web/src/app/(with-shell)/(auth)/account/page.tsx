@@ -17,21 +17,23 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { toast } from 'sonner'
 
-export default function SettingsPage() {
+// Query key constants
+const providerKeys = {
+  notion: ['provider', 'notion'],
+  notionToken: ['providerExtended', 'notion', 'token'],
+  github: ['provider', 'github'],
+  githubLogme: ['providerExtended', 'github', 'logmeInstallationId'],
+  githubVercel: ['providerExtended', 'github', 'vercelInstallation'],
+  vercel: ['provider', 'vercel'],
+  vercelToken: ['providerExtended', 'vercel', 'token'],
+}
+
+export default function AccountPage() {
   const queryClient = useQueryClient()
   const invalidateAll = async () => {
-    await queryClient.invalidateQueries({ queryKey: ['provider', 'notion'] })
-    await queryClient.invalidateQueries({ queryKey: ['providerExtended', 'notion', 'token'] })
-    await queryClient.invalidateQueries({ queryKey: ['provider', 'github'] })
-    await queryClient.invalidateQueries({
-      queryKey: ['providerExtended', 'github', 'logmeInstallationId'],
-    })
-    await queryClient.invalidateQueries({
-      queryKey: ['providerExtended', 'github', 'vercelInstallation'],
-    })
-    await queryClient.invalidateQueries({ queryKey: ['provider', 'vercel'] })
-    await queryClient.invalidateQueries({ queryKey: ['providerExtended', 'vercel', 'token'] })
-
+    for (const key of Object.values(providerKeys)) {
+      await queryClient.invalidateQueries({ queryKey: key })
+    }
     await queryClient.refetchQueries()
   }
   const [isMasked, setIsMasked] = useState(true)
@@ -75,51 +77,38 @@ export default function SettingsPage() {
   const [vercelTokenInput, setVercelTokenInput] = useState(vercelTokenData ?? '')
 
   useEffect(() => {
-    if (logmeInstallationIdData) setIsLogmeAppInstalled(true)
-    console.log('🔹 logmeInstallationIdData:', logmeInstallationIdData)
-    if (vercelInstallation) setInstalledVercel(true)
+    setIsLogmeAppInstalled(!!logmeInstallationIdData)
+    setInstalledVercel(!!vercelInstallation)
   }, [logmeInstallationIdData, vercelInstallation, setInstalledVercel, setIsLogmeAppInstalled])
 
   useEffect(() => {
-    if (vercelTokenData) setVercelTokenInput(vercelTokenData)
+    setVercelTokenInput(vercelTokenData ?? '')
   }, [vercelTokenData])
 
   const handleSave = async () => {
-    if (!vercelTokenInput) return
-
-    console.log('🔹 vercelTokenData:', vercelTokenInput) // ✅ vercelToken 값 확인
-
-    console.log('🔹 userId:', session?.user?.id) // ✅ userId 값 확인
+    if (!vercelTokenInput || !session?.user?.id) return
 
     const { user } = await fetchUser(vercelTokenInput)
 
-    const userId = session?.user?.id
-
-    console.log('🔐 Vercel 사용자 정보:', user.uid)
     const providerUser = {
       providerType: 'vercel',
       providerUserId: user.uid,
       name: user.username || '',
       email: user.email,
       image: user.avatar || '',
-      userId,
+      userId: session.user.id,
     }
-
-    console.log('🔐 providerUser:', providerUser)
 
     await storeProviderUser.mutateAsync(providerUser)
 
-    const providerExtended = {
+    await storeProviderExtended.mutateAsync({
       providerType: 'vercel',
       extendedKey: 'token',
       extendedValue: vercelTokenInput,
-    }
-    await storeProviderExtended.mutateAsync(providerExtended)
+    })
 
-    storeProviderToken(userId!, 'vercel', vercelTokenInput)
+    storeProviderToken(session.user.id, 'vercel', vercelTokenInput)
 
-    await queryClient.invalidateQueries({ queryKey: ['providerExtended', 'vercel', 'token'] })
-    await queryClient.refetchQueries({ queryKey: ['providerExtended', 'vercel', 'token'] })
     await invalidateAll()
 
     setIsMasked(true)

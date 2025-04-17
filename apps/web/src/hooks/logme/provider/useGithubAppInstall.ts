@@ -20,7 +20,18 @@ export const useGithubAppInstall = () => {
     const url =
       app === 'vercel' ? 'https://github.com/apps/vercel' : 'https://github.com/apps/flexyz-logme'
     const name = app === 'vercel' ? 'gitHub-app-vercel-install' : 'gitHub-app-logme-install'
-    const popup = window.open(url, name, 'width=600,height=700,resizable,scrollbars')
+    const screenW = window.innerWidth
+    const screenH = window.outerHeight - 60
+    const popupWidth = 600
+    const popupHeight = 700
+    
+    const guideLeft = Math.max(0, window.screenX - 500) // assuming guide is 500px wide on left
+    const popupLeft = guideLeft + 500 + 10 // 10px spacing to the right of guide
+    const popupTop = window.screenY
+    
+    const features = `width=${popupWidth},height=${popupHeight},top=${popupTop},left=${popupLeft},resizable,scrollbars`
+    
+    const popup = window.open(url, name, features)
 
     if (app === 'vercel') {
       setVercelPopup(popup)

@@ -1,17 +1,11 @@
 'use client'
 
-// import GithubButton from '@/components/logme/GithubButton'
 import { Button } from '@/components/ui/button'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { ArrowRight, Check } from 'lucide-react'
-// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-// import { GuideDialogTriggerButton } from '@/components/logme/common/GuideDialogTriggerButton'
 import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  // const notionConnected = false // Replace with actual logic or state
-  // const githubConnected = false // Replace with actual logic or state
-  // const vercelConnected = false // Replace with actual logic or state
   const { setBuilderStep } = useBuilderStore()
   const router = useRouter()
 

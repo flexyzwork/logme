@@ -5,6 +5,8 @@ export interface GuideDialogTriggerButtonProps {
   label?: string
 }
 
+let guideWindow: Window | null = null
+
 export function GuideDialogTriggerButton({
   path = '/guide/join',
   label = '가입가이드',
@@ -24,8 +26,23 @@ export function GuideDialogTriggerButton({
     }
 
     const url = new URL(path, window.location.origin)
-    console.log('🔗 URL:', url.href)
-    window.open(url.href, '_blank', features)
+
+    if (guideWindow && !guideWindow.closed) {
+      const current = new URL(guideWindow.location.href)
+      const requested = url
+
+      // 해시 포함 전체 URL이 다르면 강제로 리로드
+      if (current.href !== requested.href) {
+        guideWindow.location.href = 'about:blank'
+        setTimeout(() => {
+          if (guideWindow) {
+            guideWindow.location.href = requested.href
+          }
+        }, 50)
+      }
+    } else {
+      guideWindow = window.open(url.href, '_blank', features)
+    }
   }
 
   return (
