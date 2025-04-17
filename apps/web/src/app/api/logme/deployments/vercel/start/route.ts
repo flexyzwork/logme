@@ -15,19 +15,18 @@ export async function POST(req: NextRequest) {
       githubRepoName,
     } = await req.json()
 
-    console.log('🚀 Vercel 배포 요청:', { vercelToken })
+    console.log('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
     console.log('githubInstallationId:', githubInstallationId)
 
     if (!githubInstallationId) {
       console.error('❌ GitHub Installation Id 없음: Vercel 배포 중단')
       return NextResponse.json(
         { error: 'GitHub Installation Id가 필요합니다. 온보딩을 완료해주세요.' },
-        { status: 400 },
+        { status: 400 }
       )
-    } 
+    }
 
-    const githubInstallationToken = await fetchGithubInstallationToken(
-      githubInstallationId)
+    const githubInstallationToken = await fetchGithubInstallationToken(githubInstallationId)
 
     // Step 1: 템플릿 레포 복제
     const githubCreateRes = await fetch(
@@ -47,7 +46,7 @@ export async function POST(req: NextRequest) {
           include_all_branches: false,
           private: false,
         }),
-      },
+      }
     )
 
     const githubCreateData = await githubCreateRes.json()
@@ -56,7 +55,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ GitHub 레포 생성 실패:', githubCreateData)
       return NextResponse.json(
         { error: 'GitHub 레포 복제 실패', details: githubCreateData },
-        { status: 500 },
+        { status: 500 }
       )
     }
 
@@ -71,7 +70,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ Notion Page ID 없음: Vercel 배포 중단')
       return NextResponse.json(
         { error: 'Notion Page ID가 필요합니다. 온보딩을 완료해주세요.' },
-        { status: 400 },
+        { status: 400 }
       )
     }
 
@@ -96,7 +95,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ Vercel 프로젝트 생성 실패:', projectData)
       return NextResponse.json(
         { error: 'Vercel 프로젝트 생성 실패', details: projectData },
-        { status: 500 },
+        { status: 500 }
       )
     }
 
@@ -105,7 +104,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ Vercel API 응답 오류: 프로젝트 ID 없음', projectData)
       return NextResponse.json(
         { error: 'Vercel API 응답 오류', details: projectData },
-        { status: 500 },
+        { status: 500 }
       )
     }
 
@@ -140,7 +139,7 @@ export async function POST(req: NextRequest) {
             target: ['production'],
           },
         ]),
-      },
+      }
     )
 
     const envData = await envResponse.json()
@@ -184,7 +183,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ Vercel 배포 API 응답 오류:', deployData)
       return NextResponse.json(
         { error: 'Vercel 배포 API 요청 실패', details: deployData },
-        { status: 500 },
+        { status: 500 }
       )
     }
 
@@ -195,7 +194,7 @@ export async function POST(req: NextRequest) {
       console.error('❌ Vercel 배포 실패: 배포 URL 없음', deployData)
       return NextResponse.json(
         { error: 'Vercel 배포 실패: 배포 URL이 없습니다.', details: deployData },
-        { status: 500 },
+        { status: 500 }
       )
     }
 
@@ -210,7 +209,7 @@ export async function POST(req: NextRequest) {
         targetId: deployData.project.id,
         targetName: deployData.project.name,
       },
-      { status: 200 },
+      { status: 200 }
     )
   } catch (error) {
     console.error('❌ Vercel 배포 실패:', error)

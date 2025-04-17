@@ -1,16 +1,18 @@
 'use client'
 
-import GithubButton from '@/components/logme/GithubButton'
+// import GithubButton from '@/components/logme/GithubButton'
 import { Button } from '@/components/ui/button'
+import { useBuilderStore } from '@/stores/logme/builderStore'
 import { ArrowRight, Check } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { GuideDialogTriggerButton } from '@/components/logme/GuideDialogTriggerButton'
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+// import { GuideDialogTriggerButton } from '@/components/logme/common/GuideDialogTriggerButton'
 import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  const notionConnected = false // Replace with actual logic or state
-  const githubConnected = false // Replace with actual logic or state
-  const vercelConnected = false // Replace with actual logic or state
+  // const notionConnected = false // Replace with actual logic or state
+  // const githubConnected = false // Replace with actual logic or state
+  // const vercelConnected = false // Replace with actual logic or state
+  const { setBuilderStep } = useBuilderStore()
   const router = useRouter()
 
   return (
@@ -39,7 +41,17 @@ export default function Home() {
           </div>
           <h3 className="mt-4 text-xl font-bold">디자인 & 설정</h3>
           <p className="text-sm text-muted-foreground mt-1">템플릿 고르고 도메인 설정</p>
-          <GithubButton text="빌더 시작" stateType="github:builder:" />
+          {/* <GithubButton text="빌더 시작" stateType="github:builder:" /> */}
+          <Button
+            className="mt-2"
+            size="sm"
+            onClick={() => {
+              setBuilderStep(0)
+              router.push('/logme/builder')
+            }}
+          >
+            시작하기
+          </Button>
         </div>
 
         {/* Arrow */}

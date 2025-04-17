@@ -1,6 +1,6 @@
 'use client'
 
-import { GuideDialogTriggerButton } from '@/components/logme/GuideDialogTriggerButton'
+import { GuideDialogTriggerButton } from '@/components/logme/common/GuideDialogTriggerButton'
 import ConnectionStatus from '@/components/logme/common/ConnectionStatus'
 import { useRouter } from 'next/navigation'
 

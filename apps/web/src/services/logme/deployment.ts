@@ -5,6 +5,8 @@ import { useCreateRepo } from '@/hooks/logme/repo/useCreateRepo'
 import { useCreateDeployTarget } from '@/hooks/logme/deployTarget/useCreateDeployTarget'
 import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeployment'
 import { SiteStatus } from '@prisma/client'
+import { db } from '@repo/db'
+import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId } = useBuilderStore()
@@ -13,6 +15,7 @@ export const useDeploymentActions = () => {
   const { mutateAsync: createDeployTargetDB } = useCreateDeployTarget()
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
+  const { data: vercelToken } = useFetchProviderExtended('vercel', 'token')
 
   const checkDeploymentStatus = async (
     deploymentId: string,
@@ -55,7 +58,7 @@ export const useDeploymentActions = () => {
 
   const startDeploy = async (
     params: {
-      vercelToken: string
+      // vercelToken: string
       notionPageId: string
       // githubInstallationToken: string
       githubInstallationId: string
@@ -70,10 +73,16 @@ export const useDeploymentActions = () => {
   ) => {
     try {
       onDeploying?.()
+        if (!vercelToken) {
+        console.error('❌ Vercel API 토큰이 없습니다.')
+        return
+        }
+      console.log('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
+
       const response = await fetch('/api/logme/deployments/vercel/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(params),
+        body: JSON.stringify({...params, vercelToken}), 
       })
 
       const data = await response.json()
@@ -121,8 +130,8 @@ export const useDeploymentActions = () => {
           console.error('❌ Site ID가 없습니다.')
         }
 
-        setBuilderStep(5)
-        checkDeploymentStatus(data.id, params.vercelToken, onReady || (() => {}))
+        setBuilderStep(3)
+        checkDeploymentStatus(data.id, vercelToken, onReady || (() => {}))
       } else {
         console.error('❌ 배포 실패:', data)
 

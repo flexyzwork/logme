@@ -70,7 +70,7 @@ export function SiteInfoForm({
           }}
           disabled={isDisabled || isSaving}
         >
-          {isSaving ? "저장 중..." : "저장하기"}
+          {isSaving ? "저장 중..." : "저장 & 배포"}
         </Button>
       </div>
     </div>

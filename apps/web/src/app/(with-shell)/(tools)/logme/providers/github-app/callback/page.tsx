@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export default function GithubCallback() {
+export default function k() {
   useEffect(() => {
     const installationId = new URLSearchParams(window.location.search).get('installation_id')
 
@@ -12,7 +12,7 @@ export default function GithubCallback() {
           type: 'github_app_installed',
           installationId,
         },
-        window.origin,
+        window.origin
       )
 
       window.close()

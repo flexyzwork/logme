@@ -1,4 +1,14 @@
-export function GuideDialogTriggerButton() {
+import { Button } from '@/components/ui/button'
+
+export interface GuideDialogTriggerButtonProps {
+  path?: string
+  label?: string
+}
+
+export function GuideDialogTriggerButton({
+  path = '/guide/join',
+  label = '가입가이드',
+}: GuideDialogTriggerButtonProps) {
   const handleClick = () => {
     const screenW = window.innerWidth
     const screenH = window.outerHeight - 60
@@ -13,12 +23,14 @@ export function GuideDialogTriggerButton() {
       features = `width=${popupWidth},height=${screenH},top=${popupTop},left=${popupLeft}`
     }
 
-    window.open('/guide', '_blank', features)
+    const url = new URL(path, window.location.origin)
+    console.log('🔗 URL:', url.href)
+    window.open(url.href, '_blank', features)
   }
 
   return (
-    <button onClick={handleClick} className="text-sm text-muted-foreground mt-1 underline">
-      가입가이드
-    </button>
+    <Button onClick={handleClick} variant="outline">
+      {label}
+    </Button>
   )
 }

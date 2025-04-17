@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { createId } from '@paralleldrive/cuid2'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 import { ProviderType } from '@prisma/client'
 import { getAuthSession } from '@/lib/auth'
 

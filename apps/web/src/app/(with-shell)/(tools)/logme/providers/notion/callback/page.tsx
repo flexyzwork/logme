@@ -8,9 +8,6 @@ import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateContentSource'
 import { useAuthStore } from '@/stores/logme/authStore'
-// import { useCreateSession } from '@/hooks/logme/session/useCreateSession'
-// import { useCreateSite } from '@/hooks/logme/site/useCreateSite'
-// import { createId } from '@paralleldrive/cuid2'
 import { useSession } from 'next-auth/react'
 
 export default function NotionCallbackPage() {
@@ -33,7 +30,6 @@ export default function NotionCallbackPage() {
   const [error, setError] = useState<string | null>(null)
   const { notion } = useAuthStore()
   const { mutateAsync: storeProviderUser } = useCreateProvider()
-  // const { mutateAsync: createSite } = useCreateSite()
   const { mutateAsync: createContentSourceDB } = useCreateContentSource()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const executedRef = useRef(false)
@@ -155,7 +151,6 @@ export default function NotionCallbackPage() {
     notionLastProcessedCode,
     setSiteId,
     storeProviderUser,
-    // createSite,
     setUserId,
     notion?.authState,
     createContentSourceDB,

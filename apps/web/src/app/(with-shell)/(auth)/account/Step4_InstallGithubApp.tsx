@@ -54,7 +54,7 @@ export default function Step4_InstallGithubApp() {
 
     startDeploy(
       {
-        vercelToken: tokens?.vercel ?? '', // redis, db
+        // vercelToken: tokens?.vercel ?? '', // redis, db
         notionPageId: notionPageId ?? '', // 1단계에서 저장 가능하지만 db 저장 안 하는 듯?
         githubInstallationId: `${github?.installationId}`,
         templateOwner: 'flexyzlogme', // env 로 관리하는 게 나을 듯
