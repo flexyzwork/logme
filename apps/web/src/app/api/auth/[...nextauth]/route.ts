@@ -1,4 +1,3 @@
-// app/api/logme/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth'
 import { authConfig } from '@/lib/auth'
 

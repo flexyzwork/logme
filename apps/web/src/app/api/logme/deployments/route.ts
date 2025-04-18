@@ -4,7 +4,6 @@ import { db } from '@repo/db'
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    // console.log('🔹 data:', data)
     const deployment = await db.deployment.create({
       data: {
         ...data,

@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 
 // POST /api/logme/deployTarget - 배포 프로젝트 생성
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    // console.log('🔹 data:', data)
     const deployTarget = await db.deployTarget.create({
       data: {
         ...data,

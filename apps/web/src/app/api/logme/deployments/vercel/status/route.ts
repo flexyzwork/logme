@@ -21,7 +21,5 @@ export async function GET(req: NextRequest) {
 
   const data = await res.json()
 
-  // console.log('🚀 GET /api/logme/deployments/vercel/status:', { data })
-
   return NextResponse.json(data)
 }

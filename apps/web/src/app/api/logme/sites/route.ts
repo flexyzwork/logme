@@ -6,7 +6,6 @@ import { getAuthSession } from '@/lib/auth'
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    // console.log('🔹 data:', data)
     const site = await db.site.create({
       data: {
         ...data,

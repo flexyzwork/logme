@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 

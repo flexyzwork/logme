@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 
 // POST /api/logme/contentSources - 컨텐츠 소스 생성
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    // console.log('🔹 data:', data)
     const contentSource = await db.contentSource.create({
       data: {
         ...data,
