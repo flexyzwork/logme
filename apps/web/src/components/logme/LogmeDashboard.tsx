@@ -353,8 +353,15 @@ export default function LogmeDashboard() {
           )}
         </>
       ) : (
-        <div className="border rounded-md p-6 text-center text-sm text-muted-foreground">
-          아직 생성된 사이트가 없습니다.
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-end">
+            <Button className="text-sm mt-1" onClick={() => router.push('/logme')}>
+              + 새 블로그 만들기
+            </Button>
+          </div>
+          <div className="border rounded-md p-6 text-center text-sm text-muted-foreground">
+            아직 생성된 사이트가 없습니다.
+          </div>
         </div>
       )}
     </div>

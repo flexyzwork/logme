@@ -1,28 +1,24 @@
 [
   {
     "id": "github-1",
-    "title": "🐱 GitHub - Logme APP 연결",
+    "title": "Logme APP 연결",
     "steps": [
       {
-        "text": "1. 'GitHub - Logme App 설치'를 누릅니다.",
+        "text": "1. 계정관리의 GitHub App 'Logme App 설치' 버튼을 누릅니다.",
         "image": "/guide-connect/1-gitapp-logme-app-1.png"
       },
       {
-        "text": "2. 'Install & Authorize' 버튼을 누릅니다.",
+        "text": "2. 'Install & Authorize' 버튼을 누른 후 화면을 닫습니다.",
         "image": "/guide-connect/1-gitapp-logme-app-2.png"
       }
-    ],
-    "link": {
-      "text": ">> GitHub - Logme App 설치",
-      "url": "https://github.com/apps/flexyz-logme"
-    }
+    ]
   },
   {
     "id": "github-2",
-    "title": "🐱 GitHub Vercel APP 연결",
+    "title": "Vercel APP 연결",
     "steps": [
       {
-        "text": "1. 'GitHub - Vercel App 설치'를 누릅니다.",
+        "text": "1. 계정관리의 GitHub App 'Vercel App 설치' 버튼을 누릅니다.",
         "image": "/guide-connect/2-gitapp-vercel-app-1.png"
       },
       {
@@ -30,21 +26,17 @@
         "image": "/guide-connect/2-gitapp-vercel-app-2.png"
       },
       {
-        "text": "3. 인스톨을 확인합니다.",
+        "text": "3. 인스톨을 확인한 후 창을 닫습니다.",
         "image": "/guide-connect/2-gitapp-vercel-app-3.png"
       }
-    ],
-    "link": {
-      "text": ">> GitHub - Vercel App 설치",
-      "url": "https://github.com/apps/vercel"
-    }
+    ]
   },
   {
     "id": "vercel",
     "title": "▲ Vercel 토큰 생성",
     "steps": [
       {
-        "text": "1. 'Vercel 토큰 생성' 버튼을 누고 토큰을 생성합니다.",
+        "text": "1. 'Vercel 토큰 생성하기' 버튼을 누고 토큰을 생성합니다.",
         "image": "/guide-connect/3-vercel-1.png"
       },
       {

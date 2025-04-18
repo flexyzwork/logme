@@ -1,4 +1,3 @@
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@repo/db'
 import { NextResponse } from 'next/server'
@@ -16,7 +15,6 @@ export async function GET() {
     where: { userId, providerType: 'notion' },
   })
 
-  // TODO: Redis에서 진행중 빌더 상태 조회 가능 (지금은 임시)
   const inProgress = false
 
   return NextResponse.json({

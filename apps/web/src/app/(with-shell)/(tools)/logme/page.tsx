@@ -34,7 +34,7 @@ export default function Home() {
             2
           </div>
           <h3 className="mt-4 text-xl font-bold">디자인 & 설정</h3>
-          <p className="text-sm text-muted-foreground mt-1">템플릿 고르고 도메인 설정</p>
+          <p className="text-sm text-muted-foreground mt-1">템플릿 고르고 블로그 설정</p>
           {/* <GithubButton text="빌더 시작" stateType="github:builder:" /> */}
           <Button
             className="mt-2"

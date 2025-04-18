@@ -6,7 +6,7 @@ export default function JoinGuidePage() {
   return (
     <GuideAccordion
       guideData={guideData}
-      title="가입가이드"
+      title="가입 안내"
       defaultValue={window.location.hash?.replace('#', '')}
     />
   )

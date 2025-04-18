@@ -9,7 +9,7 @@ let guideWindow: Window | null = null
 
 export function GuideDialogTriggerButton({
   path = '/guide/join',
-  label = '가입가이드',
+  label = '가입 안내',
 }: GuideDialogTriggerButtonProps) {
   const handleClick = () => {
     const screenW = window.innerWidth

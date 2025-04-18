@@ -118,13 +118,9 @@ export default function AccountPage() {
   return (
     <div className="max-w-2xl mx-auto py-12 space-y-6">
       <h1 className="text-2xl font-bold mb-4">계정 관리</h1>
-      <div className="flex gap-2">
-        <span className="mt-1.5">가이드:</span>
-        <GuideDialogTriggerButton path="/guide/join" label="가입" />
-        <GuideDialogTriggerButton path="/guide/connect" label="연결" />
-      </div>
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
-        <div className="flex flex-wrap gap-3 items-center">
+      <div className="flex items-center justify-between gap-4 py-2 px-6 bg-muted rounded-xl">
+        {/* 연결 상태 표시 */}
+        <div className="flex flex-wrap gap-3 items-center justify">
           <ConnectionStatus provider="notion" connected={!!notionTokenData} />
           <ConnectionStatus provider="vercel" connected={!!vercelTokenData} />
           <ConnectionStatus
@@ -132,8 +128,18 @@ export default function AccountPage() {
             connected={!!logmeInstallationIdData && !!installedVercel}
           />
         </div>
+        {/* 가이드 버튼 */}
+        <div className="flex gap-2">
+          <GuideDialogTriggerButton path="/guide/join" label="가입 안내" />
+          <GuideDialogTriggerButton path="/guide/connect" label="서비스 연결" />
+        </div>
       </div>
-
+      <div className="bg-muted/50 border border-border rounded-xl p-4 text-sm text-muted-foreground space-y-2">
+        <p>📝 <strong>Notion</strong>은 작업 기록을 문서로 백업하거나 정리할 때 유용해요. 나만의 글 저장소로 활용할 수 있어요.</p>
+        <p>🚀 <strong>Vercel</strong>은 블로그나 포트폴리오를 간단하게 배포할 수 있는 플랫폼이에요.</p>
+        <p>🔗 <strong>GitHub</strong>은 코드 저장과 배포 연결을 위해 필요해요. Vercel과 연동해 웹사이트를 올릴 수 있어요.</p>
+      </div>
+ 
       <Card>
         <CardHeader>
           <CardTitle>Notion</CardTitle>
@@ -159,15 +165,6 @@ export default function AccountPage() {
           <CardTitle>Vercel</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {!vercelTokenData ? (
-            <GuideDialogTriggerButton path="/guide/connect#vercel" label="Vercel 토큰 생성" />
-          ) : (
-            <Button variant="outline" onClick={() => vercelDelete()} disabled={vercelDeletePending}>
-              ❌ 연결 끊기
-            </Button>
-          )}
-          <br />
-          <br />
           <label className="text-sm text-muted-foreground block">Vercel Token</label>
           <div className="flex gap-2 items-center">
             <Input
@@ -180,7 +177,19 @@ export default function AccountPage() {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">Vercel Token은 안전하게 저장됩니다.</p>
-          <div className="text-right">
+          <br />
+          <div className="flex gap-2 items-center">
+            {!vercelTokenData ? (
+              <GuideDialogTriggerButton path="/guide/connect#vercel" label="Vercel 토큰 생성" />
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => vercelDelete()}
+                disabled={vercelDeletePending}
+              >
+                ❌ 연결 끊기
+              </Button>
+            )}
             <Button onClick={handleSave}>✨ 저장하기</Button>
           </div>
         </CardContent>
@@ -201,7 +210,7 @@ export default function AccountPage() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <span>Logme App 설치완료</span>
+              <span className="text-sm text-muted-foreground">Logme App 설치 완료! </span>
             </div>
           )}
           {!installedVercel ? (
@@ -225,7 +234,9 @@ export default function AccountPage() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <span>Vercel App 설치완료</span>
+              <span className="text-sm text-muted-foreground">
+                Vercel App은 외부 플랫폼이라 설치 상태를 정확히 확인할 수 없습니다.
+              </span>
             </div>
           )}
           {isLogmeAppInstalled && installedVercel && (

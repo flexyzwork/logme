@@ -34,15 +34,18 @@ export default function Landing() {
         <div className="grid sm:grid-cols-3 gap-6 text-center text-sm text-muted-foreground ">
           <div>
             <p className="text-base font-bold mb-1 ㅅㄷ">1단계</p>
-            <p>Notion / GitHub / Vercel 계정을 연결합니다.</p>
+            <p>Notion / GitHub / Vercel 계정을</p>
+            연결합니다.
           </div>
           <div>
             <p className="text-base font-bold mb-1">2단계</p>
-            <p>원하는 템플릿을 고르고 블로그 디자인을 설정합니다.</p>
+            <p>원하는 템플릿을 고르고 블로그를 설정합니다.</p>
+            (현재 단일 템플릿이지만 추가 예정입니다!)
           </div>
           <div>
             <p className="text-base font-bold mb-1">3단계</p>
-            <p>자동으로 배포된 블로그를 확인하세요. 놀라실 거예요 😎</p>
+            <p>자동으로 배포된 블로그를 확인하세요. </p>
+            놀라실 거예요 😎
           </div>
         </div>
       </section>
@@ -152,16 +155,17 @@ export default function Landing() {
 
       {/* Coffee Support Section */}
       <section className="mb-32 text-center">
-        <h2 className="text-xl font-semibold mb-4">☕ 커피 한 잔으로 응원하기</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="text-lg font-semibold mb-4">☕ 커피 한 잔으로 응원하기</h2>
+        <p className="text-base text-muted-foreground">
           이 서비스가 마음에 드셨다면,{' '}
           <a
             href="https://buymeacoffee.com/flexyzworkr"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:underline mt-8"
+            className="inline-flex items-center text-base text-muted-foreground hover:underline"
           >
-            {' '} 커피 한 잔으로 응원
+            {' '}
+            <strong className="text-black dark:text-white"> 커피 한 잔으로 응원</strong>
           </a>
           해 주세요!
         </p>

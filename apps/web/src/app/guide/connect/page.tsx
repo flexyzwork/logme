@@ -6,7 +6,7 @@ export default function ConnectGuidePage() {
   return (
     <GuideAccordion
       guideData={guideData}
-      title="연결가이드"
+      title="서비스 연결"
       defaultValue={window.location.hash?.replace('#', '')}
     />
   )

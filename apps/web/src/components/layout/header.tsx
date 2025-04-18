@@ -58,12 +58,6 @@ export async function Header() {
                     계정 관리
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings" className="w-full text-left">
-                    설정
-                  </Link>
-                </DropdownMenuItem>
-
                 <LogoutButton />
               </DropdownMenuContent>
             </DropdownMenu>
