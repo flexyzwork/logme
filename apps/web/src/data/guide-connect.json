@@ -4,7 +4,7 @@
     "title": "Logme APP 연결",
     "steps": [
       {
-        "text": "1. 계정관리의 GitHub App 'Logme App 설치' 버튼을 누릅니다.",
+        "text": "1. 계정관리의 GitHub App 'Logme App 연결' 버튼을 누릅니다.",
         "image": "/guide-connect/1-gitapp-logme-app-1.png"
       },
       {
@@ -18,7 +18,7 @@
     "title": "Vercel APP 연결",
     "steps": [
       {
-        "text": "1. 계정관리의 GitHub App 'Vercel App 설치' 버튼을 누릅니다.",
+        "text": "1. 계정관리의 GitHub App 'Vercel App 연결' 버튼을 누릅니다.",
         "image": "/guide-connect/2-gitapp-vercel-app-1.png"
       },
       {

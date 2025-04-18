@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
-interface OAuthUser {
-  id: string
-  name: string
-  email: string
-  avatar_url: string
-  login?: string
-}
+// interface OAuthUser {
+//   id: string
+//   name: string
+//   email: string
+//   avatar_url: string
+//   login?: string
+// }
 
 interface Notion {
   // user: OAuthUser | null
@@ -16,34 +16,34 @@ interface Notion {
 }
 
 interface Github {
-  user: OAuthUser | null
+  // user: OAuthUser | null
   // accessToken: string | null
   authState: string | null
   installationId: number | null
-  installationToken: string | null
+  // installationToken: string | null
 }
 
-interface Vercel {
-  // user: OAuthUser | null
-  accessToken: string | null
-}
+// interface Vercel {
+//   // user: OAuthUser | null
+//   accessToken: string | null
+// }
 
 interface AuthState {
   // user: User | null
   notion: Notion
   github: Github
-  vercel: Vercel
+  // vercel: Vercel
 
   // setUser: (user: User) => void
   // loginNotion: (user: OAuthUser, accessToken: string) => void
   // logoutNotion: () => void
-  loginGithub: (user: OAuthUser) => void
+  // loginGithub: (user: OAuthUser) => void
   // logoutGithub: () => void
   setNotionAuthState: (authState: string) => void
   setGithubAuthState: (authState: string) => void
   setGithubInstallationId: (installationId: number) => void
-  setGithubInstallationToken: (token: string) => void
-  setVercelToken: (accessToken: string) => void
+  // setGithubInstallationToken: (token: string) => void
+  // setVercelToken: (accessToken: string) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -58,13 +58,13 @@ export const useAuthStore = create<AuthState>()(
 
         },
         github: {
-          user: null,
+          // user: null,
           // accessToken: null,
           authState: null,
           installationId: null,
-          installationToken: null,
+          // installationToken: null,
         },
-        vercel: { accessToken: null },
+        // vercel: { accessToken: null },
 
         // setUser: (user) => {
         //   console.log('✅ 사용자 정보 저장:', user)
@@ -87,18 +87,18 @@ export const useAuthStore = create<AuthState>()(
         //   }))
         // },
 
-        loginGithub: (user: OAuthUser) => {
-          console.log('✅ Github 로그인:', user)
-          set((state) => ({
-            ...state,
-            github: {
-              ...state.github,
-              user,
-              // accessToken,
-              authState: null,
-            },
-          }))
-        },
+        // loginGithub: (user: OAuthUser) => {
+        //   console.log('✅ Github 로그인:', user)
+        //   set((state) => ({
+        //     ...state,
+        //     github: {
+        //       ...state.github,
+        //       user,
+        //       // accessToken,
+        //       authState: null,
+        //     },
+        //   }))
+        // },
 
         // logoutGithub: () => {
         //   console.log('🔴 Github 로그아웃')
@@ -130,15 +130,15 @@ export const useAuthStore = create<AuthState>()(
             github: { ...state.github, installationId },
           })),
 
-        setGithubInstallationToken: (token) =>
-          set((state) => ({
-            github: { ...state.github, installationToken: token },
-          })),
+        // setGithubInstallationToken: (token) =>
+        //   set((state) => ({
+        //     github: { ...state.github, installationToken: token },
+        //   })),
 
-        setVercelToken: (accessToken) =>
-          set((state) => ({
-            vercel: { ...state.vercel, accessToken },
-          })),
+        // setVercelToken: (accessToken) =>
+        //   set((state) => ({
+        //     vercel: { ...state.vercel, accessToken },
+        //   })),
       }),
       {
         name: 'auth-storage',
@@ -148,13 +148,13 @@ export const useAuthStore = create<AuthState>()(
             authState: state.notion.authState,
           },
           github: {
-            user: state.github.user,
+            // user: state.github.user,
             // accessToken: state.github.accessToken,
             authState: state.github.authState,
             installationId: state.github.installationId,
-            installationToken: state.github.installationToken,
+            // installationToken: state.github.installationToken,
           },
-          vercel: state.vercel,
+          // vercel: state.vercel,
         }),
       },
     ),

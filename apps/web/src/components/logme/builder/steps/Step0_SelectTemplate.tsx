@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { generateOAuthState } from '@/lib/utils'
 import { useAuthStore } from '@/stores/logme/authStore'
-import { useSiteStore } from '@/stores/logme/siteStore'
+// import { useSiteStore } from '@/stores/logme/siteStore'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useCreateSite } from '@/hooks/logme/site/useCreateSite'
 import { createId } from '@paralleldrive/cuid2'
 
 export default function Step0_SelectTemplate() {
-  const { createSite } = useSiteStore()
+  // const { createSite } = useSiteStore()
   const { setSiteId, userId } = useBuilderStore()
   const { mutateAsync: createSiteDB } = useCreateSite()
 
@@ -34,17 +34,17 @@ export default function Step0_SelectTemplate() {
     })
 
     // Create a new site to Store
-    createSite(
-      siteId,
-      '',
-      '',
-      false,
-      id,
-      undefined,
-      undefined,
-      undefined
-      // userId,
-    )
+    // createSite(
+    //   siteId,
+    //   '',
+    //   '',
+    //   false,
+    //   id,
+    //   undefined,
+    //   undefined,
+    //   undefined
+    //   // userId,
+    // )
     setSiteId(siteId)
 
     const stateType = `notion:${clientId}:`

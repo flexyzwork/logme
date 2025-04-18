@@ -46,7 +46,7 @@ export default function SiteBuilder() {
   useEffect(() => {
     if (shouldRedirectToAccount) {
       toast('연결이 필요해요', {
-        description: '계정 연동 후 다시 시작할 수 있어요. 곧 계정 관리로 이동합니다.',
+        description: '계정 연동 후 다시 시작할 수 있어요. 계정 관리로 이동합니다.',
       })
 
       const timeout = setTimeout(() => {

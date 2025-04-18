@@ -6,9 +6,15 @@ import { getAuthSession } from '@/lib/auth'
 export async function POST(req: Request) {
   try {
     const data = await req.json()
+    const session = await getAuthSession()
+    if (!session) {
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+    const userId = session.user.id
     const site = await db.site.create({
       data: {
         ...data,
+        userId,
       },
     })
     return NextResponse.json(site)

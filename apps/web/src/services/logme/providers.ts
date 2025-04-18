@@ -13,7 +13,6 @@ export async function handleGithub(req: Request, userId: string) {
   try {
     const { installationId } = await req.json()
 
-
     console.log('installationId:', installationId)
 
     if (!installationId) {
@@ -81,7 +80,7 @@ export async function handleGithub(req: Request, userId: string) {
         avatarUrl: account?.avatar_url || null,
         user: {
           connect: {
-            id: userId, 
+            id: userId,
           },
         },
         providerExtended: {
@@ -93,7 +92,6 @@ export async function handleGithub(req: Request, userId: string) {
         },
       },
     })
-
 
     // 1️⃣ JWT 생성
     const now = Math.floor(Date.now() / 1000)
@@ -108,7 +106,7 @@ export async function handleGithub(req: Request, userId: string) {
     })
     console.log('token:', token)
 
-    // 2️⃣ 설치 토큰 요청
+    // 2️⃣ 연결 토큰 요청
     const res = await fetch(
       `https://api.github.com/app/installations/${installationId}/access_tokens`,
       {
@@ -117,7 +115,7 @@ export async function handleGithub(req: Request, userId: string) {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github+json',
         },
-      },
+      }
     )
 
     const data = await res.json()
@@ -125,7 +123,7 @@ export async function handleGithub(req: Request, userId: string) {
     if (!res.ok) {
       return NextResponse.json(
         { error: 'Installation token 요청 실패', detail: data },
-        { status: res.status },
+        { status: res.status }
       )
     }
 
@@ -133,7 +131,7 @@ export async function handleGithub(req: Request, userId: string) {
       token: data.token,
       expires_at: data.expires_at,
     })
-    // 2️⃣ 설치 토큰 요청
+    // 2️⃣ 연결 토큰 요청
     // const res = (await octokit.auth({
     //   type: 'installation',
     //   installationId,

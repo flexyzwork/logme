@@ -6,15 +6,15 @@ import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useDeploymentActions } from '@/services/logme/deployment'
 import { useSession } from 'next-auth/react'
-import { useAuthStore } from '@/stores/logme/authStore'
+// import { useAuthStore } from '@/stores/logme/authStore'
 import { useSiteBuilderUI } from '@/hooks/logme/site/useSiteBuilderUI'
 
 export default function Step2_InputSiteInfo() {
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { startDeploy } = useDeploymentActions()
-  const { siteId, notionPageId, setBuilderStep, setDeploymentUrl } = useBuilderStore()
+  const { siteId, setBuilderStep, setDeploymentUrl } = useBuilderStore()
   const { data: session } = useSession()
-  const { github } = useAuthStore()
+  // const { github } = useAuthStore()
   const { setIsDeploying } = useSiteBuilderUI()
 
   const [siteInfo, setSiteInfo] = useState({
@@ -49,16 +49,16 @@ export default function Step2_InputSiteInfo() {
       })
       console.log('✅ Site 업데이트:', siteInfo.title, siteInfo.description)
       startDeploy(
-        {
+        // {
           // vercelToken: tokens?.vercel ?? '', // redis, db
-          notionPageId: notionPageId ?? '', // 1단계에서 저장 가능하지만 db 저장 안 하는 듯?
-          githubInstallationId: `${github?.installationId}`,
-          templateOwner: 'flexyzlogme', // env 로 관리하는 게 나을 듯
-          templateRepo: 'logme-template', // env 로 관리하는 게 나을 듯
-          githubOwner: github.user?.login ?? '', // db에 저장하는지 확인,
-          githubRepoName: `logme-${Date.now()}`, // logme-템플릿네임(영문)-날짜?
-          siteId: siteId ?? '', // 사이트는 1단계에서 저장, 2단계에서 블로그 정보 업데이트(해야 함)
-        },
+          // notionPageId: notionPageId ?? '', // 1단계에서 저장 가능하지만 db 저장 안 하는 듯?
+          // githubInstallationId: `${github?.installationId}`,
+          // templateOwner: 'flexyzlogme', // env 로 관리하는 게 나을 듯
+          // templateRepo: 'logme-template', // env 로 관리하는 게 나을 듯
+          // githubOwner: github.user?.login ?? '', // db에 저장하는지 확인,
+          // githubRepoName: `logme-${Date.now()}`, // logme-템플릿네임(영문)-날짜?
+          // siteId: siteId ?? '', // 사이트는 1단계에서 저장, 2단계에서 블로그 정보 업데이트(해야 함)
+        // },
         () => setIsDeploying(true),
         (url) => {
           setDeploymentUrl(url)

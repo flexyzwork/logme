@@ -1,11 +1,11 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { getProviderToken } from '@/lib/redis/tokenStore'
-import { useSiteStore } from '@/stores/logme/siteStore'
+// import { useSiteStore } from '@/stores/logme/siteStore'
 import { useUpdateContentSource } from '@/hooks/logme/contentSource/useUpdateContentSource'
 
 export const useTemplatePageOpener = () => {
   const { userId } = useBuilderStore()
-  const { updateSite } = useSiteStore()
+  // const { updateSite } = useSiteStore()
   const { mutateAsync: updateContentSourceDB } = useUpdateContentSource()
 
   const openNotionPageUrl = async ({
@@ -35,12 +35,12 @@ export const useTemplatePageOpener = () => {
       const data = await res.json()
 
       if (data.url) {
-        updateSite(siteId, {
-          notionPage: {
-            url: data.url,
-            id: notionPageId,
-          },
-        })
+        // updateSite(siteId, {
+        //   notionPage: {
+        //     url: data.url,
+        //     id: notionPageId,
+        //   },
+        // })
         await updateContentSourceDB({ sourceId: notionPageId, sourceUrl: data.url })
 
         const newWindow = window.open(data.url, '_blank')

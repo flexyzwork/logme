@@ -1,21 +1,27 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
-import { useSiteStore } from '@/stores/logme/siteStore'
+// import { useSiteStore } from '@/stores/logme/siteStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateRepo } from '@/hooks/logme/repo/useCreateRepo'
 import { useCreateDeployTarget } from '@/hooks/logme/deployTarget/useCreateDeployTarget'
 import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeployment'
-import { SiteStatus } from '@prisma/client'
+import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
+import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 
 export const useDeploymentActions = () => {
-  const { setBuilderStep, siteId } = useBuilderStore()
-  const { updateSite } = useSiteStore()
+  const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
+  // const { updateSite } = useSiteStore()
   const { mutateAsync: createRepoDB } = useCreateRepo()
   const { mutateAsync: createDeployTargetDB } = useCreateDeployTarget()
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { data: vercelToken } = useFetchProviderExtended('vercel', 'token')
-
+  const { data: githubInstallationId } = useFetchProviderExtended('github', 'logmeInstallationId')
+  const { data: gitHub } = useFetchProvider(ProviderType.github)
+  const githubOwner = gitHub?.name || ''
+  const githubRepoName = `logme-${Date.now()}`
+  const templateOwner = 'flexyzlogme'
+  const templateRepo = 'logme-template'
   const checkDeploymentStatus = async (
     deploymentId: string,
     vercelToken: string,
@@ -56,49 +62,71 @@ export const useDeploymentActions = () => {
   }
 
   const startDeploy = async (
-    params: {
+    // params: {
       // vercelToken: string
-      notionPageId: string
+      // notionPageId: string
       // githubInstallationToken: string
-      githubInstallationId: string
-      templateOwner: string
-      templateRepo: string
-      githubOwner: string
-      githubRepoName: string
-      siteId: string
-    },
+      // githubInstallationId: string
+      // templateOwner: string
+      // templateRepo: string
+      // githubOwner: string
+      // githubRepoName: string
+      // siteId: string
+    // },
     onDeploying?: () => void,
     onReady?: (url: string) => void
   ) => {
     try {
       onDeploying?.()
-        if (!vercelToken) {
+      if (!vercelToken) {
         console.error('❌ Vercel API 토큰이 없습니다.')
         return
-        }
+      }
       console.log('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
+      if (!githubOwner) {
+        console.error('❌ githubOwner가 없습니다.')
+        return
+      }
+      console.log('🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
+      if (!githubInstallationId) {
+        console.error('❌ githubInstallationId가 없습니다.')
+        return
+      }
+      console.log('🚀 githubInstallationId 배포 요청: githubInstallationId', {
+        githubInstallationId,
+      })
 
       const response = await fetch('/api/logme/deployments/vercel/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({...params, vercelToken}), 
+        body: JSON.stringify({
+          // ...params,
+          vercelToken,
+          notionPageId,
+          githubInstallationId,
+          templateOwner,
+          templateRepo,
+          githubOwner,
+          githubRepoName,
+          siteId,
+        }),
       })
 
       const data = await response.json()
       if (data.url && data.id) {
         console.log('✅ 배포 응답!!!!!!!!! :', data)
 
-        updateSite(params.siteId, {
-          domain: data.url,
-          githubRepo: { id: data.repoId, name: params.githubRepoName },
-          vercelProject: { id: data.id, name: params.githubRepoName },
-        })
+        // updateSite(siteId!, {
+        //   domain: data.url,
+        //   githubRepo: { id: data.repoId, name: githubRepoName },
+        //   vercelProject: { id: data.id, name: githubRepoName },
+        // })
 
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
-          repoName: params.githubRepoName,
-          repoUrl: `https://github.com/${params.githubOwner}/${params.githubRepoName}`,
-          repoOwner: params.githubOwner,
+          repoName: githubRepoName,
+          repoUrl: `https://github.com/${githubOwner}/${githubRepoName}`,
+          repoOwner: githubOwner,
           repoBranch: data.repoBranch,
         })
         console.log('✅ Repo DB 생성:', repo)
@@ -117,9 +145,9 @@ export const useDeploymentActions = () => {
 
         console.log('✅ Deployment DB 생성:', deployment)
 
-        if (params.siteId) {
+        if (siteId) {
           await updateSiteDB({
-            id: params.siteId,
+            id: siteId,
             repoId: repo.id,
             deployTargetId: deployTarget.id,
             status: SiteStatus.draft,

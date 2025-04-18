@@ -19,5 +19,5 @@ export default function k() {
     }
   }, [])
 
-  return <p>설치 완료 중... 창이 곧 닫힙니다.</p>
+  return <p>연결 완료 중... 창이 곧 닫힙니다.</p>
 }
