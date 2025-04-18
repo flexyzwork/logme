@@ -1,11 +1,10 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { getProviderToken } from '@/lib/redis/tokenStore'
-// import { useSiteStore } from '@/stores/logme/siteStore'
 import { useUpdateContentSource } from '@/hooks/logme/contentSource/useUpdateContentSource'
+import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePageOpener = () => {
   const { userId } = useBuilderStore()
-  // const { updateSite } = useSiteStore()
   const { mutateAsync: updateContentSourceDB } = useUpdateContentSource()
 
   const openNotionPageUrl = async ({
@@ -19,8 +18,13 @@ export const useTemplatePageOpener = () => {
     onWindow?: (w: Window) => void
     onError?: (e: unknown) => void
   }) => {
-    const notionAccessToken = await getProviderToken(userId!, 'notion')
-    console.log('notionAccessToken:', notionAccessToken)
+    const encryptedToken = await getProviderToken(userId!, 'notion')
+    if (!encryptedToken) {
+      alert('❌ Notion 인증 정보가 없습니다.')
+      return
+    }
+    const notionAccessToken = decrypt(encryptedToken)
+    // console.log('notionAccessToken:', notionAccessToken)
     // if (!notionAccessToken || !notionPageId) {
     //   alert('❌ Notion 인증 정보가 없습니다.')
     //   return

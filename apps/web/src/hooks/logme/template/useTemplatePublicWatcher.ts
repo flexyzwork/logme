@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { getProviderToken } from '@/lib/redis/tokenStore'
+import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePublicWatcher = ({
   enabled,
@@ -20,8 +21,12 @@ export const useTemplatePublicWatcher = ({
 
     const interval = setInterval(async () => {
       try {
-        const notionAccessToken = await getProviderToken(userId!, 'notion')
-        console.log('notionAccessToken:', notionAccessToken)
+        const encryptedToken = await getProviderToken(userId!, 'notion')
+        if (!encryptedToken) {
+          throw new Error('Notion 인증 토큰이 없습니다.')
+        }
+        const notionAccessToken = decrypt(encryptedToken)
+        // console.log('notionAccessToken:', notionAccessToken)
 
         const res = await fetch(`/api/logme/templates/check-public?notionPageId=${notionPageId}`, {
           headers: {

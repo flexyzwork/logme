@@ -1,3 +1,4 @@
+import { decrypt } from '@/lib/crypto'
 import { getProviderToken } from '@/lib/redis/tokenStore'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useEffect } from 'react'
@@ -22,12 +23,13 @@ export const useTemplateCopyWatcher = ({
 
     const checkCopyStatus = async () => {
       try {
-        const notionAccessToken = await getProviderToken(userId!, 'notion')
-        console.log('notionAccessToken:', notionAccessToken)
-        // if (!notionAccessToken) {
-        //   alert('❌ Notion 인증 정보가 없습니다.')
-        //   return
-        // }
+        const encryptedToken = await getProviderToken(userId!, 'notion')
+        if (!encryptedToken) {
+          alert('❌ Notion 인증 정보가 없습니다.')
+          return
+        }
+        // console.log('notionAccessToken:', encryptedToken)
+        const notionAccessToken = decrypt(encryptedToken)
 
         const response = await fetch(
           `/api/logme/templates/check-copy?notionPageId=${notionPageId}`,

@@ -12,12 +12,15 @@ import { useEffect, useState } from 'react'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { decrypt } from '@/lib/crypto'
 
 export default function SiteBuilder() {
   const { isDeploying } = useSiteBuilderUI()
   const { step, notionPageId } = useBuilderStore()
 
-  const { data: vercelTokenData } = useFetchProviderExtended('vercel', 'token')
+  const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
+  const vercelTokenData = decrypt(encryptedVercelTokenData ?? '')
+
   const { data: logmeInstallationIdData } = useFetchProviderExtended(
     'github',
     'logmeInstallationId'

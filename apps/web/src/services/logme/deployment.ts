@@ -1,5 +1,4 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
-// import { useSiteStore } from '@/stores/logme/siteStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateRepo } from '@/hooks/logme/repo/useCreateRepo'
 import { useCreateDeployTarget } from '@/hooks/logme/deployTarget/useCreateDeployTarget'
@@ -7,19 +6,21 @@ import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeploymen
 import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
+import { decrypt } from '@/lib/crypto'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
-  // const { updateSite } = useSiteStore()
   const { mutateAsync: createRepoDB } = useCreateRepo()
   const { mutateAsync: createDeployTargetDB } = useCreateDeployTarget()
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
-  const { data: vercelToken } = useFetchProviderExtended('vercel', 'token')
+  const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
+  const vercelToken = decrypt(encryptedVercelTokenData ?? '')
   const { data: githubInstallationId } = useFetchProviderExtended('github', 'logmeInstallationId')
   const { data: gitHub } = useFetchProvider(ProviderType.github)
   const githubOwner = gitHub?.name || ''
   const githubRepoName = `logme-${Date.now()}`
+  // TODO: 템플릿 선택 후 템플릿 소유자와 레포지토리 이름을 동적으로 설정
   const templateOwner = 'flexyzlogme'
   const templateRepo = 'logme-template'
   const checkDeploymentStatus = async (
@@ -45,37 +46,19 @@ export const useDeploymentActions = () => {
               status: SiteStatus.published,
             })
             console.log('✅ 사이트 도메인 업데이트 완료:', data.url)
-            // setBuilderStep(0)
           }
-          // alert('✅ 배포가 완료되었습니다. 🚀')
           return
         }
 
         await new Promise((resolve) => setTimeout(resolve, 5000))
       }
-
-      // alert('❌ 배포가 실패했습니다.')
     } catch (error) {
       console.error('❌ 배포 상태 확인 오류:', error)
       alert('배포 상태 확인 중 오류가 발생했습니다.')
     }
   }
 
-  const startDeploy = async (
-    // params: {
-      // vercelToken: string
-      // notionPageId: string
-      // githubInstallationToken: string
-      // githubInstallationId: string
-      // templateOwner: string
-      // templateRepo: string
-      // githubOwner: string
-      // githubRepoName: string
-      // siteId: string
-    // },
-    onDeploying?: () => void,
-    onReady?: (url: string) => void
-  ) => {
+  const startDeploy = async (onDeploying?: () => void, onReady?: (url: string) => void) => {
     try {
       onDeploying?.()
       if (!vercelToken) {
@@ -116,12 +99,6 @@ export const useDeploymentActions = () => {
       if (data.url && data.id) {
         console.log('✅ 배포 응답!!!!!!!!! :', data)
 
-        // updateSite(siteId!, {
-        //   domain: data.url,
-        //   githubRepo: { id: data.repoId, name: githubRepoName },
-        //   vercelProject: { id: data.id, name: githubRepoName },
-        // })
-
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
           repoName: githubRepoName,
@@ -140,7 +117,6 @@ export const useDeploymentActions = () => {
 
         const deployment = await createDeploymentDB({
           deployTargetId: deployTarget.id,
-          // targetUrl: data.url,
         })
 
         console.log('✅ Deployment DB 생성:', deployment)

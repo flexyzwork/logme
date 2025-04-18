@@ -9,6 +9,7 @@ import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateContentSource'
 import { useAuthStore } from '@/stores/logme/authStore'
 import { useSession } from 'next-auth/react'
+import { encrypt } from '@/lib/crypto'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()
@@ -102,7 +103,9 @@ export default function NotionCallbackPage() {
             currentUserId = newUserId
           }
 
-          storeProviderToken(currentUserId!, 'notion', accessToken)
+          const encryptedToken = encrypt(accessToken)
+
+          storeProviderToken(currentUserId!, 'notion', encryptedToken)
 
           // const siteId = createId()
 

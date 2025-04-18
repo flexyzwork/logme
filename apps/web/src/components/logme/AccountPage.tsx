@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useEffect, useState, useRef } from 'react'
-// import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useDeleteProvider } from '@/hooks/logme/provider/useDeleteProvider'
 import { useGithubAppInstall } from '@/hooks/logme/provider/useGithubAppInstall'
 import { useCreateProvider } from '@/hooks/logme/provider/useCreateProvider'
@@ -17,11 +16,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { toast } from 'sonner'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
+import { decrypt, encrypt } from '@/lib/crypto'
 
 // Query key constants
 const providerKeys = {
   notion: ['provider', 'notion'],
-  // notionToken: ['providerExtended', 'notion', 'token'],
   github: ['provider', 'github'],
   githubLogme: ['providerExtended', 'github', 'logmeInstallationId'],
   githubVercel: ['providerExtended', 'github', 'vercelInstallation'],
@@ -43,8 +42,9 @@ export default function AccountPage() {
   const storeProviderExtended = useCreateProviderExtended()
   const { mutateAsync: fetchUser } = useFetchProviderVercel()
 
-  const { data: vercelTokenData } = useFetchProviderExtended('vercel', 'token')
-  // const { data: notionTokenData } = useFetchProviderExtended('notion', 'token')
+  const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
+  const vercelTokenData = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
+
   const { data: notionData } = useFetchProvider('notion')
   const { data: logmeInstallationIdData } = useFetchProviderExtended(
     'github',
@@ -108,10 +108,8 @@ export default function AccountPage() {
     await storeProviderExtended.mutateAsync({
       providerType: 'vercel',
       extendedKey: 'token',
-      extendedValue: vercelTokenInput,
+      extendedValue: encrypt(vercelTokenInput),
     })
-
-    // storeProviderToken(session.user.id, 'vercel', vercelTokenInput)
 
     await invalidateAll()
 

@@ -3,6 +3,7 @@ import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 import { deleteVercelProject, deleteGithubRepo } from '@/services/logme/deleteExternals'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
+import { decrypt } from '@/lib/crypto'
 
 // GET /api/logme/sites/[id] - 사이트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -85,7 +86,11 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
       },
     })
 
-    const vercelToken = vercelTokenData?.extendedValue
+    const encryptedToken = vercelTokenData?.extendedValue
+    if (!encryptedToken) {
+      throw new Error('Vercel 토큰이 없습니다.')
+    }
+    const vercelToken = decrypt(encryptedToken)
 
     console.log('vercelToken:', vercelToken)
     try {

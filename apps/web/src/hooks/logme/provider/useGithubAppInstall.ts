@@ -1,12 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
-// import { useAuthStore } from '@/stores/logme/authStore'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
-// import { storeProviderToken } from '@/lib/redis/tokenStore'
-// import { useSession } from 'next-auth/react'
 
 export const useGithubAppInstall = () => {
-  // const { data: session } = useSession()
   const storeProviderExtended = useCreateProviderExtended()
   const [installedVercel, setInstalledVercel] = useState(false)
   const [isLogmeAppInstalled, setIsLogmeAppInstalled] = useState(false)
@@ -19,8 +15,6 @@ export const useGithubAppInstall = () => {
     const url =
       app === 'vercel' ? 'https://github.com/apps/vercel' : 'https://github.com/apps/flexyz-logme'
     const name = app === 'vercel' ? 'gitHub-app-vercel-install' : 'gitHub-app-logme-install'
-    // const screenW = window.innerWidth
-    // const screenH = window.outerHeight - 60
     const popupWidth = 600
     const popupHeight = 700
 
@@ -49,8 +43,6 @@ export const useGithubAppInstall = () => {
             extendedValue: 'true',
           }
           await storeProviderExtended.mutateAsync(providerExtended)
-          // } else {
-          //   setIsLogmeAppInstalled(true)
         }
       }
     }, 500)
@@ -77,14 +69,10 @@ export const useGithubAppInstall = () => {
             extendedValue: installationId,
           }
           await storeProviderExtended.mutateAsync(providerExtended)
-          // useAuthStore.getState().setGithubInstallationId(installationId)
 
           const token = await fetchGithubInstallationToken(installationId)
           console.log('✅ 연결 토큰:', token)
-          // storeProviderToken(userId!, 'githubApp', token)
-
-          // useAuthStore.getState().setGithubInstallationToken(token)
-
+          
           setIsLogmeAppInstalled(true)
         } catch (err) {
           console.error('❌ 연결 토큰 저장 실패:', err)
