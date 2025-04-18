@@ -6,7 +6,7 @@
     "build": "turbo run build",
     "check-types": "turbo run check-types",
     "db": "pnpm --filter @repo/db",
-    "db:init": "pnpm db migrate dev --name init",
+    "db:m": "pnpm db migrate dev --name",
     "db:reset": "pnpm docker-dev db:reset && pnpm db migrate dev",
     "db:seed": "pnpm db seed",
     "dev": "turbo run dev",

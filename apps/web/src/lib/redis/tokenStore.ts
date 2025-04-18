@@ -11,7 +11,7 @@ export async function storeProviderToken(
   await redis.hset(`${TOKEN_PREFIX}${userId}`, {
     [provider]: accessToken,
   })
-  await redis.expire(`${TOKEN_PREFIX}${userId}`, 2 * 60 * 60) // 2시간 TTL
+  await redis.expire(`${TOKEN_PREFIX}${userId}`, 1 * 60 * 60) // 1시간 TTL
 }
 
 export async function getProviderToken(

@@ -10,6 +10,7 @@ import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateCon
 import { useAuthStore } from '@/stores/logme/authStore'
 import { useSession } from 'next-auth/react'
 import { encrypt } from '@/lib/crypto'
+import { trackEvent } from '@/lib/tracking'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()
@@ -106,7 +107,13 @@ export default function NotionCallbackPage() {
           const encryptedToken = encrypt(accessToken)
 
           storeProviderToken(currentUserId!, 'notion', encryptedToken)
+          console.log('🔑 Notion 인증 토큰 저장 완료:', encryptedToken)
 
+          await trackEvent({
+            userId: session?.user.id,
+            event: 'notion_connected',
+            meta: { pageId: data.duplicated_template_id, method: 'oauth' },
+          })
           // const siteId = createId()
 
           setUserId(currentUserId)
@@ -159,7 +166,7 @@ export default function NotionCallbackPage() {
     createContentSourceDB,
     siteId,
     updateSiteDB,
-    setNotionPageId
+    setNotionPageId,
   ])
 
   if (status === 'loading' || loading) return <p>Loading...</p>

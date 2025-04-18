@@ -266,6 +266,19 @@ model DeployTarget {
 }
 
 
+model EventLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  event     String
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+
+
 //
 // ENUM 정의
 //
