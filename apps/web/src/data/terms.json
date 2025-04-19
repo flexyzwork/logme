@@ -1,0 +1,114 @@
+
+
+{
+  "ko": {
+    "title": "이용약관",
+    "lastUpdated": "2024-04-19",
+    "sections": [
+      {
+        "title": "1. 목적",
+        "content": [
+          "본 약관은 Logme 서비스(이하 '서비스')의 이용조건 및 절차에 관한 사항을 규정함을 목적으로 합니다."
+        ]
+      },
+      {
+        "title": "2. 정의",
+        "content": [
+          "'회원'이라 함은 본 약관에 따라 서비스를 이용하는 자를 말합니다.",
+          "'운영자'는 서비스를 관리하고 운영하는 자를 의미합니다."
+        ]
+      },
+      {
+        "title": "3. 약관의 효력 및 변경",
+        "content": [
+          "이 약관은 서비스 화면에 게시하거나 기타의 방법으로 공지함으로써 효력이 발생합니다.",
+          "운영자는 필요한 경우 약관을 변경할 수 있으며, 변경된 약관은 공지 후 효력이 발생합니다."
+        ]
+      },
+      {
+        "title": "4. 서비스의 이용",
+        "content": [
+          "회원은 본 약관에 따라 서비스를 이용할 수 있습니다.",
+          "운영자는 서비스의 일부를 사전 공지 없이 변경하거나 중단할 수 있습니다."
+        ]
+      },
+      {
+        "title": "5. 회원의 의무",
+        "content": [
+          "회원은 서비스를 이용함에 있어 다음 각 호의 행위를 하여서는 안 됩니다:",
+          "- 타인의 정보를 도용하는 행위",
+          "- 서비스의 운영을 방해하는 행위",
+          "- 기타 법령에 위반되는 행위"
+        ]
+      },
+      {
+        "title": "6. 면책 조항",
+        "content": [
+          "운영자는 천재지변, 불가항력적 사유 등으로 인해 서비스를 제공할 수 없는 경우 책임을 지지 않습니다."
+        ]
+      },
+      {
+        "title": "7. 분쟁 해결",
+        "content": [
+          "서비스 이용과 관련하여 분쟁이 발생한 경우, 운영자와 회원은 성실히 협의하여 해결합니다.",
+          "협의가 이루어지지 않을 경우, 관할 법원은 운영자의 소재지를 관할하는 법원으로 합니다."
+        ]
+      }
+    ]
+  },
+  "en": {
+    "title": "Terms of Service",
+    "lastUpdated": "2024-04-19",
+    "sections": [
+      {
+        "title": "1. Purpose",
+        "content": [
+          "These terms define the conditions and procedures for using the Logme service (hereinafter referred to as the 'Service')."
+        ]
+      },
+      {
+        "title": "2. Definitions",
+        "content": [
+          "'Member' refers to a person who uses the service in accordance with these terms.",
+          "'Operator' means a person who manages and operates the service."
+        ]
+      },
+      {
+        "title": "3. Effect and Changes of Terms",
+        "content": [
+          "These terms come into effect by being posted on the service screen or otherwise notified.",
+          "The operator may change the terms if necessary, and the changed terms take effect after being notified."
+        ]
+      },
+      {
+        "title": "4. Use of the Service",
+        "content": [
+          "Members may use the service in accordance with these terms.",
+          "The operator may change or discontinue parts of the service without prior notice."
+        ]
+      },
+      {
+        "title": "5. Obligations of Members",
+        "content": [
+          "Members must not engage in the following acts when using the service:",
+          "- Using others' information illegally",
+          "- Disrupting the operation of the service",
+          "- Any act that violates relevant laws and regulations"
+        ]
+      },
+      {
+        "title": "6. Disclaimer",
+        "content": [
+          "The operator shall not be held liable if the service cannot be provided due to natural disasters or force majeure."
+        ]
+      },
+      {
+        "title": "7. Dispute Resolution",
+        "content": [
+          "In the event of a dispute related to the use of the service, the operator and the member shall consult in good faith to resolve it.",
+          "If the consultation fails, the court with jurisdiction over the operator’s location shall have jurisdiction."
+        ]
+      }
+    ]
+  }
+}
