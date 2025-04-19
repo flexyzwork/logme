@@ -43,7 +43,6 @@ export default function Step6_Done() {
       <Button
         className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm"
         onClick={() => {
-          setBuilderStep(0)
           router.push('/dashboard')
         }}
       >

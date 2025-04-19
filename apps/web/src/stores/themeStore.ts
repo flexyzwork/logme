@@ -24,21 +24,15 @@ export const useThemeStore = create<ThemeState>()(
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
           const currentTheme = get().theme
           const newTheme =
-            currentTheme === 'dark'
-              ? 'light'
-              : currentTheme === 'light'
-                ? 'dark'
-                : prefersDark
-                  ? 'light'
-                  : 'dark'
+            currentTheme === 'dark' ? 'light' : currentTheme === 'light' ? 'dark' : prefersDark ? 'light' : 'dark'
           set({ theme: newTheme })
-          const isDark = newTheme === 'dark' || prefersDark
-
+          const isDark = newTheme === 'dark' // || (newTheme === 'system' && prefersDark)
+          
           document.documentElement.classList.toggle('dark', isDark)
         },
       }),
-      { name: 'theme-storage' }
+      { name: 'theme-storage' },
     ),
-    { name: 'theme-storage' }
-  )
+    { name: 'theme-storage' },
+  ),
 )

@@ -5,6 +5,7 @@ import QueryProvider from '@/context/QueryProvider'
 import SessionProvider from '@/context/SessionProvider'
 import { Toaster } from 'sonner'
 import { AuthTracker } from '@/components/system/AuthTracker'
+import { PageViewTracker } from '@/components/system/ㅊ'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -16,6 +17,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           >
             <Toaster />
             <AuthTracker />
+            <PageViewTracker />
             {children}
           </Suspense>
         </ZustandProvider>
