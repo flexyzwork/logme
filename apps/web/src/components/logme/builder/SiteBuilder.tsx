@@ -19,7 +19,7 @@ export default function SiteBuilder() {
   const { step, notionPageId } = useBuilderStore()
 
   const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
-  const vercelTokenData = decrypt(encryptedVercelTokenData ?? '')
+  const vercelTokenData = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
 
   const { data: logmeInstallationIdData } = useFetchProviderExtended(
     'github',

@@ -23,8 +23,8 @@ export const useTemplatePageOpener = () => {
       alert('❌ Notion 인증 정보가 없습니다.')
       return
     }
+    console.log('notionAccessToken(encryptedToken):', encryptedToken)
     const notionAccessToken = decrypt(encryptedToken)
-    // console.log('notionAccessToken:', notionAccessToken)
     // if (!notionAccessToken || !notionPageId) {
     //   alert('❌ Notion 인증 정보가 없습니다.')
     //   return

@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import QueryProvider from '@/context/QueryProvider'
 import SessionProvider from '@/context/SessionProvider'
 import { Toaster } from 'sonner'
+import { AuthTracker } from '@/components/system/AuthTracker'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,6 +15,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
             fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}
           >
             <Toaster />
+            <AuthTracker />
             {children}
           </Suspense>
         </ZustandProvider>

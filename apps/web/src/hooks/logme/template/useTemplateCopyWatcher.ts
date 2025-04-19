@@ -28,7 +28,7 @@ export const useTemplateCopyWatcher = ({
           alert('❌ Notion 인증 정보가 없습니다.')
           return
         }
-        // console.log('notionAccessToken:', encryptedToken)
+        console.log('notionAccessToken(encryptedToken):', encryptedToken)
         const notionAccessToken = decrypt(encryptedToken)
 
         const response = await fetch(

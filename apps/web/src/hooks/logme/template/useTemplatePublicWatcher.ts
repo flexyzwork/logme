@@ -25,8 +25,8 @@ export const useTemplatePublicWatcher = ({
         if (!encryptedToken) {
           throw new Error('Notion 인증 토큰이 없습니다.')
         }
+        console.log('notionAccessToken(encryptedToken):', encryptedToken)
         const notionAccessToken = decrypt(encryptedToken)
-        // console.log('notionAccessToken:', notionAccessToken)
 
         const res = await fetch(`/api/logme/templates/check-public?notionPageId=${notionPageId}`, {
           headers: {

@@ -15,7 +15,7 @@ export const useDeploymentActions = () => {
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
-  const vercelToken = decrypt(encryptedVercelTokenData ?? '')
+  const vercelToken = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
   const { data: githubInstallationId } = useFetchProviderExtended('github', 'logmeInstallationId')
   const { data: gitHub } = useFetchProvider(ProviderType.github)
   const githubOwner = gitHub?.name || ''

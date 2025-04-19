@@ -114,10 +114,8 @@ export default function NotionCallbackPage() {
             event: 'notion_connected',
             meta: { pageId: data.duplicated_template_id, method: 'oauth' },
           })
-          // const siteId = createId()
 
           setUserId(currentUserId)
-          // setSiteId(siteId)
           setNotionPageId(data.duplicated_template_id)
           setNotionLastProcessedCode(code)
 
