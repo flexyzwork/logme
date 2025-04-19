@@ -8,6 +8,7 @@ import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProvide
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
+import { sendAlertFromClient } from '@/lib/alert'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
@@ -55,6 +56,13 @@ export const useDeploymentActions = () => {
       }
     } catch (error) {
       logger.error('❌ 배포 상태 확인 오류:', { error })
+      await sendAlertFromClient({
+        type: 'error',
+        message: '배포 상태 확인 실패',
+        meta: {
+          error,
+        },
+      })
       alert('배포 상태 확인 중 오류가 발생했습니다.')
     }
   }
@@ -64,16 +72,28 @@ export const useDeploymentActions = () => {
       onDeploying?.()
       if (!vercelToken) {
         logger.error('❌ Vercel API 토큰이 없습니다.')
+        await sendAlertFromClient({
+          type: 'error',
+          message: 'Vercel API 토큰이 없습니다.',
+        })
         return
       }
       logger.info('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
       if (!githubOwner) {
         logger.error('❌ githubOwner가 없습니다.')
+        await sendAlertFromClient({
+          type: 'error',
+          message: 'githubOwner가 없습니다.',
+        })
         return
       }
       logger.info('🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
       if (!githubInstallationId) {
         logger.error('❌ githubInstallationId가 없습니다.')
+        await sendAlertFromClient({
+          type: 'error',
+          message: 'githubInstallationId가 없습니다.',
+        })
         return
       }
       logger.info('🚀 githubInstallationId 배포 요청: githubInstallationId', {
@@ -136,17 +156,31 @@ export const useDeploymentActions = () => {
           })
         } else {
           logger.error('❌ Site ID가 없습니다.')
+          await sendAlertFromClient({
+            type: 'error',
+            message: '사이트 ID가 없습니다.',
+          })
         }
 
         setBuilderStep(3)
         checkDeploymentStatus(data.id, vercelToken, onReady || (() => {}))
       } else {
         logger.error('❌ 배포 실패:', data)
+        await sendAlertFromClient({
+          type: 'error',
+          message: '배포 실패',
+          meta: { error: data.error || '알 수 없는 오류' },
+        })
 
         alert('배포 실패: ' + (data.error || '알 수 없는 오류'))
       }
     } catch (error) {
       logger.error('❌ 배포 요청 오류:', { error })
+      await sendAlertFromClient({
+        type: 'error',
+        message: '배포 요청 오류',
+        meta: { error },
+      })
       alert('배포 중 오류가 발생했습니다.')
     }
   }

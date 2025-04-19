@@ -1,5 +1,6 @@
 'use server'
 
+import { sendAlertFromClient } from '@/lib/alert'
 import { getAuthSession } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { getUniqueSlug } from '@/lib/utils'
@@ -36,7 +37,15 @@ export const handleGenerateSite = async (formData: FormData): Promise<void> => {
   })
   if (!newSite.ok) {
     const text = await newSite.text()
-    logger.error('API Error:', {status: newSite.status, text})
+    logger.error('API Error:', { status: newSite.status, text })
+    await sendAlertFromClient({
+      type: 'error',
+      message: '사이트 생성 실패',
+      meta: {
+        status: newSite.status,
+        text,
+      },
+    })
     return
   }
   const result = await newSite.json()
@@ -44,5 +53,12 @@ export const handleGenerateSite = async (formData: FormData): Promise<void> => {
     logger.info('Site created successfully:', result.siteId)
   } else {
     logger.error('Error creating site:', result.error)
+    await sendAlertFromClient({
+      type: 'error',
+      message: '사이트 생성 실패',
+      meta: {
+        error: result.error,
+      },
+    })
   }
 }

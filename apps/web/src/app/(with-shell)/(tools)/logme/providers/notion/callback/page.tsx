@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react'
 import { encrypt } from '@/lib/crypto'
 import { trackEvent } from '@/lib/tracking'
 import { logger } from '@/lib/logger'
+import { sendAlertFromClient } from '@/lib/alert'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()
@@ -54,6 +55,15 @@ export default function NotionCallbackPage() {
       console.warn('❌ 유효하지 않은 인증 요청입니다. (state 없거나 불일치)')
       setError('❌ 유효하지 않은 인증 요청입니다. (state 불일치)')
       setLoading(false)
+      sendAlertFromClient({
+        type: 'error',
+        message: '❌ 유효하지 않은 인증 요청입니다. (state 불일치)',
+        meta: {
+          state,
+          notionAuthState: notion?.authState,
+          sessionUserId: session?.user.id,
+        },
+      })
       return
     }
 
@@ -131,6 +141,11 @@ export default function NotionCallbackPage() {
           } else {
             setError('Failed to get site ID')
             logger.error('❌ Site ID가 없습니다.')
+            await sendAlertFromClient({
+              type: 'error',
+              message: 'Vercel 토큰 저장 실패',
+              meta: { siteId, error: '❌ Site ID가 없습니다.' },
+            })
           }
         } else {
           setError('Failed to get access token or template ID')
@@ -138,6 +153,11 @@ export default function NotionCallbackPage() {
       } catch (err) {
         logger.error('❌ Notion 인증 중 오류:', { err })
         setError('Internal server error')
+        await sendAlertFromClient({
+          type: 'error',
+          message: 'Notion 인증 중 오류',
+          meta: { err },
+        })
       } finally {
         setIsNotionFetching(false)
         setLoading(false)

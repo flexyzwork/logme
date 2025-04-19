@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
+    SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
+    DEBUG: process.env.DEBUG,
+    // NODE_ENV: process.env.NODE_ENV,
   },
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],

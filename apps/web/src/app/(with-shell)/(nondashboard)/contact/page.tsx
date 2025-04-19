@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { logger } from '@/lib/logger'
+import { sendAlertFromClient } from '@/lib/alert'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
@@ -40,6 +41,11 @@ export default function ContactPage() {
     } else {
       setResult('Error: ' + data.message)
       logger.error('Error', data.message)
+      await sendAlertFromClient({
+        type: 'error',
+        message: 'Error sending message',
+        meta: { error: data.message },
+      })
     }
   }
 

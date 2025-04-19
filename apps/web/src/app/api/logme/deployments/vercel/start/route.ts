@@ -1,3 +1,4 @@
+import { sendAlertFromClient } from '@/lib/alert'
 import { logger } from '@/lib/logger'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { NextRequest, NextResponse } from 'next/server'
@@ -179,6 +180,11 @@ export async function POST(req: NextRequest) {
     // ✅ HTTP 응답 상태 확인
     if (!deployResponse.ok) {
       logger.error('❌ Vercel 배포 API 응답 오류:', deployData)
+      await sendAlertFromClient({
+        type: 'error',
+        message: '❌ Vercel 배포 API 응답 오류',
+        meta: { deployData },
+      })
       return NextResponse.json(
         { error: 'Vercel 배포 API 요청 실패', details: deployData },
         { status: 500 }
@@ -190,6 +196,11 @@ export async function POST(req: NextRequest) {
 
     if (!deployData.url) {
       logger.error('❌ Vercel 배포 실패: 배포 URL 없음', deployData)
+      await sendAlertFromClient({
+        type: 'error',
+        message: '❌ Vercel 배포 실패: 배포 URL 없음',
+        meta: { deployData },
+      })
       return NextResponse.json(
         { error: 'Vercel 배포 실패: 배포 URL이 없습니다.', details: deployData },
         { status: 500 }
