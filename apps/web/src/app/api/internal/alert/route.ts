@@ -1,4 +1,3 @@
-// import { sendAlertFromClient } from '@/lib/alert'
 import { SLACK_WEBHOOK_URL } from '@/lib/config/server'
 
 export async function sendAlertToServer({
