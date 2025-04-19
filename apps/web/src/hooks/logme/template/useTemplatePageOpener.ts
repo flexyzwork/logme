@@ -8,7 +8,7 @@ export const useTemplatePageOpener = () => {
   const { mutateAsync: updateContentSourceDB } = useUpdateContentSource()
 
   const openNotionPageUrl = async ({
-    siteId,
+    // siteId,
     notionPageId,
     onWindow,
     onError,

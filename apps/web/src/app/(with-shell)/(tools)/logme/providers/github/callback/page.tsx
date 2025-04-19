@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export default function k() {
+export default function GithubCallbackPage() {
   useEffect(() => {
     const installationId = new URLSearchParams(window.location.search).get('installation_id')
 

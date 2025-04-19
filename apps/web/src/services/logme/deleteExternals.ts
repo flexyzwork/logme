@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Octokit } from 'octokit'
 
 /**
@@ -24,7 +26,7 @@ export async function deleteVercelProject(token: string, projectId: string) {
   try {
     return JSON.parse(text)
   } catch (err) {
-    console.error('Vercel 삭제 응답 파싱 실패:', text)
+    console.error('Vercel 삭제 응답 파싱 실패:', err)
     throw new Error('Vercel 프로젝트 삭제 응답이 올바르지 않습니다.')
   }
 }

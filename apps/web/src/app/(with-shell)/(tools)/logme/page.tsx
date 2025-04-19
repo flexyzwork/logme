@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { useBuilderStore } from '@/stores/logme/builderStore'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export default function Home() {

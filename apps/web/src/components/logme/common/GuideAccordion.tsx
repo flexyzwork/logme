@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Accordion,
   AccordionItem,
@@ -42,8 +43,7 @@ export default function GuideAccordion({
         }
       }, 300)
     }
-    // }
-  }, [])
+  }, [activeValue, setActiveValue])
 
   const openPopup = (url: string) => {
     const popupLeft = window.screenX + window.outerWidth
@@ -70,7 +70,9 @@ export default function GuideAccordion({
                     className="text-sm font-semibold underline"
                     onClick={(e) => {
                       e.preventDefault()
-                      guide.link?.url && openPopup(guide.link.url)
+                      if (guide.link?.url) {
+                        openPopup(guide.link.url)
+                      }
                     }}
                   >
                     {guide.link.text}
