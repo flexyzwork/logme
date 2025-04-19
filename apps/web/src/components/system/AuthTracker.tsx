@@ -18,7 +18,6 @@ export function AuthTracker() {
       })
     }
   }, [status, session])
-  console.log('🔹 AuthTracker:', status, session)
 
   return null
 }

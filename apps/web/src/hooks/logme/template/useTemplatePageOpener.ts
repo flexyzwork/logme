@@ -8,7 +8,6 @@ export const useTemplatePageOpener = () => {
   const { mutateAsync: updateContentSourceDB } = useUpdateContentSource()
 
   const openNotionPageUrl = async ({
-    // siteId,
     notionPageId,
     onWindow,
     onError,
@@ -19,17 +18,11 @@ export const useTemplatePageOpener = () => {
     onError?: (e: unknown) => void
   }) => {
     const encryptedToken = await getProviderToken(userId!, 'notion')
-    if (!encryptedToken) {
-      alert('❌ Notion 인증 정보가 없습니다.')
-      return
-    }
-    console.log('notionAccessToken(encryptedToken):', encryptedToken)
-    const notionAccessToken = decrypt(encryptedToken)
-    // if (!notionAccessToken || !notionPageId) {
+    // if (!encryptedToken) {
     //   alert('❌ Notion 인증 정보가 없습니다.')
     //   return
     // }
-
+    const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
     try {
       const res = await fetch(`/api/logme/templates/get-url?notionPageId=${notionPageId}`, {
         headers: {
@@ -39,12 +32,6 @@ export const useTemplatePageOpener = () => {
       const data = await res.json()
 
       if (data.url) {
-        // updateSite(siteId, {
-        //   notionPage: {
-        //     url: data.url,
-        //     id: notionPageId,
-        //   },
-        // })
         await updateContentSourceDB({ sourceId: notionPageId, sourceUrl: data.url })
 
         const newWindow = window.open(data.url, '_blank')

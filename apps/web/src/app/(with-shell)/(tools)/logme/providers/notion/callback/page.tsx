@@ -11,6 +11,7 @@ import { useAuthStore } from '@/stores/logme/authStore'
 import { useSession } from 'next-auth/react'
 import { encrypt } from '@/lib/crypto'
 import { trackEvent } from '@/lib/tracking'
+import { logger } from '@/lib/logger'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()
@@ -43,10 +44,6 @@ export default function NotionCallbackPage() {
     const code = searchParams.get('code')
     const state = searchParams.get('state')
 
-    console.log('🔹 code:', code)
-    console.log('🔹 state:', state)
-    console.log('✅ userId:', session.user?.id)
-
     if (!code) {
       setError('Authorization code is missing')
       setLoading(false)
@@ -61,7 +58,6 @@ export default function NotionCallbackPage() {
     }
 
     if (isNotionFetching || notionLastProcessedCode === code) {
-      console.log('🚀 중복 실행 방지됨:', code)
       setLoading(false)
       return
     }
@@ -81,7 +77,6 @@ export default function NotionCallbackPage() {
         })
 
         const data = await response.json()
-        console.log('✅ Notion 인증 성공:', data)
 
         if (data.access_token && data.duplicated_template_id) {
           const accessToken = data.access_token
@@ -98,8 +93,6 @@ export default function NotionCallbackPage() {
           const res = await storeProviderUser(providerUser)
           const newUserId = res.userId
 
-          console.log('🔑 newUserId:', newUserId)
-
           if (!currentUserId || currentUserId !== newUserId) {
             currentUserId = newUserId
           }
@@ -107,8 +100,12 @@ export default function NotionCallbackPage() {
           const encryptedToken = encrypt(accessToken)
 
           storeProviderToken(currentUserId!, 'notion', encryptedToken)
-          console.log('🔑 Notion 인증 토큰 저장 완료:', encryptedToken)
 
+          logger.info('✅ Notion 인증 완료:', {
+            userId: currentUserId,
+            providerUserId: data.owner?.user?.id,
+            accessToken: encryptedToken,
+          })
           await trackEvent({
             userId: session?.user.id,
             event: 'notion_connected',
@@ -123,22 +120,23 @@ export default function NotionCallbackPage() {
             sourceId: data.duplicated_template_id,
           }
           const contentSource = await createContentSourceDB(contentSourceData)
-          console.log('✅ Content Source 생성:', contentSource)
+          logger.info('✅ Content Source 생성:', contentSource)
 
           if (siteId) {
             await updateSiteDB({
               id: siteId,
               contentSourceId: contentSource.id,
             })
-            console.log('✅ Site 업데이트:', contentSource.id)
+            logger.info('✅ Site 업데이트 완료:', { siteId, contentSourceId: contentSource.id })
           } else {
-            console.error('❌ Site ID가 없습니다.')
+            setError('Failed to get site ID')
+            logger.error('❌ Site ID가 없습니다.')
           }
         } else {
           setError('Failed to get access token or template ID')
         }
       } catch (err) {
-        console.error('❌ Notion 인증 중 오류:', err)
+        logger.error('❌ Notion 인증 중 오류:', { err })
         setError('Internal server error')
       } finally {
         setIsNotionFetching(false)

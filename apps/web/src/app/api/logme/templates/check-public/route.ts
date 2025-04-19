@@ -26,9 +26,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await response.json()
-    console.log('token', token)
 
-    console.log('data', data)
     const isPublic = !!data.public_url // 게시 여부 확인
 
     return NextResponse.json({ isPublic })

@@ -7,6 +7,7 @@ import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 import { decrypt } from '@/lib/crypto'
+import { logger } from '@/lib/logger'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
@@ -45,7 +46,7 @@ export const useDeploymentActions = () => {
               domain: `https://${data.url}`,
               status: SiteStatus.published,
             })
-            console.log('✅ 사이트 도메인 업데이트 완료:', data.url)
+            logger.info('✅ 사이트 도메인 업데이트 완료:', data.url)
           }
           return
         }
@@ -53,7 +54,7 @@ export const useDeploymentActions = () => {
         await new Promise((resolve) => setTimeout(resolve, 5000))
       }
     } catch (error) {
-      console.error('❌ 배포 상태 확인 오류:', error)
+      logger.error('❌ 배포 상태 확인 오류:', { error })
       alert('배포 상태 확인 중 오류가 발생했습니다.')
     }
   }
@@ -62,20 +63,20 @@ export const useDeploymentActions = () => {
     try {
       onDeploying?.()
       if (!vercelToken) {
-        console.error('❌ Vercel API 토큰이 없습니다.')
+        logger.error('❌ Vercel API 토큰이 없습니다.')
         return
       }
-      console.log('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
+      logger.info('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
       if (!githubOwner) {
-        console.error('❌ githubOwner가 없습니다.')
+        logger.error('❌ githubOwner가 없습니다.')
         return
       }
-      console.log('🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
+      logger.info('🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
       if (!githubInstallationId) {
-        console.error('❌ githubInstallationId가 없습니다.')
+        logger.error('❌ githubInstallationId가 없습니다.')
         return
       }
-      console.log('🚀 githubInstallationId 배포 요청: githubInstallationId', {
+      logger.info('🚀 githubInstallationId 배포 요청: githubInstallationId', {
         githubInstallationId,
       })
 
@@ -97,7 +98,7 @@ export const useDeploymentActions = () => {
 
       const data = await response.json()
       if (data.url && data.id) {
-        console.log('✅ 배포 응답!!!!!!!!! :', data)
+        logger.info('✅ 배포 응답!!!!!!!!! :', data)
 
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
@@ -106,20 +107,20 @@ export const useDeploymentActions = () => {
           repoOwner: githubOwner,
           repoBranch: data.repoBranch,
         })
-        console.log('✅ Repo DB 생성:', repo)
+        logger.info('✅ Repo DB 생성:', repo)
 
         const deployTarget = await createDeployTargetDB({
           targetId: data.targetId,
           targetName: data.targetName,
           targetUrl: data.url,
         })
-        console.log('✅ Deploy Target DB 생성:', deployTarget)
+        logger.info('✅ Deploy Target DB 생성:', deployTarget)
 
         const deployment = await createDeploymentDB({
           deployTargetId: deployTarget.id,
         })
 
-        console.log('✅ Deployment DB 생성:', deployment)
+        logger.info('✅ Deployment DB 생성:', deployment)
 
         if (siteId) {
           await updateSiteDB({
@@ -128,20 +129,24 @@ export const useDeploymentActions = () => {
             deployTargetId: deployTarget.id,
             status: SiteStatus.draft,
           })
-          console.log('✅ Site 업데이트:', siteId, repo.id, deployTarget.id)
+          logger.info('✅ Site 업데이트:', {
+            siteId,
+            repoId: repo.id,
+            deployTargetId: deployTarget.id,
+          })
         } else {
-          console.error('❌ Site ID가 없습니다.')
+          logger.error('❌ Site ID가 없습니다.')
         }
 
         setBuilderStep(3)
         checkDeploymentStatus(data.id, vercelToken, onReady || (() => {}))
       } else {
-        console.error('❌ 배포 실패:', data)
+        logger.error('❌ 배포 실패:', data)
 
         alert('배포 실패: ' + (data.error || '알 수 없는 오류'))
       }
     } catch (error) {
-      console.error('❌ 배포 요청 오류:', error)
+      logger.error('❌ 배포 요청 오류:', { error })
       alert('배포 중 오류가 발생했습니다.')
     }
   }

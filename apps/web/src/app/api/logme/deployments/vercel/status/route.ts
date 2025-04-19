@@ -7,8 +7,6 @@ export async function GET(req: NextRequest) {
   const deploymentId = searchParams.get('deploymentId')
   const vercelToken = searchParams.get('vercelToken')
 
-  console.log('🚀 GET /api/logme/deployments/vercel/status:', { deploymentId, vercelToken })
-
   if (!deploymentId || !vercelToken) {
     return NextResponse.json({ error: 'Missing deploymentId or token' }, { status: 400 })
   }

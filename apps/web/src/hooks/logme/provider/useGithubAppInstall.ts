@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
+import { logger } from '@/lib/logger'
 
 export const useGithubAppInstall = () => {
   const storeProviderExtended = useCreateProviderExtended()
@@ -55,7 +56,7 @@ export const useGithubAppInstall = () => {
       if (event.data?.type === 'github_app_installed') {
         const installationId = event.data.installationId
 
-        console.log('✅ 연결 완료! installation_id:', installationId)
+        logger.info('✅ 연결 완료! installation_id:', installationId)
 
         if (isFetching.current) return
         isFetching.current = true
@@ -70,8 +71,8 @@ export const useGithubAppInstall = () => {
           }
           await storeProviderExtended.mutateAsync(providerExtended)
 
-          const token = await fetchGithubInstallationToken(installationId)
-          console.log('✅ 연결 토큰:', token)
+          // TODO: 이 부분은 나중에 삭제 ?
+          // const token = await fetchGithubInstallationToken(installationId)
           
           setIsLogmeAppInstalled(true)
         } catch (err) {

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -14,9 +15,6 @@ export async function POST(req: NextRequest) {
       githubOwner,
       githubRepoName,
     } = await req.json()
-
-    console.log('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
-    console.log('githubInstallationId:', githubInstallationId)
 
     if (!githubInstallationId) {
       console.error('❌ GitHub Installation Id 없음: Vercel 배포 중단')
@@ -61,8 +59,8 @@ export async function POST(req: NextRequest) {
 
     const fullName = githubCreateData.full_name
     const repoId = githubCreateData.id
+    logger.info('✅ GitHub 레포 복제 완료:', githubCreateData)
 
-    console.log('🚀 Vercel 배포 요청:', { fullName, repoId, vercelToken, notionPageId })
     if (!vercelToken)
       return NextResponse.json({ error: 'Vercel API Token is required' }, { status: 400 })
 
@@ -108,7 +106,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    console.log('✅ Vercel 프로젝트 생성 완료:', projectData)
+    logger.info('✅ Vercel 프로젝트 생성 완료:', projectData)
 
     // ✅ 2. 환경 변수 추가 (notionPageId를 사용)
     const envResponse = await fetch(
@@ -145,11 +143,11 @@ export async function POST(req: NextRequest) {
     const envData = await envResponse.json()
 
     if (!envResponse.ok) {
-      console.error('❌ 환경 변수 추가 실패:', envData)
+      logger.error('❌ 환경 변수 추가 실패:', envData)
       return NextResponse.json({ error: '환경 변수 추가 실패', details: envData }, { status: 500 })
     }
 
-    console.log('✅ 환경 변수 추가 완료:', envData)
+    logger.info('✅ 환경 변수 추가 완료:', envData)
 
     // ✅ 3. Vercel 배포 시작
 
@@ -180,7 +178,7 @@ export async function POST(req: NextRequest) {
 
     // ✅ HTTP 응답 상태 확인
     if (!deployResponse.ok) {
-      console.error('❌ Vercel 배포 API 응답 오류:', deployData)
+      logger.error('❌ Vercel 배포 API 응답 오류:', deployData)
       return NextResponse.json(
         { error: 'Vercel 배포 API 요청 실패', details: deployData },
         { status: 500 }
@@ -188,17 +186,17 @@ export async function POST(req: NextRequest) {
     }
 
     // ✅ Vercel API에서 반환된 데이터 확인
-    console.log('🔍 Vercel 배포 응답 데이터:', deployData)
+    logger.info('🔍 Vercel 배포 응답 데이터:', deployData)
 
     if (!deployData.url) {
-      console.error('❌ Vercel 배포 실패: 배포 URL 없음', deployData)
+      logger.error('❌ Vercel 배포 실패: 배포 URL 없음', deployData)
       return NextResponse.json(
         { error: 'Vercel 배포 실패: 배포 URL이 없습니다.', details: deployData },
         { status: 500 }
       )
     }
 
-    console.log('✅ Vercel 배포 완료:', deployData)
+    logger.info('✅ Vercel 배포 완료:', deployData)
     return NextResponse.json(
       {
         message: '배포 완료',

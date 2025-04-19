@@ -22,11 +22,10 @@ export const useTemplatePublicWatcher = ({
     const interval = setInterval(async () => {
       try {
         const encryptedToken = await getProviderToken(userId!, 'notion')
-        if (!encryptedToken) {
-          throw new Error('Notion 인증 토큰이 없습니다.')
-        }
-        console.log('notionAccessToken(encryptedToken):', encryptedToken)
-        const notionAccessToken = decrypt(encryptedToken)
+        // if (!encryptedToken) {
+        //   throw new Error('Notion 인증 토큰이 없습니다.')
+        // }
+        const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
 
         const res = await fetch(`/api/logme/templates/check-public?notionPageId=${notionPageId}`, {
           headers: {
@@ -44,7 +43,6 @@ export const useTemplatePublicWatcher = ({
           clearInterval(interval)
 
           if (notionPopup) notionPopup.close()
-          // setBuilderStep(2)
           onComplete?.()
         }
       } catch (error) {

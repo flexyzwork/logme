@@ -4,7 +4,6 @@ export function useFetchProviderExtended(providerType: string, extendedKey: stri
   return useQuery({
     queryKey: ['provider-extended', providerType, extendedKey],
     queryFn: async () => {
-      console.log('providerType', providerType, 'extendedKey', extendedKey)
       const url = `/api/logme/providers/extended?providerType=${providerType}&extendedKey=${extendedKey}`
       const res = await fetch(url)
       if (!res.ok) throw new Error('Provider 확장 필드 조회 실패')

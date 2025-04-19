@@ -92,7 +92,6 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     }
     const vercelToken = decrypt(encryptedToken)
 
-    console.log('vercelToken:', vercelToken)
     try {
       // Vercel 프로젝트 삭제
       if (site.deployTarget?.targetId && vercelToken) {
@@ -111,12 +110,10 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
       })
 
       const githubInstallationId = logmeInstallationIdData?.extendedValue
-      console.log('githubInstallationId:', githubInstallationId)
 
       // GitHub 저장소 삭제
       if (site.repo?.repoOwner && site.repo?.repoName && githubInstallationId) {
         const installationToken = await fetchGithubInstallationToken(
-          // req,
           Number(githubInstallationId)
         )
         await deleteGithubRepo({

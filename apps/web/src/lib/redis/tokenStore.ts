@@ -1,10 +1,11 @@
+import { logger } from '@/lib/logger'
 import { getRedisClient } from './client'
 
 const TOKEN_PREFIX = 'token:'
 
 export async function storeProviderToken(
   userId: string,
-  provider: 'notion' | 'github' | 'vercel' | 'githubApp',
+  provider: 'notion' | 'github' | 'vercel',
   accessToken: string,
 ) {
   const redis = getRedisClient()
@@ -16,10 +17,13 @@ export async function storeProviderToken(
 
 export async function getProviderToken(
   userId: string,
-  provider: 'notion' | 'github' | 'vercel' | 'githubApp',
+  provider: 'notion' | 'github' | 'vercel',
 ) {
   const redis = getRedisClient()
-  return await redis.hget<string>(`${TOKEN_PREFIX}${userId}`, provider)
+  logger.debug(`[debug] fetching token from Redis: userId=${userId}, provider=${provider}`)
+  const token = await redis.hget<string>(`${TOKEN_PREFIX}${userId}`, provider)
+  logger.debug(`[debug] token result: ${token}`)
+  return token
 }
 
 export async function getAllTokens(userId: string) {

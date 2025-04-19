@@ -33,7 +33,6 @@ export async function POST(req: Request) {
       }
 
       const newId = createId()
-      console.log('newId:', newId)
 
       const providerData: Prisma.ProviderUncheckedCreateInput = {
         id: newId,

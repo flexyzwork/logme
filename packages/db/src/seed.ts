@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { db } from './db'
 
 const prisma = new PrismaClient()
 

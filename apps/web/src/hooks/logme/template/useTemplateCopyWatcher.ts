@@ -24,12 +24,11 @@ export const useTemplateCopyWatcher = ({
     const checkCopyStatus = async () => {
       try {
         const encryptedToken = await getProviderToken(userId!, 'notion')
-        if (!encryptedToken) {
-          alert('❌ Notion 인증 정보가 없습니다.')
-          return
-        }
-        console.log('notionAccessToken(encryptedToken):', encryptedToken)
-        const notionAccessToken = decrypt(encryptedToken)
+        // if (!encryptedToken) {
+        //   alert('❌ Notion 인증 정보가 없습니다.')
+        //   return
+        // }
+        const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
 
         const response = await fetch(
           `/api/logme/templates/check-copy?notionPageId=${notionPageId}`,

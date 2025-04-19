@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { logger } from '@/lib/logger'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
@@ -37,7 +38,8 @@ export default function ContactPage() {
       setResult('Form Submitted Successfully')
       setTimeout(() => setResult(''), 2000)
     } else {
-      console.log('Error', data)
+      setResult('Error: ' + data.message)
+      logger.error('Error', data.message)
     }
   }
 

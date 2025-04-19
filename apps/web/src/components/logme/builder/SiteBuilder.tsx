@@ -13,6 +13,7 @@ import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProvide
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { decrypt } from '@/lib/crypto'
+import { logger } from '@/lib/logger'
 
 export default function SiteBuilder() {
   const { isDeploying } = useSiteBuilderUI()
@@ -59,7 +60,7 @@ export default function SiteBuilder() {
       return () => clearTimeout(timeout)
     }
   }, [shouldRedirectToAccount, router])
-  console.log('📌 현재 온보딩 상태:', { step })
+  logger.info('📌 현재 온보딩 상태:', { step })
 
   if (step === undefined || step === null) return null
 

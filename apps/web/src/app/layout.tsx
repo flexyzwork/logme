@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Providers from '@/app/providers'
+import { logger } from '@/lib/logger'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,10 +34,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  logger.info('DEBUG env:', { DEBUG: process.env.DEBUG })
+  logger.info('NODE_ENV:', { NODE_ENV: process.env.NODE_ENV })
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <Providers>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

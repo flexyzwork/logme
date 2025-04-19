@@ -1,6 +1,7 @@
 'use server'
 
 import { getAuthSession } from '@/lib/auth'
+import { logger } from '@/lib/logger'
 import { getUniqueSlug } from '@/lib/utils'
 import { NextResponse } from 'next/server'
 
@@ -20,8 +21,6 @@ export const handleGenerateSite = async (formData: FormData): Promise<void> => {
 
   siteSlug = await getUniqueSlug(siteSlug)
 
-  console.log('siteSlug', siteSlug)
-
   const newSite = await fetch(`${baseUrl}/api/logme/site/create`, {
     method: 'POST',
     body: JSON.stringify({
@@ -37,13 +36,13 @@ export const handleGenerateSite = async (formData: FormData): Promise<void> => {
   })
   if (!newSite.ok) {
     const text = await newSite.text()
-    console.error('API Error:', newSite.status, text)
+    logger.error('API Error:', {status: newSite.status, text})
     return
   }
   const result = await newSite.json()
   if (result.ok) {
-    console.log('Site created successfully:', result.siteId)
+    logger.info('Site created successfully:', result.siteId)
   } else {
-    console.error('Error creating site:', result.error)
+    logger.error('Error creating site:', result.error)
   }
 }

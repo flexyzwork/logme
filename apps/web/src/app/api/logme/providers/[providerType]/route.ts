@@ -22,8 +22,6 @@ export async function POST(
     const sessionId = session?.user?.id || 'anonymous'
     const lockKey = `${sessionId}-${providerType}`
 
-    console.log('sessionId:', sessionId)
-
     if (providerLocks.get(lockKey)) {
       return NextResponse.json({ error: 'Request already in progress' }, { status: 429 })
     }
@@ -100,7 +98,6 @@ export async function DELETE(
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
     }
-    console.log('userId:', userId)
 
     await db.providerExtended.deleteMany({
       where: {

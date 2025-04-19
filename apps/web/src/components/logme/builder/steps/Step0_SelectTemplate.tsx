@@ -3,24 +3,21 @@
 import { useFetchTemplates } from '@/hooks/logme/template/useFetchTemplates'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
 import { generateOAuthState } from '@/lib/utils'
 import { useAuthStore } from '@/stores/logme/authStore'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useCreateSite } from '@/hooks/logme/site/useCreateSite'
 import { createId } from '@paralleldrive/cuid2'
+import Image from 'next/image'
 
 export default function Step0_SelectTemplate() {
   const { setSiteId, userId } = useBuilderStore()
   const { mutateAsync: createSiteDB } = useCreateSite()
 
-
   const handleSelect = (id: string, clientId: string, redirectUri: string) => {
     const siteId = createId()
 
     const { setNotionAuthState } = useAuthStore.getState()
-
-    console.log('선택된 템플릿:', { id, clientId, redirectUri })
 
     createSiteDB({
       id: siteId,
@@ -31,23 +28,10 @@ export default function Step0_SelectTemplate() {
       slug: siteId,
     })
 
-    // Create a new site to Store
-    // createSite(
-    //   siteId,
-    //   '',
-    //   '',
-    //   false,
-    //   id,
-    //   undefined,
-    //   undefined,
-    //   undefined
-    //   // userId,
-    // )
     setSiteId(siteId)
 
     const stateType = `notion:${clientId}:`
     const state = generateOAuthState(stateType)
-    console.log('🔹 생성된 state:', state) // ✅ state 값 확인
     setNotionAuthState(state)
 
     const params = new URLSearchParams({
