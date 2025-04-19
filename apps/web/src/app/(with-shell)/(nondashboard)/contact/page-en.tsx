@@ -21,7 +21,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setResult('전송 중...')
+    setResult('Sending....')
     const formData = new FormData(event.currentTarget)
     formData.append('access_key', accessKey)
 
@@ -36,14 +36,14 @@ export default function ContactPage() {
       setName('')
       setEmail('')
       setMessage('')
-      setResult('성공적으로 전송되었습니다.')
+      setResult('Form Submitted Successfully')
       setTimeout(() => setResult(''), 2000)
     } else {
-      setResult('오류: ' + data.message)
+      setResult('Error: ' + data.message)
       logger.error('Error', data.message)
       await sendAlertFromClient({
         type: 'error',
-        message: '메시지 전송 오류',
+        message: 'Error sending message',
         meta: { error: data.message },
       })
     }
@@ -51,14 +51,14 @@ export default function ContactPage() {
 
   return (
     <main className="max-w-xl mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold mb-6 text-center">문의하기</h1>
-      <p className="text-muted-foreground mb-8">
-        Logme는 Flexyz가 만든 도구입니다. <br />
-        궁금한 점, 아이디어 제안, 또는 인사하고 싶으시다면 아래 폼을 통해 연락해 주세요.
+      <h1 className="text-2xl font-bold mb-6 text-center">Contact</h1>
+      <p className="text-muted-foreground mb-8 text-center">
+        Logme is a tool built by <strong>Flexyz</strong>. If you have questions, ideas, or just want
+        to say hello — feel free to reach out using the form below.
       </p>
       <div className="space-y-4 text-sm">
         <p>
-          📧 이메일:{' '}
+          📧 Email:{' '}
           <a href="mailto:flexyzwork@gmail.com" className="underline">
             flexyzwork@gmail.com
           </a>
@@ -75,7 +75,7 @@ export default function ContactPage() {
           </a>
         </p>
         <p>
-          ☕ 지원:{' '}
+          ☕ Support:{' '}
           <a
             href="https://buymeacoffee.com/flexyzwork"
             target="_blank"
@@ -93,7 +93,7 @@ export default function ContactPage() {
         <Input
           type="text"
           name="name"
-          placeholder="이름"
+          placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -102,13 +102,13 @@ export default function ContactPage() {
         <Input
           type="email"
           name="email"
-          placeholder="이메일"
+          placeholder="Your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
         <Textarea
-          placeholder="메시지"
+          placeholder="Your message"
           name="message"
           rows={6}
           value={message}
@@ -116,7 +116,7 @@ export default function ContactPage() {
           required
         />
         <Button type="submit" className="w-full">
-          메시지 보내기
+          Send Message
         </Button>
       </form>
       <p className="mt-4">{result}</p>

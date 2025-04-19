@@ -34,10 +34,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  logger.info('DEBUG env:', { DEBUG: process.env.DEBUG })
-  logger.info('NODE_ENV:', { NODE_ENV: process.env.NODE_ENV })
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'system';
+                  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const shouldUseDark = theme === 'dark' || (theme === 'system' && systemPrefersDark);
+                  if (shouldUseDark) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (_) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>

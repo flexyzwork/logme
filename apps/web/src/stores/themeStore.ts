@@ -4,7 +4,8 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 interface ThemeState {
-  theme: 'light' | 'dark'
+  theme: 'light' | 'dark' | 'system'
+  setTheme: (theme: 'light' | 'dark' | 'system') => void
   toggleTheme: () => void
 }
 
@@ -12,15 +13,32 @@ export const useThemeStore = create<ThemeState>()(
   devtools(
     persist(
       (set, get) => ({
-        theme: 'light',
+        theme: 'system',
+        setTheme: (theme) => {
+          set({ theme })
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isDark = theme === 'dark' || (theme === 'system' && prefersDark)
+          document.documentElement.classList.toggle('dark', isDark)
+        },
         toggleTheme: () => {
-          const newTheme = get().theme === 'light' ? 'dark' : 'light'
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const currentTheme = get().theme
+          const newTheme =
+            currentTheme === 'dark'
+              ? 'light'
+              : currentTheme === 'light'
+                ? 'dark'
+                : prefersDark
+                  ? 'light'
+                  : 'dark'
           set({ theme: newTheme })
-          document.documentElement.classList.toggle('dark', newTheme === 'dark') // HTML에 클래스 적용
+          const isDark = newTheme === 'dark' || prefersDark
+
+          document.documentElement.classList.toggle('dark', isDark)
         },
       }),
-      { name: 'theme-storage' },
+      { name: 'theme-storage' }
     ),
-    { name: 'theme-storage' },
-  ),
+    { name: 'theme-storage' }
+  )
 )
