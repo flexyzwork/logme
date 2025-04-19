@@ -13,7 +13,8 @@
     "docker-dev": "pnpm --filter @repo/docker-dev",
     "format": "prettier --write .",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "test:w": "turbo run test:watch"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
