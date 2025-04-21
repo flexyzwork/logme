@@ -24,6 +24,7 @@ interface BuilderState {
   setDeployUrl: (id: string) => void
   setSub: (sub: string) => void
   setGitRepoUrl: (url: string) => void
+  reset: () => void
 }
 
 export const useBuilderStore = create<BuilderState>()(
@@ -83,6 +84,18 @@ export const useBuilderStore = create<BuilderState>()(
           logger.info(`🚀 Git Repo URL 저장:`, { url })
           set({ gitRepoUrl: url })
         },
+        reset: () => set({
+          step: 0,
+          isNotionFetching: false,
+          userId: null,
+          notionLastProcessedCode: null,
+          notionPageId: null,
+          siteId: null,
+          templateId: null,
+          deployUrl: null,
+          sub: null,
+          gitRepoUrl: null,
+        }),
       }),
       {
         name: 'builder-storage',

@@ -16,20 +16,19 @@ interface AuthState {
   setNotionAuthState: (authState: string) => void
   setGithubAuthState: (authState: string) => void
   setGithubInstallationId: (installationId: number) => void
+  reset: () => void
+}
+
+const initialAuthState = {
+  notion: { authState: null },
+  github: { authState: null, installationId: null },
 }
 
 export const useAuthStore = create<AuthState>()(
   devtools(
     persist(
       (set) => ({
-        notion: {
-          authState: null,
-        },
-
-        github: {
-          authState: null,
-          installationId: null,
-        },
+        ...initialAuthState,
 
         setNotionAuthState: (authState) =>
           set((state) => ({
@@ -45,6 +44,8 @@ export const useAuthStore = create<AuthState>()(
           set((state) => ({
             github: { ...state.github, installationId },
           })),
+
+        reset: () => set(initialAuthState),
       }),
       {
         name: 'auth-storage',
