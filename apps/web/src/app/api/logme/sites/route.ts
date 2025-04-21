@@ -36,6 +36,7 @@ export async function GET() {
       where: { userId, deletedAt: null },
       select: {
         id: true,
+        sub: true,
         siteType: true,
         siteTitle: true,
         siteDescription: true,
@@ -65,6 +66,11 @@ export async function GET() {
           select: {
             targetName: true,
             targetUrl: true,
+            deployments: {
+              select: {
+                deployUrl: true,
+              },
+            },
           },
         },
       },

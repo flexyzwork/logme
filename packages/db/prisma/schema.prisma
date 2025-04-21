@@ -122,7 +122,7 @@ model TemplateApp {
 model Site {
   id              String         @id @default(cuid())
   siteType        SiteType?      @default(blog)
-  slug            String         @unique
+  sub             String         
   siteTitle       String?
   siteDescription String?
   userId          String
@@ -148,7 +148,7 @@ model Site {
   deployTarget    DeployTarget?   @relation(fields: [deployTargetId], references: [id])
   builds          Build[]
 
-  @@index([slug])
+  @@index([sub])
   @@index([userId])
   @@index([templateId])
   @@index([contentSourceId])
@@ -176,15 +176,17 @@ model Build {
 
 /// 배포 이력
 model Deployment {
-  id              String      @id @default(cuid())
+  id              String        @id @default(cuid())
   deployTargetId  String
-  status          DeployStatus?    /// enum
-  logUrl          String?
-  triggeredAt     DateTime     @default(now())
+  deployId        String        @unique
+  status          DeployStatus? @default(deploying)
+  deployUrl       String?
+  triggeredAt     DateTime      @default(now())
   completedAt     DateTime?
 
   deployTarget    DeployTarget  @relation(fields: [deployTargetId], references: [id])
   @@index([deployTargetId])
+  @@index([deployId])
 }
 
 
@@ -300,7 +302,7 @@ enum SiteType {
 
 /// 도메인 타닙
 enum DomainType {
-  sub     // 서브도메인 (예: xxx.flexyz.work)
+  sub     // 서브도메인 (예: xxx.logme.click)
   custom  // 사용자 커스텀 도메인
 }
 
@@ -350,7 +352,7 @@ enum Language {
 /// 배포 상태
 enum DeployStatus {
   pending
-  // deploying
+  deploying
   success
   error
   cancelled

@@ -16,16 +16,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Flexyz',
-    template: '%s | Flexyz',
+    default: 'Logme',
+    template: '%s | Logme',
   },
   description: '노션으로 만드는 멋진 블로그, 포트폴리오, 팀 사이트',
-  metadataBase: new URL('https://flexyz.work'),
+  metadataBase: new URL('https://logme.dev'),
   openGraph: {
-    title: 'Flexyz',
+    title: 'Logme',
     description: '노션으로 만드는 멋진 블로그, 포트폴리오, 팀 사이트',
-    url: 'https://flexyz.work',
-    siteName: 'Flexyz',
+    url: 'https://logme.dev',
+    siteName: 'Logme',
     type: 'website',
   },
 }

@@ -9,12 +9,14 @@ import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
 import { sendAlertFromClient } from '@/lib/alert'
+import { useCreateDomain } from '@/hooks/logme/domain/useCreateDomain'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
   const { mutateAsync: createRepoDB } = useCreateRepo()
   const { mutateAsync: createDeployTargetDB } = useCreateDeployTarget()
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
+  const { mutateAsync: createDomain } = useCreateDomain()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
   const vercelToken = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
@@ -25,10 +27,14 @@ export const useDeploymentActions = () => {
   // TODO: 템플릿 선택 후 템플릿 소유자와 레포지토리 이름을 동적으로 설정
   const templateOwner = 'flexyzlogme'
   const templateRepo = 'logme-template'
+
   const checkDeploymentStatus = async (
     deploymentId: string,
     vercelToken: string,
-    onSuccess: (url: string) => void
+    targetId: string,
+    sub: string,
+    deployUrl: string,
+    onSuccess: (deployUrl: string, gitRepoUrl: string) => void
   ) => {
     try {
       let status = 'QUEUED'
@@ -40,14 +46,22 @@ export const useDeploymentActions = () => {
         status = data.readyState || data.status
 
         if (status === 'READY') {
-          onSuccess(data.url)
+          logger.info('✅ 배포 완료:', data)
+          onSuccess(deployUrl, `https://github.com/${githubOwner}/${githubRepoName}`)
+          await createDomain({
+            // siteId,
+            sub,
+            vercelToken,
+            vercelProjectId: targetId,
+          })
           if (siteId) {
             await updateSiteDB({
               id: siteId,
-              domain: `https://${data.url}`,
+              sub,
+              domain: `https://${sub}.logme.click`,
               status: SiteStatus.published,
             })
-            logger.info('✅ 사이트 도메인 업데이트 완료:', data.url)
+            logger.info('✅ 사이트 도메인 업데이트 완료:', { domain: `https://${sub}.logme.click` })
           }
           return
         }
@@ -67,9 +81,17 @@ export const useDeploymentActions = () => {
     }
   }
 
-  const startDeploy = async (onDeploying?: () => void, onReady?: (url: string) => void) => {
+  const startDeploy = async (
+    params: {
+      sub: string
+    },
+
+    onDeploying?: () => void,
+    onReady?: (deployUrl: string, gitRepoUrl: string) => void
+  ) => {
     try {
       onDeploying?.()
+      const { sub } = params
       if (!vercelToken) {
         logger.error('❌ Vercel API 토큰이 없습니다.')
         await sendAlertFromClient({
@@ -104,7 +126,7 @@ export const useDeploymentActions = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          // ...params,
+          sub,
           vercelToken,
           notionPageId,
           githubInstallationId,
@@ -138,6 +160,8 @@ export const useDeploymentActions = () => {
 
         const deployment = await createDeploymentDB({
           deployTargetId: deployTarget.id,
+          deployId: data.id,
+          deployUrl: data.deployUrl,
         })
 
         logger.info('✅ Deployment DB 생성:', deployment)
@@ -163,7 +187,14 @@ export const useDeploymentActions = () => {
         }
 
         setBuilderStep(3)
-        checkDeploymentStatus(data.id, vercelToken, onReady || (() => {}))
+        checkDeploymentStatus(
+          data.id,
+          vercelToken,
+          data.targetId,
+          sub,
+          data.deployUrl,
+          onReady || (() => {})
+        )
       } else {
         logger.error('❌ 배포 실패:', data)
         await sendAlertFromClient({

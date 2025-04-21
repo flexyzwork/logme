@@ -3,7 +3,7 @@
 import { sendAlertFromClient } from '@/lib/alert'
 import { getAuthSession } from '@/lib/auth'
 import { logger } from '@/lib/logger'
-import { getUniqueSlug } from '@/lib/utils'
+import { getUniquesub } from '@/lib/utils'
 import { NextResponse } from 'next/server'
 
 export const handleGenerateSite = async (formData: FormData): Promise<void> => {
@@ -14,19 +14,19 @@ export const handleGenerateSite = async (formData: FormData): Promise<void> => {
   }
   const userId = session?.user.id
   const notionPageId = formData.get('notionPageId') as string
-  const siteSlugInput = formData.get('siteSlug') as string
+  const sitesubInput = formData.get('sitesub') as string
   const siteTitle = formData.get('siteTitle') as string
   const siteDescription = formData.get('siteDescription') as string
 
-  let siteSlug = siteSlugInput || 'my-site-slug'
+  let sitesub = sitesubInput || 'my-site-sub'
 
-  siteSlug = await getUniqueSlug(siteSlug)
+  sitesub = await getUniquesub(sitesub)
 
   const newSite = await fetch(`${baseUrl}/api/logme/site/create`, {
     method: 'POST',
     body: JSON.stringify({
       notionPageId: notionPageId,
-      siteSlug: siteSlug,
+      sitesub: sitesub,
       userId: userId,
       siteTitle: siteTitle,
       siteDescription: siteDescription,

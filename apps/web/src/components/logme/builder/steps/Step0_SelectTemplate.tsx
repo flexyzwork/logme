@@ -25,7 +25,7 @@ export default function Step0_SelectTemplate() {
       siteDescription: '',
       templateId: id,
       userId: userId || '',
-      slug: siteId,
+      sub: siteId,
     })
 
     setSiteId(siteId)

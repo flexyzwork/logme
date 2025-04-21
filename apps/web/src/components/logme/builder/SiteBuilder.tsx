@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
 
 export default function SiteBuilder() {
@@ -20,8 +19,6 @@ export default function SiteBuilder() {
   const { step, notionPageId } = useBuilderStore()
 
   const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
-  const vercelTokenData = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
-
   const { data: logmeInstallationIdData } = useFetchProviderExtended(
     'github',
     'logmeInstallationId'
@@ -33,11 +30,11 @@ export default function SiteBuilder() {
 
   useEffect(() => {
     if (
-      vercelTokenData !== undefined &&
+      encryptedVercelTokenData !== undefined &&
       logmeInstallationIdData !== undefined &&
       vercelInstallation !== undefined
     ) {
-      const isVercelConnected = !!vercelTokenData
+      const isVercelConnected = !!encryptedVercelTokenData
       const isGithubLogmeInstalled = !!logmeInstallationIdData
       const isGithubVercelInstalled = !!vercelInstallation
 
@@ -45,7 +42,7 @@ export default function SiteBuilder() {
         setShouldRedirectToAccount(true)
       }
     }
-  }, [vercelTokenData, logmeInstallationIdData, vercelInstallation])
+  }, [encryptedVercelTokenData, logmeInstallationIdData, vercelInstallation])
 
   useEffect(() => {
     if (shouldRedirectToAccount) {
@@ -66,10 +63,10 @@ export default function SiteBuilder() {
 
   const stepTitleMap: Record<number, string | ((isDeploying: boolean) => string)> = {
     0: '템플릿을 선택하세요',
-    1: 'Notion 템플릿을 공유해주세요',
+    1: '템플릿을 공유해주세요',
     2: '사이트 정보를 입력해 주세요.',
     3: (deploying) => (deploying ? '배포 중...' : 'Vercel 배포를 진행합니다.'),
-    4: 'Vercel 배포가 완료되었습니다.',
+    4: '배포가 완료되었습니다.',
   }
 
   const stepTitle =

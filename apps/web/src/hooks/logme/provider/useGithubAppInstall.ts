@@ -62,8 +62,6 @@ export const useGithubAppInstall = () => {
         isFetching.current = true
 
         try {
-          // const userId = session?.user?.id
-
           const providerExtended = {
             providerType: 'github',
             extendedKey: 'logmeInstallationId',
@@ -71,9 +69,8 @@ export const useGithubAppInstall = () => {
           }
           await storeProviderExtended.mutateAsync(providerExtended)
 
-          // TODO: 이 부분은 나중에 삭제 ?
-          // const token = await fetchGithubInstallationToken(installationId)
-          
+          await fetchGithubInstallationToken(installationId)
+
           setIsLogmeAppInstalled(true)
         } catch (err) {
           console.error('❌ 연결 토큰 저장 실패:', err)

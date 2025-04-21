@@ -9,16 +9,19 @@ interface BuilderState {
   notionLastProcessedCode: string | null
   notionPageId: string | null
   siteId: string | null
-  deploymentUrl: string | null
-  isModalOpen: boolean
-  showToken: boolean
+  deployUrl: string | null
+  sub: string | null
+  gitRepoUrl: string | null
+
   setBuilderStep: (step: number) => void
   setIsNotionFetching: (status: boolean) => void
   setNotionLastProcessedCode: (code: string) => void
   setNotionPageId: (id: string) => void
   setSiteId: (id: string) => void
   setUserId: (userId: string | null) => void
-  setDeploymentUrl: (id: string) => void
+  setDeployUrl: (id: string) => void
+  setSub: (sub: string) => void
+  setGitRepoUrl: (url: string) => void
 }
 
 export const useBuilderStore = create<BuilderState>()(
@@ -31,9 +34,9 @@ export const useBuilderStore = create<BuilderState>()(
         notionLastProcessedCode: null,
         notionPageId: null,
         siteId: null,
-        deploymentUrl: null,
-        isModalOpen: true,
-        showToken: false,
+        deployUrl: null,
+        sub: null,
+        gitRepoUrl: null,
 
         setBuilderStep: (step) => {
           logger.info(`🚀 온보딩 스텝 변경:`, { step })
@@ -61,9 +64,17 @@ export const useBuilderStore = create<BuilderState>()(
           set({ siteId: id })
         },
 
-        setDeploymentUrl: (url) => {
+        setDeployUrl: (url) => {
           logger.info(`🚀 배포 URL 저장:`, { url })
-          set({ deploymentUrl: url })
+          set({ deployUrl: url })
+        },
+        setSub: (sub) => {
+          logger.info(`🚀 서브 도메인 정보 저장:`, { sub })
+          set({ sub })
+        },
+        setGitRepoUrl: (url) => {
+          logger.info(`🚀 Git Repo URL 저장:`, { url })
+          set({ gitRepoUrl: url })
         },
       }),
       {
@@ -74,8 +85,10 @@ export const useBuilderStore = create<BuilderState>()(
           userId: state.userId,
           notionPageId: state.notionPageId,
           siteId: state.siteId,
-          deploymentUrl: state.deploymentUrl,
+          deployUrl: state.deployUrl,
           notionLastProcessedCode: state.notionLastProcessedCode,
+          sub: state.sub,
+          gitRepoUrl: state.gitRepoUrl,
         }),
       }
     ),

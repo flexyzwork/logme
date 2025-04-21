@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useTemplatePageOpener } from '@/hooks/logme/template/useTemplatePageOpener'
 import { useRouter } from 'next/navigation'
+import ShareButton from '@/components/logme/common/ShareButton'
 
 export default function Step6_Done() {
-  const { siteId, notionPageId, deploymentUrl, setBuilderStep } = useBuilderStore()
+  const { siteId, notionPageId, deployUrl, sub, gitRepoUrl } = useBuilderStore()
   const { openNotionPageUrl } = useTemplatePageOpener()
   const router = useRouter()
 
@@ -16,16 +17,16 @@ export default function Step6_Done() {
         🎉 Vercel 배포가 완료되었습니다! <br />
         블로그를 확인해보세요.
       </p>
-
-      {deploymentUrl ? (
+      <ShareButton url={`https://${sub}.logme.click`} />
+      {sub ? (
         <Button
           className="w-full mt-2 bg-green-600 hover:bg-green-700 text-white text-sm"
-          onClick={() => window.open(`https://${deploymentUrl}`, '_blank')}
+          onClick={() => window.open(`https://${sub}.logme.click`, '_blank')}
         >
-          🌍 배포된 블로그 보기
+          🌍 블로그 보기
         </Button>
       ) : (
-        <p className="text-center text-red-500">❌ 배포 URL을 가져올 수 없습니다.</p>
+        <p className="text-center text-red-500">❌ 블로그 URL을 가져올 수 없습니다.</p>
       )}
 
       <Button
@@ -37,7 +38,7 @@ export default function Step6_Done() {
           })
         }}
       >
-        📖 Notion 페이지 열기
+        📖 컨텐츠 편집하기
       </Button>
 
       <Button

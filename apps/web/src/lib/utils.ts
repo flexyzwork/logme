@@ -7,19 +7,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function getUniqueSlug(title: string): Promise<string> {
+export async function getUniquesub(title: string): Promise<string> {
   const base = slugify(title, { lower: true, strict: true })
-  let slug = base
+  let sub = base
   let counter = 1
 
   while (true) {
-    const existing = await db.site.findUnique({ where: { slug } })
+    const existing = await db.site.findUnique({ where: { sub } })
     if (!existing) break
-    slug = `${base}-${counter}`
+    sub = `${base}-${counter}`
     counter++
   }
 
-  return slug
+  return sub
 }
 
 // ✅ 이메일 없을 때 자동 생성

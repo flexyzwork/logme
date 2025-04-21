@@ -5,13 +5,13 @@ import { revalidatePath } from 'next/cache'
 import { BuildStatus } from '@prisma/client'
 
 export async function POST(req: Request) {
-  const { notionPageId, siteSlug, userId, siteTitle, siteDescription } = await req.json()
+  const { notionPageId, sitesub, userId, siteTitle, siteDescription } = await req.json()
 
   // 1. DB에 site 엔트리 생성
   const site = await db.site.create({
     data: {
       userId,
-      slug: siteSlug,
+      sub: sitesub,
       siteTitle,
       siteDescription,
       contentSourceId: notionPageId,
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     siteId: site.id,
     buildId: build.id,
     userId,
-    slug: site.slug,
+    sub: site.sub,
     siteTitle: site.siteTitle,
     siteDescription: site.siteDescription,
     contentSourceId: site.contentSourceId,

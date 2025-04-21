@@ -212,6 +212,7 @@ export async function POST(req: NextRequest) {
       {
         message: '배포 완료',
         url: `https://${deployData.url}`,
+        deployUrl: `${deployData.inspectorUrl}`,
         id: deployData.id,
         repoId,
         repoBranch: deployData.gitSource.ref,

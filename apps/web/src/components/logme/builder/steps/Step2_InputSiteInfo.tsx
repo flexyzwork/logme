@@ -8,22 +8,41 @@ import { useDeploymentActions } from '@/services/logme/deployment'
 import { useSession } from 'next-auth/react'
 import { useSiteBuilderUI } from '@/hooks/logme/site/useSiteBuilderUI'
 import { logger } from '@/lib/logger'
+import { RESERVED_SUBDOMAINS } from '@/constants/reserved'
 
 export default function Step2_InputSiteInfo() {
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { startDeploy } = useDeploymentActions()
-  const { siteId, setBuilderStep, setDeploymentUrl } = useBuilderStore()
+  const { siteId, setBuilderStep, setDeployUrl, setSub, setGitRepoUrl } = useBuilderStore()
   const { data: session } = useSession()
   const { setIsDeploying } = useSiteBuilderUI()
 
   const [siteInfo, setSiteInfo] = useState({
     title: '',
     description: '',
+    sub: '',
   })
 
   const [isSaving, setIsSaving] = useState(false)
 
-  const handleChange = (field: 'title' | 'description', value: string) => {
+  const checkSubAvailable = async (sub: string): Promise<boolean> => {
+    const isReserved = RESERVED_SUBDOMAINS.some((word) =>
+      sub.toLowerCase().startsWith(word)
+    )
+    if (isReserved) {
+      alert('❌ 사용할 수 없는 서브 도메인입니다.')
+      return false
+    }
+    const res = await fetch(`/api/domains/check-sub?sub=${sub}`)
+    const json = await res.json()
+    if (!res.ok || json.exists) {
+      alert('❌ 이미 사용 중인 서브 도메인입니다.')
+      return false
+    }
+    return true
+  }
+
+  const handleChange = (field: 'title' | 'description' | 'sub', value: string) => {
     setSiteInfo((prev) => ({
       ...prev,
       [field]: value,
@@ -36,18 +55,41 @@ export default function Step2_InputSiteInfo() {
       alert('❌ 로그인이 필요합니다.')
       return
     }
+    if (!(await checkSubAvailable(siteInfo.sub))) return
+
     setIsSaving(true)
+
+    // await fetch('/api/domains', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     userId,
+    //     siteId,
+    //     sub: siteInfo.sub,
+    //     // vercelToken: 'user-vercel-token',
+    //     // vercelProjectId: 'project-id-from-vercel'
+    //   })
+    // })
+
     if (siteId) {
       await updateSiteDB({
         id: siteId,
+        sub: siteInfo.sub,
         siteTitle: siteInfo.title,
         siteDescription: siteInfo.description,
       })
-      logger.info('✅ Site 업데이트:', {title: siteInfo.title, description: siteInfo.description})
+      logger.info('✅ Site 업데이트:', {
+        sub: siteInfo.sub,
+        title: siteInfo.title,
+        description: siteInfo.description,
+      })
       startDeploy(
+        { sub: siteInfo.sub },
         () => setIsDeploying(true),
-        (url) => {
-          setDeploymentUrl(url)
+        (deployUrl, gitRepoUrl) => {
+          setDeployUrl(deployUrl)
+          setSub(siteInfo.sub)
+          setGitRepoUrl(gitRepoUrl)
           logger.info('배포 중...', siteInfo)
           setIsSaving(false)
           setBuilderStep(4)
@@ -68,6 +110,7 @@ export default function Step2_InputSiteInfo() {
       <SiteInfoForm
         title={siteInfo.title}
         description={siteInfo.description}
+        sub={siteInfo.sub}
         onChange={handleChange}
         onSave={handleSave}
         isSaving={isSaving}
