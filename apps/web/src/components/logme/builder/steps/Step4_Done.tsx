@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import ShareButton from '@/components/logme/common/ShareButton'
 
 export default function Step6_Done() {
-  const { siteId, notionPageId, deployUrl, sub, gitRepoUrl } = useBuilderStore()
+  const { siteId, notionPageId, sub } = useBuilderStore()
   const { openNotionPageUrl } = useTemplatePageOpener()
   const router = useRouter()
 

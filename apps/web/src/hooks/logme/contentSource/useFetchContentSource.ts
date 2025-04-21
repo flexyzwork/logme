@@ -9,6 +9,6 @@ export function useFetchContentSource(sourceId: string) {
       if (!res.ok) throw new Error('ContentContentSourceSource 정보를 불러오지 못했습니다')
       return res.json()
     },
-    enabled: !!sourceId, // sourceId 없을 땐 요청 안 보냄
+    enabled: !!sourceId,
   })
 }

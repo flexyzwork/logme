@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
       provider = {
         ...created,
-        user: user!, // 여기서 user는 무조건 존재
+        user: user!,
       }
     }
 

@@ -28,6 +28,3 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
-
-// 클라이언트에서는 다음을 호출:
-// signOut({ callbackUrl: '/' })

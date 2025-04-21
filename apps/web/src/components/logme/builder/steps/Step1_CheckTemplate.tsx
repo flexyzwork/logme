@@ -29,7 +29,6 @@ export default function Step1_CheckTemplate({ notionPageId }: { notionPageId: st
     onComplete: () => {
       setIsCheckingCopy(false)
       setHasChecked(true)
-      // setIsCopyComplete(true)
       setTimeout(() => {
         setIsCopyComplete(true)
       }, 1000)
@@ -39,7 +38,6 @@ export default function Step1_CheckTemplate({ notionPageId }: { notionPageId: st
     },
   })
 
-  // 노션 창 열기
   const handleOpenNotion = async () => {
     if (!notionPageId) return
     setIsCheckingPublic(true)

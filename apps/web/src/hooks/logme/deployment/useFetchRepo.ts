@@ -9,6 +9,6 @@ export function useFetchDeployment(id: string) {
       if (!res.ok) throw new Error('Deployment 정보를 불러오지 못했습니다')
       return res.json()
     },
-    enabled: !!id, // deploymentId 없을 땐 요청 안 보냄
+    enabled: !!id,
   })
 }

@@ -9,6 +9,6 @@ export function useFetchDeployTarget(targetId: string) {
       if (!res.ok) throw new Error('ContentDeployTargetSource 정보를 불러오지 못했습니다')
       return res.json()
     },
-    enabled: !!targetId, // targetId 없을 땐 요청 안 보냄
+    enabled: !!targetId,
   })
 }

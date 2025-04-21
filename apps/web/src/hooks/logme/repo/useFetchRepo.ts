@@ -9,6 +9,6 @@ export function useFetchRepo(repoId: string) {
       if (!res.ok) throw new Error('Repo 정보를 불러오지 못했습니다')
       return res.json()
     },
-    enabled: !!repoId, // repoId 없을 땐 요청 안 보냄
+    enabled: !!repoId,
   })
 }

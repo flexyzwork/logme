@@ -1,5 +1,4 @@
-import { sendAlert } from "@/lib/server/alert"
-
+import { sendAlert } from '@/lib/server/alert'
 
 export async function POST(req: Request) {
   const { type, message, meta } = await req.json()

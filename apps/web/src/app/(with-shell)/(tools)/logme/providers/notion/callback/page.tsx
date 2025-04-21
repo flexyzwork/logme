@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useCreateProvider } from '@/hooks/logme/provider/useCreateProvider'
-// import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateContentSource'
 import { useAuthStore } from '@/stores/logme/authStore'
@@ -114,7 +113,6 @@ export default function NotionCallbackPage() {
 
           const encryptedToken = encrypt(accessToken)
 
-          // storeProviderToken(currentUserId!, 'notion', encryptedToken)
           await storeProviderExtended.mutateAsync({
             providerType: 'notion',
             templateId: templateId ?? '',
@@ -128,7 +126,7 @@ export default function NotionCallbackPage() {
             accessToken: encryptedToken,
           })
           await trackEvent({
-            userId: session?.user.id,
+            userId: session?.user?.id,
             event: 'notion_connected',
             meta: { pageId: data.duplicated_template_id, method: 'oauth' },
           })
@@ -194,6 +192,8 @@ export default function NotionCallbackPage() {
     siteId,
     updateSiteDB,
     setNotionPageId,
+    storeProviderExtended,
+    templateId,
   ])
 
   if (status === 'loading' || loading) return <p>Loading...</p>

@@ -1,4 +1,3 @@
-// src/components/system/PageViewTracker.tsx
 'use client'
 
 import { useEffect } from 'react'
@@ -18,7 +17,7 @@ export function PageViewTracker() {
         meta: { pathname },
       })
     }
-  }, [pathname])
+  }, [pathname, session?.user?.id])
 
   return null
 }

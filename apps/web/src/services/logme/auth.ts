@@ -4,7 +4,6 @@ export const fetchGithubInstallationToken = async (installationId: number) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // cookie: req.headers.get('cookie') || '', // 여기서 전달
     },
     body: JSON.stringify({ installationId }),
   })

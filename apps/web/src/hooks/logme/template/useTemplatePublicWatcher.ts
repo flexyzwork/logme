@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { useBuilderStore } from '@/stores/logme/builderStore'
-// import { getProviderToken } from '@/lib/redis/tokenStore'
-// import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePublicWatcher = ({
   enabled,
@@ -21,13 +19,7 @@ export const useTemplatePublicWatcher = ({
 
     const interval = setInterval(async () => {
       try {
-        // const encryptedToken = await getProviderToken(userId!, 'notion')
-        // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
-
         const res = await fetch(`/api/logme/templates/check-public`, {
-          // headers: {
-          //   Authorization: `Bearer ${notionToken}`,
-          // },
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -53,5 +45,5 @@ export const useTemplatePublicWatcher = ({
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [enabled, notionPageId, notionPopup, onComplete, setBuilderStep, userId])
+  }, [enabled, notionPageId, notionPopup, onComplete, setBuilderStep, userId, templateId])
 }

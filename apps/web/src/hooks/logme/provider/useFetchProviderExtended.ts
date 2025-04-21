@@ -10,6 +10,6 @@ export function useFetchProviderExtended(providerType: string,extendedKey: strin
       const data = await res.json()
       return data.value as string | null
     },
-    enabled: !!providerType && !!extendedKey, // 값이 없으면 요청 안 함
+    enabled: !!providerType && !!extendedKey,
   })
 }

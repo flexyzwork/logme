@@ -1,5 +1,3 @@
-// 📁 app/api/domains/route.ts (Next.js 15, App Router 기반)
-
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
@@ -69,7 +67,7 @@ export async function POST(req: NextRequest) {
 
     const domainData = await domainRes.json()
 
-    // 3. 이미 등록되었거나 verification 필요할 경우 TXT 레코드 추가
+    // 3. TXT 레코드 추가
     if (domainData?.verified === false && domainData?.verification?.length > 0) {
       const { domain: txtName, value: txtValue } = domainData.verification[0]
 

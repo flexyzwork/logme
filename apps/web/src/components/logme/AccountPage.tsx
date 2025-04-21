@@ -77,7 +77,6 @@ export default function AccountPage() {
   } = useGithubAppInstall()
 
   const [vercelTokenInput, setVercelTokenInput] = useState(vercelTokenData ?? '')
-  // const isFetching = useRef(false)
 
   useEffect(() => {
     setIsLogmeAppInstalled(!!logmeInstallationIdData)

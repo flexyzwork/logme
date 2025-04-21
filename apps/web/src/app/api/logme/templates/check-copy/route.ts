@@ -5,8 +5,6 @@ import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  // const token = req.headers.get('Authorization')?.split('Bearer ')[1]
-  // const notionPageId = req.nextUrl.searchParams.get('v')
   const { notionPageId, templateId } = await req.json()
 
   logger.info('Notion page ID:', notionPageId)
@@ -60,7 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ isCopied: false, status: response.status }) // 아직 복사 안 됨
     }
 
-    return NextResponse.json({ isCopied: true }) // 템플릿 복사 완료
+    return NextResponse.json({ isCopied: true })
   } catch (error) {
     console.error('Notion API Error:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

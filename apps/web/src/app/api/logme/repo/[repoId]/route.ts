@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 
 // GET /api/logme/repos/[repoId] - 레포 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ repoId: string }> }) {
@@ -33,7 +32,6 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ repoI
     const updated = await db.repo.update({
       where: {
         repoId,
-        // userId,
       },
       data,
     })
@@ -57,7 +55,6 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ repo
     const deleted = await db.repo.delete({
       where: {
         repoId,
-        // userId,
       },
     })
 

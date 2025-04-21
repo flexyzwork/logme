@@ -54,7 +54,6 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ sour
     const deleted = await db.contentSource.delete({
       where: {
         sourceId,
-        // userId,
       },
     })
 

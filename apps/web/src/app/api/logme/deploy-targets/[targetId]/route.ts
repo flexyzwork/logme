@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
-// import { getUserFromSession } from '@/lib/session/sessionStore'
 
 // GET /api/logme/deployTarget/[id] - 배포 프로젝트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {

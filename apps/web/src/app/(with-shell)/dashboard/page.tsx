@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { getAuthSession } from '@/lib/auth'
 
 export default function Dashboard() {
-  const defaultApp = 'logme' // 나중에 dynamic 가능
+  const defaultApp = 'logme'
 
   return (
     <DashboardLayout app={defaultApp}>

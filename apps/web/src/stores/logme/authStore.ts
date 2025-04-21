@@ -10,7 +10,6 @@ interface Github {
   installationId: number | null
 }
 
-
 interface AuthState {
   notion: Notion
   github: Github
@@ -58,8 +57,8 @@ export const useAuthStore = create<AuthState>()(
             installationId: state.github.installationId,
           },
         }),
-      },
+      }
     ),
-    { name: 'auth-storage' },
-  ),
+    { name: 'auth-storage' }
+  )
 )

@@ -1,5 +1,3 @@
-import { decrypt } from '@/lib/crypto'
-// import { getProviderToken } from '@/lib/redis/tokenStore'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useEffect } from 'react'
 
@@ -23,15 +21,9 @@ export const useTemplateCopyWatcher = ({
 
     const checkCopyStatus = async () => {
       try {
-        // const encryptedToken = await getProviderToken(userId!, 'notion')
-        // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
-
         const response = await fetch(
           `/api/logme/templates/check-copy`,
           {
-            // headers: {
-            //   Authorization: `Bearer ${notionToken}`,
-            // },
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -55,5 +47,5 @@ export const useTemplateCopyWatcher = ({
     checkCopyStatus()
 
     return () => clearTimeout(timeoutId)
-  }, [enabled, notionPageId, onComplete, onError, userId])
+  }, [enabled, notionPageId, onComplete, onError, userId, templateId])
 }

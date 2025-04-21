@@ -7,13 +7,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function getUniquesub(title: string): Promise<string> {
+export async function getUniqueSub(title: string): Promise<string> {
   const base = slugify(title, { lower: true, strict: true })
   let sub = base
   let counter = 1
 
   while (true) {
-    const existing = await db.site.findUnique({ where: { sub } })
+    const existing = await db.site.findFirst({ where: { sub } })
     if (!existing) break
     sub = `${base}-${counter}`
     counter++

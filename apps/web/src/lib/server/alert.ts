@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SLACK_WEBHOOK_URL } from '@/lib/config/server'
 
 export async function sendAlert({

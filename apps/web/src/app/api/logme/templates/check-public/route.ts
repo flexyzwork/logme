@@ -4,8 +4,6 @@ import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  // const token = req.headers.get('Authorization')?.split('Bearer ')[1]
-  // const notionPageId = req.nextUrl.searchParams.get('notionPageId')
   const { notionPageId, templateId } = await req.json()
 
   if (!notionPageId) {

@@ -65,7 +65,7 @@ export async function handleGithub(req: Request, userId: string) {
       },
     })
 
-    // 1️⃣ JWT 생성
+    // JWT 생성
     const now = Math.floor(Date.now() / 1000)
     const payload = {
       iat: now,
@@ -77,7 +77,7 @@ export async function handleGithub(req: Request, userId: string) {
       algorithm: 'RS256',
     })
 
-    // 2️⃣ 연결 토큰 요청
+    // 연결 토큰 요청
     const res = await fetch(
       `https://api.github.com/app/installations/${installationId}/access_tokens`,
       {

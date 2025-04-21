@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@repo/db'
 import { createId } from '@paralleldrive/cuid2'
 import { ProviderType } from '@prisma/client'
 import { getAuthSession } from '@/lib/auth'
+import { db } from '@repo/db'
 
 export async function POST(req: Request) {
   try {

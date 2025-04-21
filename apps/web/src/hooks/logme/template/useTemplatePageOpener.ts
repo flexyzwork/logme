@@ -1,7 +1,5 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
-// import { getProviderToken } from '@/lib/redis/tokenStore'
 import { useUpdateContentSource } from '@/hooks/logme/contentSource/useUpdateContentSource'
-// import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePageOpener = () => {
   const { templateId } = useBuilderStore()
@@ -17,13 +15,8 @@ export const useTemplatePageOpener = () => {
     onWindow?: (w: Window) => void
     onError?: (e: unknown) => void
   }) => {
-    // const encryptedToken = await getProviderToken(userId!, 'notion')
-    // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
     try {
       const res = await fetch(`/api/logme/templates/get-url`, {
-        // headers: {
-        //   Authorization: `Bearer ${notionToken}`,
-        // },
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

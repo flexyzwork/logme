@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { logger } from '@/lib/logger'
 import { Copy } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -18,7 +19,8 @@ export default function ShareButton({ url }: ShareButtonProps) {
       setCopied(true)
       toast.success('링크가 복사되었습니다!')
       setTimeout(() => setCopied(false), 2000)
-    } catch (e) {
+    } catch (error) {
+      logger.error('링크 복사 실패', { error })
       toast.error('링크 복사에 실패했습니다')
     }
   }

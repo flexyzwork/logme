@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 interface ProviderUser {
-  providerType: 'notion' | 'github' | 'vercel' | string // enum 가능
+  providerType: 'notion' | 'github' | 'vercel' | string
   providerUserId: string
   name: string
   email?: string

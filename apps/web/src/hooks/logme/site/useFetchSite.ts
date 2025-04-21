@@ -9,6 +9,6 @@ export function useFetchSite(siteId: string) {
       if (!res.ok) throw new Error('사이트 정보를 불러오지 못했습니다')
       return res.json()
     },
-    enabled: !!siteId, // siteId 없을 땐 요청 안 보냄
+    enabled: !!siteId,
   })
 }
