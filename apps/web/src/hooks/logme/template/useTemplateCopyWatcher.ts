@@ -1,5 +1,5 @@
 import { decrypt } from '@/lib/crypto'
-import { getProviderToken } from '@/lib/redis/tokenStore'
+// import { getProviderToken } from '@/lib/redis/tokenStore'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useEffect } from 'react'
 
@@ -14,7 +14,7 @@ export const useTemplateCopyWatcher = ({
   onComplete?: () => void
   onError?: (error: unknown) => void
 }) => {
-  const { userId } = useBuilderStore()
+  const { userId, templateId } = useBuilderStore()
 
   useEffect(() => {
     if (!enabled || !notionPageId) return
@@ -23,19 +23,20 @@ export const useTemplateCopyWatcher = ({
 
     const checkCopyStatus = async () => {
       try {
-        const encryptedToken = await getProviderToken(userId!, 'notion')
-        // if (!encryptedToken) {
-        //   alert('❌ Notion 인증 정보가 없습니다.')
-        //   return
-        // }
-        const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
+        // const encryptedToken = await getProviderToken(userId!, 'notion')
+        // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
 
         const response = await fetch(
-          `/api/logme/templates/check-copy?notionPageId=${notionPageId}`,
+          `/api/logme/templates/check-copy`,
           {
+            // headers: {
+            //   Authorization: `Bearer ${notionToken}`,
+            // },
+            method: 'POST',
             headers: {
-              Authorization: `Bearer ${notionAccessToken}`,
+              'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ notionPageId, templateId }),
           }
         )
 

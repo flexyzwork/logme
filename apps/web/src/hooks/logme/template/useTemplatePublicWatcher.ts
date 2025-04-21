@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useBuilderStore } from '@/stores/logme/builderStore'
-import { getProviderToken } from '@/lib/redis/tokenStore'
-import { decrypt } from '@/lib/crypto'
+// import { getProviderToken } from '@/lib/redis/tokenStore'
+// import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePublicWatcher = ({
   enabled,
@@ -14,23 +14,25 @@ export const useTemplatePublicWatcher = ({
   notionPopup: Window | null
   onComplete?: () => void
 }) => {
-  const { userId, setBuilderStep } = useBuilderStore()
+  const { userId, setBuilderStep, templateId } = useBuilderStore()
 
   useEffect(() => {
     if (!enabled || !notionPageId || !userId) return
 
     const interval = setInterval(async () => {
       try {
-        const encryptedToken = await getProviderToken(userId!, 'notion')
-        // if (!encryptedToken) {
-        //   throw new Error('Notion 인증 토큰이 없습니다.')
-        // }
-        const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
+        // const encryptedToken = await getProviderToken(userId!, 'notion')
+        // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
 
-        const res = await fetch(`/api/logme/templates/check-public?notionPageId=${notionPageId}`, {
+        const res = await fetch(`/api/logme/templates/check-public`, {
+          // headers: {
+          //   Authorization: `Bearer ${notionToken}`,
+          // },
+          method: 'POST',
           headers: {
-            Authorization: `Bearer ${notionAccessToken}`,
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ notionPageId, templateId }),
         })
 
         if (!res.ok) {

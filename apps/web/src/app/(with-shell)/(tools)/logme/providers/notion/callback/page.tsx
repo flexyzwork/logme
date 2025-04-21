@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useCreateProvider } from '@/hooks/logme/provider/useCreateProvider'
-import { storeProviderToken } from '@/lib/redis/tokenStore'
+// import { storeProviderToken } from '@/lib/redis/tokenStore'
 import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateContentSource'
 import { useAuthStore } from '@/stores/logme/authStore'
@@ -13,6 +13,7 @@ import { encrypt } from '@/lib/crypto'
 import { trackEvent } from '@/lib/tracking'
 import { logger } from '@/lib/logger'
 import { sendAlertFromClient } from '@/lib/alert'
+import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()
@@ -20,6 +21,7 @@ export default function NotionCallbackPage() {
   const router = useRouter()
   const {
     siteId,
+    templateId,
     isNotionFetching,
     notionLastProcessedCode,
     setBuilderStep,
@@ -36,6 +38,7 @@ export default function NotionCallbackPage() {
   const { mutateAsync: storeProviderUser } = useCreateProvider()
   const { mutateAsync: createContentSourceDB } = useCreateContentSource()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
+  const storeProviderExtended = useCreateProviderExtended()
   const executedRef = useRef(false)
 
   useEffect(() => {
@@ -88,6 +91,8 @@ export default function NotionCallbackPage() {
 
         const data = await response.json()
 
+        logger.info('Notion 인증 응답:', { data })
+
         if (data.access_token && data.duplicated_template_id) {
           const accessToken = data.access_token
 
@@ -109,7 +114,13 @@ export default function NotionCallbackPage() {
 
           const encryptedToken = encrypt(accessToken)
 
-          storeProviderToken(currentUserId!, 'notion', encryptedToken)
+          // storeProviderToken(currentUserId!, 'notion', encryptedToken)
+          await storeProviderExtended.mutateAsync({
+            providerType: 'notion',
+            templateId: templateId ?? '',
+            extendedKey: 'token',
+            extendedValue: encryptedToken,
+          })
 
           logger.info('✅ Notion 인증 완료:', {
             userId: currentUserId,

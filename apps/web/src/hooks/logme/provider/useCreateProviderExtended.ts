@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 
 interface providerExtended {
   providerType: 'notion' | 'github' | 'vercel' | string
+  templateId?: string
   extendedKey: string
   extendedValue: string
 }

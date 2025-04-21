@@ -6,7 +6,7 @@ import { getAuthSession } from '@/lib/auth'
 
 export async function POST(req: Request) {
   try {
-    const { providerType, extendedKey, extendedValue } = await req.json()
+    const { providerType, templateId = null, extendedKey, extendedValue } = await req.json()
     const session = await getAuthSession()
     if (!session) {
       return new NextResponse('Unauthorized', { status: 401 })
@@ -27,10 +27,18 @@ export async function POST(req: Request) {
 
     const providerId = provider.id
 
+    let existing
+
     // 기존 providerExtended 여부 확인
-    const existing = await db.providerExtended.findUnique({
-      where: { providerId_extendedKey: { providerId, extendedKey } },
-    })
+    if (templateId) {
+      existing = await db.providerExtended.findFirst({
+        where: { providerId, templateId, extendedKey },
+      })
+    } else {
+      existing = await db.providerExtended.findUnique({
+        where: { providerId_extendedKey: { providerId, extendedKey } },
+      })
+    }
 
     let result
     if (existing) {
@@ -40,6 +48,7 @@ export async function POST(req: Request) {
         data: {
           extendedKey,
           extendedValue,
+          templateId,
         },
       })
     } else {
@@ -48,6 +57,7 @@ export async function POST(req: Request) {
         data: {
           id: createId(),
           providerType,
+          templateId,
           extendedKey,
           extendedValue,
           providerId,
@@ -73,10 +83,12 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const providerType = searchParams.get('providerType')
     const extendedKey = searchParams.get('extendedKey')
+    const templateId = searchParams.get('templateId') === 'undefined' ? null : searchParams.get('templateId')
 
     if (!providerType || !extendedKey) {
       return NextResponse.json({ error: '필수 파라미터 누락' }, { status: 400 })
     }
+
 
     const provider = await db.provider.findFirst({
       where: { userId, providerType: providerType as ProviderType },
@@ -90,6 +102,7 @@ export async function GET(req: NextRequest) {
       where: {
         providerId: provider.id,
         extendedKey,
+        templateId,
       },
     })
 

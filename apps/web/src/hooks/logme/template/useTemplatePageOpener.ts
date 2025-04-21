@@ -1,10 +1,10 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
-import { getProviderToken } from '@/lib/redis/tokenStore'
+// import { getProviderToken } from '@/lib/redis/tokenStore'
 import { useUpdateContentSource } from '@/hooks/logme/contentSource/useUpdateContentSource'
-import { decrypt } from '@/lib/crypto'
+// import { decrypt } from '@/lib/crypto'
 
 export const useTemplatePageOpener = () => {
-  const { userId } = useBuilderStore()
+  const { templateId } = useBuilderStore()
   const { mutateAsync: updateContentSourceDB } = useUpdateContentSource()
 
   const openNotionPageUrl = async ({
@@ -17,13 +17,18 @@ export const useTemplatePageOpener = () => {
     onWindow?: (w: Window) => void
     onError?: (e: unknown) => void
   }) => {
-    const encryptedToken = await getProviderToken(userId!, 'notion')
-    const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
+    // const encryptedToken = await getProviderToken(userId!, 'notion')
+    // const notionToken = encryptedToken ? decrypt(encryptedToken) : ''
     try {
-      const res = await fetch(`/api/logme/templates/get-url?notionPageId=${notionPageId}`, {
+      const res = await fetch(`/api/logme/templates/get-url`, {
+        // headers: {
+        //   Authorization: `Bearer ${notionToken}`,
+        // },
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${notionAccessToken}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ notionPageId, templateId }),
       })
       const data = await res.json()
 

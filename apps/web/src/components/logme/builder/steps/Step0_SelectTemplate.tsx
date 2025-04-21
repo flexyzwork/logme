@@ -11,7 +11,7 @@ import { createId } from '@paralleldrive/cuid2'
 import Image from 'next/image'
 
 export default function Step0_SelectTemplate() {
-  const { setSiteId, userId } = useBuilderStore()
+  const { setSiteId, userId, setTemplateId } = useBuilderStore()
   const { mutateAsync: createSiteDB } = useCreateSite()
 
   const handleSelect = (id: string, clientId: string, redirectUri: string) => {
@@ -29,6 +29,7 @@ export default function Step0_SelectTemplate() {
     })
 
     setSiteId(siteId)
+    setTemplateId(id)
 
     const stateType = `notion:${clientId}:`
     const state = generateOAuthState(stateType)
