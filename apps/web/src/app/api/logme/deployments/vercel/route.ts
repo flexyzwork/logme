@@ -1,6 +1,9 @@
 import { sendAlertFromClient } from '@/lib/alert'
+import { getAuthSession } from '@/lib/auth'
+import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
+import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 const VERCEL_API_BASE_URL = 'https://api.vercel.com'
@@ -8,7 +11,6 @@ const VERCEL_API_BASE_URL = 'https://api.vercel.com'
 export async function POST(req: NextRequest) {
   try {
     const {
-      vercelToken,
       notionPageId,
       githubInstallationId,
       templateOwner,
@@ -61,6 +63,38 @@ export async function POST(req: NextRequest) {
     const fullName = githubCreateData.full_name
     const repoId = githubCreateData.id
     logger.info('✅ GitHub 레포 복제 완료:', githubCreateData)
+
+    // Step 2: Vercel API 토큰 가져오기
+
+    const session = await getAuthSession()
+    if (!session) {
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+
+    const userId = session.user.id
+    const provider = await db.provider.findFirst({
+      where: { userId, providerType: 'vercel' },
+    })
+
+    if (!provider) {
+      return NextResponse.json({ error: 'Vercel provider not found' }, { status: 404 })
+    }
+
+    const providerExtended = await db.providerExtended.findUnique({
+      where: {
+        providerId_extendedKey: {
+          providerId: provider.id,
+          extendedKey: 'token',
+        },
+      },
+    })
+
+    const encryptedVercelTokenData = providerExtended?.extendedValue
+
+    if (!encryptedVercelTokenData) {
+      return NextResponse.json({ error: 'Vercel token not found' }, { status: 400 })
+    }
+    const vercelToken = decrypt(encryptedVercelTokenData)
 
     if (!vercelToken)
       return NextResponse.json({ error: 'Vercel API Token is required' }, { status: 400 })

@@ -18,10 +18,6 @@ export const useTemplatePageOpener = () => {
     onError?: (e: unknown) => void
   }) => {
     const encryptedToken = await getProviderToken(userId!, 'notion')
-    // if (!encryptedToken) {
-    //   alert('❌ Notion 인증 정보가 없습니다.')
-    //   return
-    // }
     const notionAccessToken = encryptedToken ? decrypt(encryptedToken) : ''
     try {
       const res = await fetch(`/api/logme/templates/get-url?notionPageId=${notionPageId}`, {

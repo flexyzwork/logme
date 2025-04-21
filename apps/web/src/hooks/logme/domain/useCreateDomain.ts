@@ -2,19 +2,17 @@ import { useMutation } from '@tanstack/react-query'
 
 interface CreateDomainParams {
   sub: string
-  vercelToken?: string
   vercelProjectId?: string
 }
 
 export function useCreateDomain() {
   return useMutation({
-    mutationFn: async ({ sub, vercelToken, vercelProjectId }: CreateDomainParams) => {
+    mutationFn: async ({ sub, vercelProjectId }: CreateDomainParams) => {
       const res = await fetch('/api/domains', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sub,
-          vercelToken,
           vercelProjectId,
         }),
       })

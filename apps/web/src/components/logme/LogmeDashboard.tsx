@@ -31,7 +31,7 @@ export default function LogmeDashboard() {
   const router = useRouter()
 
   return (
-    <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-3xl mx-auto py-6">
+    <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-4xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">대시보드</h1>
 
       {isLoading ? (
@@ -48,15 +48,18 @@ export default function LogmeDashboard() {
 
           <div className="grid grid-cols-1 gap-4">
             {sites.map((site: any) => (
-              <div key={site.id} className="border rounded-md p-4 shadow flex items-center min-w-[360px]">
+              <div
+                key={site.id}
+                className="border rounded-md p-4 shadow flex flex-col sm:flex-row w-full"
+              >
                 <Image
                   src="/placeholder.png"
                   alt="Site preview"
-                  width={320}
-                  height={200}
-                  className="w-48 rounded border object-cover"
+                  width={400}
+                  height={300}
+                  className="w-full sm:w-80 rounded border object-cover"
                 />
-                <div className="ml-4 flex-1">
+                <div className="sm:ml-10 mt-4 sm:mt-0 flex-1">
                   {editingSite === site.id ? (
                     <>
                       <input
@@ -173,7 +176,7 @@ export default function LogmeDashboard() {
                         </p>
                       )}
 
-                      <div className="mt-2 flex gap-2">
+                      <div className="mt-4 flex justify-end-safe gap-2">
                         <Button
                           size="sm"
                           onClick={() => {
@@ -194,7 +197,8 @@ export default function LogmeDashboard() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                이 작업은 되돌릴 수 없습니다. GitHub 저장소, Vercel 배포 프로젝트 등 사이트와 관련된 모든 정보가 삭제됩니다.
+                                이 작업은 되돌릴 수 없습니다. GitHub 저장소, Vercel 배포 프로젝트 등
+                                사이트와 관련된 모든 정보가 삭제됩니다.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

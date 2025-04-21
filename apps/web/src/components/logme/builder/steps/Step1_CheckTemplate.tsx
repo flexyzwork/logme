@@ -29,7 +29,10 @@ export default function Step1_CheckTemplate({ notionPageId }: { notionPageId: st
     onComplete: () => {
       setIsCheckingCopy(false)
       setHasChecked(true)
-      setIsCopyComplete(true)
+      // setIsCopyComplete(true)
+      setTimeout(() => {
+        setIsCopyComplete(true)
+      }, 1000)
     },
     onError: () => {
       setIsCheckingCopy(false)

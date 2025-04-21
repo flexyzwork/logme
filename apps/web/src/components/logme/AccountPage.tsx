@@ -104,7 +104,6 @@ export default function AccountPage() {
 
     await storeProviderUser.mutateAsync(providerUser)
 
-    // TODO: 암복호화 추가
     await storeProviderExtended.mutateAsync({
       providerType: 'vercel',
       extendedKey: 'token',

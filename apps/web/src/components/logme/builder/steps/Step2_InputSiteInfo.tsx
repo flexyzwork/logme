@@ -59,18 +59,6 @@ export default function Step2_InputSiteInfo() {
 
     setIsSaving(true)
 
-    // await fetch('/api/domains', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     userId,
-    //     siteId,
-    //     sub: siteInfo.sub,
-    //     // vercelToken: 'user-vercel-token',
-    //     // vercelProjectId: 'project-id-from-vercel'
-    //   })
-    // })
-
     if (siteId) {
       await updateSiteDB({
         id: siteId,

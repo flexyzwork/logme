@@ -6,10 +6,10 @@ import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeploymen
 import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
-import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
 import { sendAlertFromClient } from '@/lib/alert'
 import { useCreateDomain } from '@/hooks/logme/domain/useCreateDomain'
+import { TEMPLATE_OWNER, TEMPLATE_REPO } from '@/lib/config/client'
 
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
@@ -18,19 +18,14 @@ export const useDeploymentActions = () => {
   const { mutateAsync: createDeploymentDB } = useCreateDeployment()
   const { mutateAsync: createDomain } = useCreateDomain()
   const { mutateAsync: updateSiteDB } = useUpdateSite()
-  const { data: encryptedVercelTokenData } = useFetchProviderExtended('vercel', 'token')
-  const vercelToken = encryptedVercelTokenData ? decrypt(encryptedVercelTokenData) : ''
   const { data: githubInstallationId } = useFetchProviderExtended('github', 'logmeInstallationId')
   const { data: gitHub } = useFetchProvider(ProviderType.github)
   const githubOwner = gitHub?.name || ''
-  const githubRepoName = `logme-${Date.now()}`
-  // TODO: 템플릿 선택 후 템플릿 소유자와 레포지토리 이름을 동적으로 설정
-  const templateOwner = 'flexyzlogme'
-  const templateRepo = 'logme-template'
+  const templateOwner = TEMPLATE_OWNER
+  const templateRepo = TEMPLATE_REPO
 
   const checkDeploymentStatus = async (
     deploymentId: string,
-    vercelToken: string,
     targetId: string,
     sub: string,
     deployUrl: string,
@@ -39,19 +34,21 @@ export const useDeploymentActions = () => {
     try {
       let status = 'QUEUED'
       while (status === 'BUILDING' || status === 'QUEUED') {
-        const res = await fetch(
-          `/api/logme/deployments/vercel/status?deploymentId=${deploymentId}&vercelToken=${vercelToken}`
-        )
+        const res = await fetch('/api/logme/deployments/vercel/status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ deploymentId }),
+        })
         const data = await res.json()
         status = data.readyState || data.status
 
         if (status === 'READY') {
           logger.info('✅ 배포 완료:', data)
-          onSuccess(deployUrl, `https://github.com/${githubOwner}/${githubRepoName}`)
+          onSuccess(deployUrl, `https://github.com/${githubOwner}/logme-${sub}`)
           await createDomain({
-            // siteId,
             sub,
-            vercelToken,
             vercelProjectId: targetId,
           })
           if (siteId) {
@@ -92,15 +89,6 @@ export const useDeploymentActions = () => {
     try {
       onDeploying?.()
       const { sub } = params
-      if (!vercelToken) {
-        logger.error('❌ Vercel API 토큰이 없습니다.')
-        await sendAlertFromClient({
-          type: 'error',
-          message: 'Vercel API 토큰이 없습니다.',
-        })
-        return
-      }
-      logger.info('🚀 Vercel 배포 요청: vercelToken', { vercelToken })
       if (!githubOwner) {
         logger.error('❌ githubOwner가 없습니다.')
         await sendAlertFromClient({
@@ -122,18 +110,17 @@ export const useDeploymentActions = () => {
         githubInstallationId,
       })
 
-      const response = await fetch('/api/logme/deployments/vercel/start', {
+      const response = await fetch('/api/logme/deployments/vercel', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sub,
-          vercelToken,
           notionPageId,
           githubInstallationId,
           templateOwner,
           templateRepo,
           githubOwner,
-          githubRepoName,
+          githubRepoName: `logme-${sub}`,
           siteId,
         }),
       })
@@ -144,8 +131,8 @@ export const useDeploymentActions = () => {
 
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
-          repoName: githubRepoName,
-          repoUrl: `https://github.com/${githubOwner}/${githubRepoName}`,
+          repoName: `logme-${sub}`,
+          repoUrl: `https://github.com/${githubOwner}/logme-${sub}`,
           repoOwner: githubOwner,
           repoBranch: data.repoBranch,
         })
@@ -187,14 +174,7 @@ export const useDeploymentActions = () => {
         }
 
         setBuilderStep(3)
-        checkDeploymentStatus(
-          data.id,
-          vercelToken,
-          data.targetId,
-          sub,
-          data.deployUrl,
-          onReady || (() => {})
-        )
+        checkDeploymentStatus(data.id, data.targetId, sub, data.deployUrl, onReady || (() => {}))
       } else {
         logger.error('❌ 배포 실패:', data)
         await sendAlertFromClient({

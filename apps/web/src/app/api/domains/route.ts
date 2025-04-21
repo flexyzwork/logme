@@ -1,6 +1,9 @@
 // 📁 app/api/domains/route.ts (Next.js 15, App Router 기반)
 
+import { getAuthSession } from '@/lib/auth'
+import { decrypt } from '@/lib/crypto'
 import { logger } from '@/lib/logger'
+import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN!
@@ -12,15 +15,43 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const {
       sub,
-      // siteId,
-      vercelToken,
       vercelProjectId,
     } = body
 
-    // 1. 사용자 서브도메인 생성 (예: user-123.logme.click)
+    // 1. 사용자 서브도메인 생성 (예: user123.logme.click)
     const subdomain = `${sub}.logme.click`
     logger.info('subdomain:', { subdomain })
-    logger.info('vercelToken:', { vercelToken })
+
+    const session = await getAuthSession()
+    if (!session) {
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+
+    const userId = session.user.id
+    const provider = await db.provider.findFirst({
+      where: { userId, providerType: 'vercel' },
+    })
+
+    if (!provider) {
+      return NextResponse.json({ error: 'Vercel provider not found' }, { status: 404 })
+    }
+
+    const providerExtended = await db.providerExtended.findUnique({
+      where: {
+        providerId_extendedKey: {
+          providerId: provider.id,
+          extendedKey: 'token',
+        },
+      },
+    })
+
+    const encryptedVercelTokenData = providerExtended?.extendedValue
+
+    if (!encryptedVercelTokenData) {
+      return NextResponse.json({ error: 'Vercel token not found' }, { status: 400 })
+    }
+    const vercelToken = decrypt(encryptedVercelTokenData)
+
     logger.info('vercelProjectId:', { vercelProjectId })
     if (!subdomain || !vercelToken || !vercelProjectId) {
       return NextResponse.json({ success: false, error: 'Missing parameters' }, { status: 400 })

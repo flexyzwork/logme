@@ -1,3 +1,5 @@
 export const GITHUB_CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID!
 export const GITHUB_REDIRECT_URI = process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI!
 export const NOTION_AUTH_URL = process.env.NEXT_PUBLIC_NOTION_AUTH_URL!
+export const TEMPLATE_OWNER = process.env.NEXT_PUBLIC_TEMPLATE_OWNER!
+export const TEMPLATE_REPO = process.env.NEXT_PUBLIC_TEMPLATE_REPO!

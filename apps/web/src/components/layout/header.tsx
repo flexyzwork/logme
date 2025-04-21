@@ -21,12 +21,12 @@ export async function Header() {
   }
 
   return (
-    <header className="flex justify-between items-center px-4 py-3 border-b">
+    <header className="flex flex-col sm:flex-row justify-between items-center px-4 py-3 border-b gap-2 sm:gap-0">
       <Link href="/logme" className="text-xl font-bold">
         LOGME
       </Link>
 
-      <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+      <nav className="flex flex-wrap justify-center sm:justify-end items-center gap-4 text-sm text-muted-foreground text-center">
         <Link href="/about">서비스 소개</Link>
         <Link href="/faq">자주 묻는 질문</Link>
         <Link href="/contact">연락하기</Link>
