@@ -96,6 +96,9 @@ jobs:
           cd ~/app
 
           echo "현재 컨테이너: $(docker ps --format '{{.Names}}')"
+
+          # 이 부분이 중요했음! git pull 부분 삭제하고, .env가 없어서 docker-compose.yaml의 ACTIVE 변수가 ""로 바뀌는 바람에 
+          # docker-compose 스크립트가 nginx depends_on: app- 으로 해석되어 구문 오류 발생
           echo "ACTIVE=${{ env.ACTIVE }}" > .env
 
           docker-compose pull app-${{ env.NEW }}
