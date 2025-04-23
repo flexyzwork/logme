@@ -58,6 +58,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           # context: ./apps/web
+          file: ./apps/web/Dockerfile
+          context: .
           push: true
           platforms: linux/amd64
           tags: |
