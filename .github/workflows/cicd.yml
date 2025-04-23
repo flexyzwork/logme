@@ -95,6 +95,9 @@ jobs:
 
           cd ~/app
 
+          echo "현재 컨테이너: $(docker ps --format '{{.Names}}')"
+          echo "ACTIVE=${{ env.ACTIVE }}" > .env
+
           docker-compose pull app-${{ env.NEW }}
           docker-compose up -d app-${{ env.NEW }}
 
