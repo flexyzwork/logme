@@ -23,30 +23,10 @@ services:
     ports:
       - '3000:3000'
     env_file:
-      - apps/web/.env
-    # volumes:
-    #   - app_data:/app/data
+      - apps/web/.env.local
     networks:
       - app-network
-
-  # app-blue:
-  #   image: kix.ocir.io/axunckhvyv1v/logme-app:blue
-  #   restart: always
-  #   ports:
-  #     - '3002:3000'
-  #   env_file:
-  #     - ./apps/web/.env
-  #   volumes:
-  #     - app_data:/app/data
-  #   networks:
-  #     - app-network
-
-# networks:
-#   app-network:
-#     driver: bridge
 
 networks:
   app-network:
     external: true
-# volumes:
-#   app_data:
