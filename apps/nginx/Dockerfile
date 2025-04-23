@@ -5,7 +5,6 @@ FROM nginx:latest
 RUN apt-get update
 
 # Nginx 설정 파일 및 엔트리포인트 복사
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
 COPY nginx.conf.template.ssl /etc/nginx/nginx.conf.template.ssl
 COPY entrypoint.sh /entrypoint.sh
 
