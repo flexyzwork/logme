@@ -1,6 +1,5 @@
 import * as aws from '@pulumi/aws'
 import * as dotenv from 'dotenv'
-import * as child_process from 'child_process'
 
 // .env 파일 로드
 dotenv.config()
@@ -12,7 +11,7 @@ const sshPublicKey = process.env.AWS_PUBLIC_SSH_KEY || ''
 const dockerUsername = process.env.DOCKER_USERNAME || ''
 const dockerPassword = process.env.DOCKER_PASSWORD || ''
 const existingEipAllocId = process.env.EXISTING_EIP_ALLOC_ID || ''
-
+const rdsSecurityGroupId = process.env.RDS_SECURITY_GROUP_ID || ''
 // 최신 Ubuntu AMI 가져오기
 const ubuntuAmi = aws.ec2.getAmi({
   mostRecent: true,
@@ -37,6 +36,15 @@ const securityGroup = new aws.ec2.SecurityGroup('ec2-security-group', {
     { protocol: 'tcp', fromPort: 443, toPort: 443, cidrBlocks: ['0.0.0.0/0'] },
   ],
   egress: [{ protocol: '-1', fromPort: 0, toPort: 0, cidrBlocks: ['0.0.0.0/0'] }],
+})
+
+new aws.ec2.SecurityGroupRule('allow-ec2-to-rds', {
+  type: 'ingress',
+  fromPort: 5432,
+  toPort: 5432,
+  protocol: 'tcp',
+  securityGroupId: rdsSecurityGroupId, // RDS 보안 그룹 ID
+  sourceSecurityGroupId: securityGroup.id, // Pulumi로 생성된 EC2 보안 그룹
 })
 
 // SSH 키 페어 설정
@@ -115,4 +123,3 @@ new aws.ec2.EipAssociation('elastic-ip-association', {
 
 export const instancePublicIp = instance.publicIp
 export const instancePublicDns = instance.publicDns
-
