@@ -1,38 +1,38 @@
 services:
-  # nginx:
-  #   build:
-  #     context: ./apps/nginx
-  #   restart: always
-  #   ports:
-  #     - '80:80'
-  #     - '443:443'
-  #   volumes:
-  #     - ./apps/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
-  #     - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
-  #     - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
-  #     - /home/ubuntu/.acme.sh:/root/.acme.sh:rw
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     - app-${ACTIVE}
-  #   environment:
-  #     - ACTIVE=${ACTIVE}
-  #   env_file:
-  #     - .env
-  #   entrypoint: ['/bin/sh', '/entrypoint.sh']
-
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: saas_dev
+  nginx:
+    build:
+      context: ./apps/nginx
+    restart: always
     ports:
-      - '5432:5432'
+      - '80:80'
+      - '443:443'
     volumes:
-      - /var/lib/postgresql/data
+      - ./apps/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+      - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
+      - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
+      - /home/ubuntu/.acme.sh:/root/.acme.sh:rw
     networks:
-      - app_network
+      - app-network
+    depends_on:
+      - app-${ACTIVE}
+    environment:
+      - ACTIVE=${ACTIVE}
+    env_file:
+      - .env
+    entrypoint: ['/bin/sh', '/entrypoint.sh']
+
+  # postgres:
+  #   image: postgres:16
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: saas_dev
+  #   ports:
+  #     - '5432:5432'
+  #   volumes:
+  #     - /var/lib/postgresql/data
+  #   networks:
+  #     - app_network
 
   app-green:
     # image: web

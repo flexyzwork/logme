@@ -16,7 +16,7 @@ const dockerPassword = process.env.DOCKER_PASSWORD || ''
 const existingEipAllocId = process.env.EXISTING_EIP_ALLOC_ID || ''
 
 // `.env` 파일 로드
-const appEnvPath = process.env.CLIENT_ENV_PATH || ''
+const appEnvPath = process.env.APP_ENV_PATH || ''
 const appEnv = appEnvPath ? fs.readFileSync(appEnvPath, 'utf-8') : ''
 
 // 최신 Ubuntu AMI 가져오기

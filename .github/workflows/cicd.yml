@@ -19,7 +19,7 @@ jobs:
 
       - name: Create .env
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
-        
+
       - name: Check .env exists
         run: ls -al apps/web/.env
 
@@ -54,7 +54,7 @@ jobs:
       - name: Check GITHUB_ENV
         run: echo $GITHUB_ENV
 
-      - name: Build and Push Frontend Image
+      - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
           # context: ./apps/web
@@ -73,16 +73,16 @@ jobs:
 
           rollback() {
               echo "❌ 배포 실패! 이전 컨테이너로 원복 중..."
-              docker-compose kill logme-app:${{ env.NEW }}
-              docker-compose rm -f logme-app:${{ env.NEW }}
+              docker-compose kill app-${{ env.NEW }}
+              docker-compose rm -f app-${{ env.NEW }}
 
               docker system prune -a -f
               exit 1
           }
           cleanup() {
               echo "✅ 배포 성공! 이전 컨테이너 정리 중..."
-              docker-compose kill logme-app:${{ env.ACTIVE }}
-              docker-compose rm -f logme-app:${{ env.ACTIVE }}
+              docker-compose kill app-${{ env.ACTIVE }}
+              docker-compose rm -f app-${{ env.ACTIVE }}
 
               sleep 5
               docker system prune -a -f
@@ -91,8 +91,8 @@ jobs:
 
           cd ~/app
 
-          docker-compose pull logme-app:${{ env.NEW }}
-          docker-compose up -d logme-app:${{ env.NEW }}
+          docker-compose pull app-:${{ env.NEW }}
+          docker-compose up -d app-${{ env.NEW }}
 
           sleep 10
           docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
