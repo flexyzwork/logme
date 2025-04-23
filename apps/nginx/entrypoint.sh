@@ -7,7 +7,7 @@ echo "🚀 Nginx 설정을 시작합니다."
 echo "✅ ACTIVE: $ACTIVE"
 
 # 최초 ssl 인증서 발급
-CERT_PATH="/root/.acme.sh/logme.dev_ecc/fullchain.cer"
+CERT_PATH="/root/.acme.sh/lm.flexyz.work_ecc/fullchain.cer"
 
 if [ ! -f "$CERT_PATH" ]; then
   echo "🚀 SSL 인증서 발급을 시작합니다."
@@ -18,7 +18,7 @@ if [ ! -f "$CERT_PATH" ]; then
   source /root/.bashrc
   /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
   /root/.acme.sh/acme.sh --register-account -m flexyzwork@gmail.com
-  /root/.acme.sh/acme.sh --issue -d logme.dev --nginx
+  /root/.acme.sh/acme.sh --issue -d lm.flexyz.work --nginx
   nginx -s reload
   echo "✅ SSL 인증서 발급 완료."
   /root/.acme.sh/acme.sh --upgrade --auto-upgrade

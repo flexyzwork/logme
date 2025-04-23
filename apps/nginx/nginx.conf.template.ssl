@@ -13,7 +13,7 @@ http {
     # HTTP 트래픽을 HTTPS로 자동 리디렉션
     server {
         listen 80;
-        server_name logme.dev;
+        server_name lm.flexyz.work;
 
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
@@ -27,10 +27,10 @@ http {
     # HTTPS 서버 설정
     server {
         listen 443 ssl;
-        server_name logme.dev;
+        server_name lm.flexyz.work;
 
-        ssl_certificate /root/.acme.sh/logme.dev_ecc/fullchain.cer;    
-        ssl_certificate_key /root/.acme.sh/logme.dev_ecc/logme.dev.key;
+        ssl_certificate /root/.acme.sh/lm.flexyz.work_ecc/fullchain.cer;    
+        ssl_certificate_key /root/.acme.sh/lm.flexyz.work_ecc/lm.flexyz.work.key;
         ssl_protocols TLSv1.2 TLSv1.3;
         ssl_ciphers HIGH:!aNULL:!MD5;
         ssl_prefer_server_ciphers on;
