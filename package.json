@@ -1,16 +1,17 @@
 {
   "name": "saas",
   "private": true,
-  "packageManager": "pnpm@10.6.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "check-types": "turbo run check-types",
-    "db": "pnpm --filter @repo/db",
-    "db:m": "pnpm db migrate dev --name",
-    "db:reset": "pnpm docker-dev db:reset && pnpm db migrate dev",
-    "db:seed": "pnpm db seed",
+    "db": "yarn --filter @repo/db",
+    "db:m": "yarn db migrate dev --name",
     "dev": "turbo run dev",
-    "docker-dev": "pnpm --filter @repo/docker-dev",
+    "docker-dev": "yarn --filter @repo/docker-dev",
     "format": "prettier --write .",
     "lint": "turbo run lint",
     "test": "turbo run test",
@@ -20,5 +21,10 @@
     "prettier": "^3.5.3",
     "turbo": "^2.5.0",
     "typescript": "^5.8.3"
+  },
+  "packageManager": "yarn@1.22.19",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0"
   }
 }
