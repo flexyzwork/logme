@@ -72,7 +72,7 @@ jobs:
 
       - name: Deploy on EC2
         run: |
-          ssh ec2 << 'EOF'
+          ssh ec2 << EOF
           set -e
 
           rollback() {
