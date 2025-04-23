@@ -64,11 +64,5 @@ services:
 networks:
   app-network:
     driver: bridge
-
-networks:
-  app_network:
-    external: true
-
-
 # volumes:
 #   app_data:
