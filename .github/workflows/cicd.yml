@@ -91,7 +91,7 @@ jobs:
 
           cd ~/app
 
-          docker-compose pull app-:${{ env.NEW }}
+          docker-compose pull app-${{ env.NEW }}
           docker-compose up -d app-${{ env.NEW }}
 
           sleep 10
