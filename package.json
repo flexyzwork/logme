@@ -11,7 +11,10 @@
     "format": "prettier --write .",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "test:w": "turbo run test:watch"
+    "test:w": "turbo run test:watch",
+    "infra": "pnpm --filter @infra/aws",
+    "infra:up": "pnpm run infra make",
+    "infra:down": "pnpm run infra down"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
