@@ -19,6 +19,9 @@ jobs:
 
       - name: Create .env
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
+        
+      - name: Check .env exists
+        run: ls -al apps/web/.env
 
       - name: Log in to OCI Registry
         run: |
