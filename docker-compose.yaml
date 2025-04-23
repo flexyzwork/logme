@@ -38,8 +38,6 @@ services:
       - '3002:3000'
     env_file:
       - ./apps/web/.env
-    volumes:
-      - app_data:/app/data
     networks:
       - app-network
 
