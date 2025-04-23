@@ -6,7 +6,8 @@ import { ProviderType } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
-const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n') // PEM 포맷 복구
+// const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n') // PEM 포맷 복구
+const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\n/g, '\n') // PEM 포맷 복구
 
 export async function handleGithub(req: Request, userId: string) {
   try {
@@ -102,7 +103,6 @@ export async function handleGithub(req: Request, userId: string) {
       token: data.token,
       expires_at: data.expires_at,
     })
-    
   } catch (error) {
     console.error('GitHub App 토큰 발급 실패:', error)
     return NextResponse.json({ error: '서버 오류', detail: String(error) }, { status: 500 })
