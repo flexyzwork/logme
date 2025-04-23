@@ -101,11 +101,8 @@ const instance = new aws.ec2.Instance('app-server', {
     sudo swapon /swapfile
     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-    mkdir -p /home/ubuntu/certs
-    sudo chmod 700 /home/ubuntu/certs
-    sudo chown ubuntu:ubuntu /home/ubuntu/certs
-
     echo "스왑 파일 생성 완료"
+
     echo "🚀 EC2 인스턴스 세팅 완료!"
   `,
 })
@@ -119,15 +116,3 @@ new aws.ec2.EipAssociation('elastic-ip-association', {
 export const instancePublicIp = instance.publicIp
 export const instancePublicDns = instance.publicDns
 
-// 이후 scp로 EC2에 복사
-instancePublicIp.apply((ip) => {
-  child_process.execSync(
-    `ssh -o StrictHostKeyChecking=no -i ~/.ssh/flexyz_id_ed25519 ubuntu@${ip} "mkdir -p /home/ubuntu/certs"`
-  )
-  child_process.execSync(
-    `scp -o StrictHostKeyChecking=no -i ~/.ssh/flexyz_id_ed25519 ../certs/logme.dev.pem ubuntu@${ip}:/home/ubuntu/certs/`
-  )
-  child_process.execSync(
-    `scp -o StrictHostKeyChecking=no -i ~/.ssh/flexyz_id_ed25519 ../certs/logme.dev.key ubuntu@${ip}:/home/ubuntu/certs/`
-  )
-})

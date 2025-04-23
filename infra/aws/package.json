@@ -2,7 +2,7 @@
   "name": "@infra/aws",
   "main": "index.ts",
   "scripts": {
-    "make": "pulumi up",
+    "make": "pulumi up && ./deploy_certs.sh",
     "down": "pulumi destroy"
   },
   "devDependencies": {
