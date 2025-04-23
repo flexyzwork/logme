@@ -9,7 +9,7 @@ services:
     volumes:
       - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
       - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
-      - /home/ubuntu/.acme.sh:/root/.acme.sh:rw
+      - /home/ubuntu/certs:/etc/nginx/ssl:rw
     networks:
       - app-network
     depends_on:

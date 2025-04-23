@@ -1,28 +1,6 @@
 # docker network create app-network
 
 services:
-  # nginx:
-  #   build:
-  #     context: ./apps/nginx
-  #   restart: always
-  #   ports:
-  #     - '80:80'
-  #     - '443:443'
-  #   volumes:
-  #     - ./apps/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
-  #     - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
-  #     - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
-  #     - /home/ubuntu/.acme.sh:/root/.acme.sh:rw
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     - app-${ACTIVE}
-  #   environment:
-  #     - ACTIVE=${ACTIVE}
-  #   env_file:
-  #     - .env
-  #   entrypoint: ['/bin/sh', '/entrypoint.sh']
-
   postgres:
     image: postgres:16
     environment:
