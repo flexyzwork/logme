@@ -75,6 +75,8 @@ jobs:
           ssh ec2 << EOF
           set -e
 
+          NEW="${{ env.NEW }}"
+
           rollback() {
               echo "❌ 배포 실패! 이전 컨테이너로 원복 중..."
               docker-compose kill app-${{ env.NEW }}
@@ -100,16 +102,11 @@ jobs:
 
           sleep 10
           docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
-          docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
 
           echo "✅ 배포 성공!"
           echo "ACTIVE=${{ env.NEW }}" > .env
-          export $(grep -v '^#' .env | xargs)
-          echo "${{ env.ACTIVE }} -> ${{ env.NEW }}"
 
           cleanup
-
-          NEW="${{ env.NEW }}"
 
           docker ps --format '{{.Names}}' | grep -q "nginx" && \
             docker-compose exec -e ACTIVE="${NEW}" nginx /bin/sh -c \
