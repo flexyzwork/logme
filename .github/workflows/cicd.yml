@@ -51,7 +51,7 @@ jobs:
           ACTIVE=$(ssh ec2 "docker ps --format '{{.Names}}' | grep -q 'backend-blue' && echo blue || echo green")
       
           # 로그를 서버에 기록 (선택사항)
-          ssh ec2 "echo \"$(date '+%Y-%m-%d %H:%M:%S') - Checking active deployment color - Active: $ACTIVE\" >> ~/app/scripts/detect_active.log"
+          # ssh ec2 "echo \"$(date '+%Y-%m-%d %H:%M:%S') - Checking active deployment color - Active: $ACTIVE\" >> ~/app/scripts/detect_active.log"
       
           echo "ACTIVE=$ACTIVE" >> $GITHUB_ENV
       
