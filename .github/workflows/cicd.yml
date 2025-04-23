@@ -43,7 +43,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/nginx
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
 
       - name: Determine Active
         id: active_version
@@ -109,7 +109,11 @@ jobs:
 
           cleanup
 
-          NEW=${{ env.NEW }}
-          docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$NEW" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
+          NEW="${{ env.NEW }}"
+
+          docker ps --format '{{.Names}}' | grep -q "nginx" && \
+            docker-compose exec -e ACTIVE="${NEW}" nginx /bin/sh -c \
+            "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || \
+            docker-compose up -d --force-recreate nginx
 
           EOF
