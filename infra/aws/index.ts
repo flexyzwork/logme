@@ -1,6 +1,5 @@
 import * as aws from '@pulumi/aws'
 import * as dotenv from 'dotenv'
-import * as fs from 'fs'
 
 // .env 파일 로드
 dotenv.config()
@@ -9,15 +8,9 @@ dotenv.config()
 const instanceType = process.env.AWS_INSTANCE_TYPE || 't2.micro'
 const sshKeyName = process.env.AWS_SSH_KEY_NAME || 'default-keypair'
 const sshPublicKey = process.env.AWS_PUBLIC_SSH_KEY || ''
-const gitRepoUrl = process.env.GIT_REPO_URL || 'https://github.com/flexyzwork/logme-saas.git'
-const branch = process.env.GIT_BRANCH || 'deploy'
 const dockerUsername = process.env.DOCKER_USERNAME || ''
 const dockerPassword = process.env.DOCKER_PASSWORD || ''
 const existingEipAllocId = process.env.EXISTING_EIP_ALLOC_ID || ''
-
-// `.env` 파일 로드
-const appEnvPath = process.env.APP_ENV_PATH || ''
-const appEnv = appEnvPath ? fs.readFileSync(appEnvPath, 'utf-8') : ''
 
 // 최신 Ubuntu AMI 가져오기
 const ubuntuAmi = aws.ec2.getAmi({
@@ -108,28 +101,7 @@ const instance = new aws.ec2.Instance('app-server', {
     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
     echo "스왑 파일 생성 완료"
-
-    # 애플리케이션 코드 가져오기
-    cd /home/ubuntu
-    if [ ! -d "app" ]; then
-        git clone -b ${branch} ${gitRepoUrl} app
-    else
-        cd app && sudo git pull
-    fi
-
-    echo "✅ 애플리케이션 코드 클론 완료"
-
-    echo "${appEnv}" > /home/ubuntu/app/apps/web/.env
-
-    echo "✅ .env 파일 생성 완료"
-
-    sudo chown -R ubuntu:ubuntu /home/ubuntu/app
-    echo "✅ 애플리케이션 코드 권한 변경 완료"
-
-    mkdir -pv .acme.sh
-    echo "✅ .acme.sh 디렉토리 생성 완료"
-
-    echo "🚀 배포 완료!"
+    echo "🚀 EC2 인스턴스 세팅 완료!"
   `,
 })
 

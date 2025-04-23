@@ -38,14 +38,24 @@ jobs:
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
 
+      - name: Copy docker-compose.yaml and nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/nginx
+
       - name: Determine Active
         id: active_version
         run: |
-          ssh ec2 "cd app && git reset --hard && git pull origin deploy"
-          ACTIVE=$(ssh ec2 "bash ~/app/scripts/detect_active.sh")
-          echo "ACTIVE=$ACTIVE" > $GITHUB_ENV
-
-          if [[ "$ACTIVE" == "blue" ]]; then
+          ACTIVE=$(ssh ec2 "docker ps --format '{{.Names}}' | grep -q 'backend-blue' && echo blue || echo green")
+      
+          # 로그를 서버에 기록 (선택사항)
+          ssh ec2 "echo \"$(date '+%Y-%m-%d %H:%M:%S') - Checking active deployment color - Active: $ACTIVE\" >> ~/app/scripts/detect_active.log"
+      
+          echo "ACTIVE=$ACTIVE" >> $GITHUB_ENV
+      
+          if [[ \"$ACTIVE\" == \"blue\" ]]; then
               echo "NEW=green" >> $GITHUB_ENV
           else
               echo "NEW=blue" >> $GITHUB_ENV
@@ -57,7 +67,6 @@ jobs:
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
-          # context: ./apps/web
           file: ./apps/web/Dockerfile
           context: .
           push: true
