@@ -1,31 +1,27 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update both files!
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk update && apk add --no-cache libc6-compat && npm install -g turbo pnpm
 # Set working directory
 WORKDIR /app
-RUN yarn global add turbo
 COPY . .
 RUN turbo prune web --docker
 
+
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk update && apk add --no-cache libc6-compat && npm install -g pnpm
 WORKDIR /app
-
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
 # Build the project
 COPY --from=builder /app/out/full/ .
-
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
@@ -33,9 +29,12 @@ COPY --from=builder /app/out/full/ .
 
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
+
+# 이게 없으면 빌드가 안됨 (경로 중요, web 폴더 안에 .env 파일이 있어야 함)
 COPY ./apps/web/.env  ./apps/web/.env
 
-RUN yarn turbo build
+# Turborepo 전ㅊ테에서 build 실행
+RUN pnpm turbo run build
 
 FROM base AS runner
 WORKDIR /app
