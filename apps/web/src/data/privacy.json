@@ -1,4 +1,3 @@
-
 {
   "ko": {
     "title": "개인정보처리방침",
@@ -51,10 +50,7 @@
       },
       {
         "title": "📜 문의 및 책임자",
-        "content": [
-          "문의사항은 아래 이메일로 연락주세요:",
-          "📧 contact@flexyz.so"
-        ]
+        "content": ["문의사항은 아래 이메일로 연락주세요:", "📧 contact@flexyz.so"]
       }
     ]
   },
@@ -109,10 +105,7 @@
       },
       {
         "title": "📜 Contact & Responsibility",
-        "content": [
-          "For inquiries, please contact:",
-          "📧 contact@flexyz.so"
-        ]
+        "content": ["For inquiries, please contact:", "📧 help@logme.dev"]
       }
     ]
   }
