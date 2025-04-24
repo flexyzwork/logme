@@ -59,8 +59,8 @@ export default function ContactPage() {
       <div className="space-y-4 text-sm">
         <p>
           📧 이메일:{' '}
-          <a href="mailto:help@logme.dev" className="underline">
-            help@logme.dev
+          <a href="mailto:contact@logme.dev" className="underline">
+            contact@logme.dev
           </a>
         </p>
         <p>
