@@ -4,12 +4,15 @@ import { Octokit } from '@octokit/rest'
 import { createAppAuth } from '@octokit/auth-app'
 import { ProviderType } from '@prisma/client'
 import jwt from 'jsonwebtoken'
+import os from 'os'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
-let GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!
-const isProduction = process.env.NODE_ENV === 'production'
-const isDocker = process.env.IS_DOCKER === 'true'
-if (!isProduction && !isDocker) {
+let GITHUB_PRIVATE_KEY = ''
+const isMac = os.platform() === 'darwin'
+
+if (isMac) {
+  GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n')
+} else {
   GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\n/g, '\n')
 }
 
