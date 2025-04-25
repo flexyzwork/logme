@@ -13,9 +13,17 @@ export const useGithubAppInstall = () => {
   const isFetching = useRef(false)
 
   const handleAppInstall = (app: 'vercel' | 'logme') => {
+    const isProduction = process.env.NODE_ENV === 'production'
+
     const url =
-      app === 'vercel' ? 'https://github.com/apps/vercel' : 'https://github.com/apps/flexyz-logme'
-    const name = app === 'vercel' ? 'gitHub-app-vercel-install' : 'gitHub-app-logme-install'
+      app === 'vercel'
+        ? 'https://github.com/apps/vercel'
+        : isProduction
+          ? 'https://github.com/apps/logme-dev'
+          : 'https://github.com/apps/logme-dev-local'
+
+    const name = app === 'vercel' ? 'gitHub-app-vercel-install' : 'gitHub-app-logme-dev-install'
+
     const popupWidth = 600
     const popupHeight = 700
 

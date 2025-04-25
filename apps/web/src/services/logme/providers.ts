@@ -6,8 +6,12 @@ import { ProviderType } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
-// const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\\n/g, '\n') // PEM 포맷 복구
-const GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\n/g, '\n') // PEM 포맷 복구
+let GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!
+const isProduction = process.env.NODE_ENV === 'production'
+const isDocker = process.env.IS_DOCKER === 'true'
+if (!isProduction && !isDocker) {
+  GITHUB_PRIVATE_KEY = process.env.GITHUB_PRIVATE_KEY!.replace(/\\n/g, '\n')
+}
 
 export async function handleGithub(req: Request, userId: string) {
   try {
