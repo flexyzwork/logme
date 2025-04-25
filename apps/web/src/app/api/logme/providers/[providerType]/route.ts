@@ -2,6 +2,7 @@ import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthSession } from '@/lib/auth'
 import { handleGithub, handleNotion, handleVercel } from '@/services/logme/providers'
+import logger from '@/lib/logger'
 
 const providerLocks = new Map<string, boolean>()
 
@@ -72,7 +73,7 @@ export async function GET(
 
     return NextResponse.json(provider)
   } catch (error) {
-    console.error('❌ provider GET error:', error)
+    logger.log('error', '❌ provider GET error:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

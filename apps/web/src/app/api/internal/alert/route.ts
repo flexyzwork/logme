@@ -1,7 +1,9 @@
-import { sendAlert } from '@/lib/server/alert'
+import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/serverSlackStrategy'
+
+const slackLogger = new ServerSlackStrategy()
 
 export async function POST(req: Request) {
   const { type, message, meta } = await req.json()
-  await sendAlert({ type, message, meta })
+  await slackLogger.log(type, message, meta)
   return new Response('ok')
 }

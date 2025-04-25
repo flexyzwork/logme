@@ -1,4 +1,5 @@
 import { getAuthSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -24,7 +25,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
     return NextResponse.json(deleted)
   } catch (err) {
-    console.error('❌ 사이트 삭제 실패:', err)
+    logger.log('error', '❌ 사이트 삭제 실패:', { err })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

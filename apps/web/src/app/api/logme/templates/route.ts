@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 
 export async function GET() {
   try {
@@ -10,8 +11,8 @@ export async function GET() {
     }
     const templates = await db.template.findMany({
       where: {
-        deletedAt: null
-       },
+        deletedAt: null,
+      },
       select: {
         id: true,
         templateTitle: true,
@@ -29,7 +30,7 @@ export async function GET() {
     })
     return NextResponse.json(templates)
   } catch (err) {
-    console.error('❌ 템플릿 목록 불러오기 실패:', err)
+    logger.log('error', '❌ 템플릿 목록 불러오기 실패:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

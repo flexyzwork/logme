@@ -4,6 +4,7 @@ import { getAuthSession } from '@/lib/auth'
 import { deleteVercelProject, deleteGithubRepo } from '@/services/logme/deleteExternals'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { decrypt } from '@/lib/crypto'
+import logger from '@/lib/logger'
 
 // GET /api/logme/sites/[id] - 사이트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -47,7 +48,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 
     return NextResponse.json(updated)
   } catch (err) {
-    console.error('❌ 사이트 수정 실패:', err)
+    logger.log('error', '❌ 사이트 수정 실패:', { err })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -113,9 +114,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
       // GitHub 저장소 삭제
       if (site.repo?.repoOwner && site.repo?.repoName && githubInstallationId) {
-        const installationToken = await fetchGithubInstallationToken(
-          Number(githubInstallationId)
-        )
+        const installationToken = await fetchGithubInstallationToken(Number(githubInstallationId))
         await deleteGithubRepo({
           installationToken,
           owner: site.repo.repoOwner,
@@ -139,7 +138,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
     return NextResponse.json(deleted)
   } catch (err) {
-    console.error('❌ 사이트 삭제 실패:', err)
+    logger.log('error', '❌ 사이트 삭제 실패:', { err })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

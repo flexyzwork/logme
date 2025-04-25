@@ -1,5 +1,6 @@
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
     const data = await response.json()
     return NextResponse.json({ url: `https://www.notion.so/${data.id.replace(/-/g, '')}` })
   } catch (error) {
-    console.error('Notion API Error:', error)
+    logger.log('error', 'Notion API Error:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

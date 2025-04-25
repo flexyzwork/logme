@@ -4,7 +4,6 @@ const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 // const { sentryWebpackPlugin } = require("@sentry/webpack-plugin/webpack5");
 
 module.exports = {
-  // ... other config above ...
 
   devtool: 'source-map', // Source map generation must be turned on
   plugins: [

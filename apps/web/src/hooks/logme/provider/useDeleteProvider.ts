@@ -1,4 +1,4 @@
-import { sendAlertFromClient } from '@/lib/alert'
+import logger from '@/lib/logger'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -24,12 +24,11 @@ export function useDeleteProvider(
       config?.onSuccess?.()
     },
     onError: async (error) => {
-      toast.error('연결 해제 중 오류 발생');
-      await sendAlertFromClient({
-        type: 'error',
-        message: '연결 해제 중 오류가 발생했습니다.',
-        meta: { providerType, error: error instanceof Error ? error.message : String(error) },
-      });
+      toast.error('연결 해제 중 오류 발생')
+      logger.log('error', '연결 해제 중 오류 발생', {
+        providerType,
+        error: error instanceof Error ? error.message : String(error),
+      })
     },
   })
 }

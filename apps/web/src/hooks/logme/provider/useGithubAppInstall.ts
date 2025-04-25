@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 export const useGithubAppInstall = () => {
   const storeProviderExtended = useCreateProviderExtended()
@@ -64,7 +64,7 @@ export const useGithubAppInstall = () => {
       if (event.data?.type === 'github_app_installed') {
         const installationId = event.data.installationId
 
-        logger.info('✅ 연결 완료! installation_id:', installationId)
+        logger.log('info', '✅ 연결 완료! installation_id:', installationId)
 
         if (isFetching.current) return
         isFetching.current = true
@@ -81,7 +81,7 @@ export const useGithubAppInstall = () => {
 
           setIsLogmeAppInstalled(true)
         } catch (err) {
-          console.error('❌ 연결 토큰 저장 실패:', err)
+          logger.log('error', '❌ 연결 토큰 저장 실패:', { err })
         } finally {
           isFetching.current = false
         }

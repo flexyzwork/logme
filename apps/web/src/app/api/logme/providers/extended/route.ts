@@ -3,6 +3,7 @@ import { createId } from '@paralleldrive/cuid2'
 import { ProviderType } from '@prisma/client'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@repo/db'
+import logger from '@/lib/logger'
 
 export async function POST(req: Request) {
   try {
@@ -67,7 +68,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, id: result.id })
   } catch (err) {
-    console.error('❌ providerExtended 저장 오류:', err)
+    logger.log('error', '❌ providerExtended 저장 오류:', { err })
     return NextResponse.json({ error: 'providerExtended 저장 실패' }, { status: 500 })
   }
 }
@@ -83,12 +84,12 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const providerType = searchParams.get('providerType')
     const extendedKey = searchParams.get('extendedKey')
-    const templateId = searchParams.get('templateId') === 'undefined' ? null : searchParams.get('templateId')
+    const templateId =
+      searchParams.get('templateId') === 'undefined' ? null : searchParams.get('templateId')
 
     if (!providerType || !extendedKey) {
       return NextResponse.json({ error: '필수 파라미터 누락' }, { status: 400 })
     }
-
 
     const provider = await db.provider.findFirst({
       where: { userId, providerType: providerType as ProviderType },
@@ -108,7 +109,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ value: extended?.extendedValue ?? null })
   } catch (err) {
-    console.error('❌ Vercel 토큰 조회 실패:', err)
+    logger.log('error', '❌ Vercel 토큰 조회 실패:', { err })
     return NextResponse.json({ error: '서버 에러' }, { status: 500 })
   }
 }

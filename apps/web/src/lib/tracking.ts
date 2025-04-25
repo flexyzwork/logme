@@ -1,3 +1,5 @@
+import logger from "@/lib/logger"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export async function trackEvent({
   userId,
@@ -17,6 +19,6 @@ export async function trackEvent({
       body: JSON.stringify({ userId, event, meta }),
     })
   } catch (err) {
-    console.error('🔴 Failed to track event:', event, err)
+    logger.log('error', '🔴 Failed to track event:', { userId, event, err })
   }
 }

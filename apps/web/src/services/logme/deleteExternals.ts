@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import logger from '@/lib/logger'
 import { Octokit } from 'octokit'
 
 /**
@@ -25,7 +26,7 @@ export async function deleteVercelProject(token: string, projectId: string) {
   try {
     return JSON.parse(text)
   } catch (err) {
-    console.error('Vercel 삭제 응답 파싱 실패:', err)
+    logger.log('error', 'Vercel 삭제 응답 파싱 실패:', { err })
     throw new Error('Vercel 프로젝트 삭제 응답이 올바르지 않습니다.')
   }
 }
@@ -51,14 +52,13 @@ export async function deleteGithubRepo({
     })
     return res
   } catch (error: any) {
-    console.error('❌ GitHub 저장소 삭제 실패 전체 응답:', error)
-  
+    logger.log('error', '❌ GitHub 저장소 삭제 실패 전체 응답:', { error })
+
     const status = error?.status || error?.response?.status
     const data = error?.response?.data || error
-  
-    const message =
-      data?.message || error?.message || '알 수 없는 오류로 삭제에 실패했습니다.'
-  
+
+    const message = data?.message || error?.message || '알 수 없는 오류로 삭제에 실패했습니다.'
+
     throw new Error(`GitHub 저장소 삭제 실패 (${status}): ${message}`)
   }
 }

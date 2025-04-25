@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
+import logger from '@/lib/logger'
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json(deployment)
   } catch (err) {
-    console.error('❌ 배포 생성 실패:', err)
+    logger.log('error', '❌ 배포 생성 실패:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

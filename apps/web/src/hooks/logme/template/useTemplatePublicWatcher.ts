@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useBuilderStore } from '@/stores/logme/builderStore'
+import logger from '@/lib/logger'
 
 export const useTemplatePublicWatcher = ({
   enabled,
@@ -40,7 +41,7 @@ export const useTemplatePublicWatcher = ({
           onComplete?.()
         }
       } catch (error) {
-        console.error('게시 상태 확인 중 오류 발생:', error)
+        logger.log('error', '게시 상태 확인 중 오류 발생:', { error })
       }
     }, 2000)
 

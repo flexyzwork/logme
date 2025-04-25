@@ -1,6 +1,6 @@
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -11,14 +11,11 @@ const VERCEL_API_URL = 'https://api.vercel.com/v9'
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const {
-      sub,
-      vercelProjectId,
-    } = body
+    const { sub, vercelProjectId } = body
 
     // 1. 사용자 서브도메인 생성 (예: user123.logme.click)
     const subdomain = `${sub}.logme.click`
-    logger.info('subdomain:', { subdomain })
+    logger.log('info', 'subdomain:', { subdomain })
 
     const session = await getAuthSession()
     if (!session) {
@@ -50,7 +47,7 @@ export async function POST(req: NextRequest) {
     }
     const vercelToken = decrypt(encryptedVercelTokenData)
 
-    logger.info('vercelProjectId:', { vercelProjectId })
+    logger.log('info', 'vercelProjectId:', { vercelProjectId })
     if (!subdomain || !vercelToken || !vercelProjectId) {
       return NextResponse.json({ success: false, error: 'Missing parameters' }, { status: 400 })
     }
@@ -88,7 +85,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, domain: subdomain })
   } catch (e) {
-    console.error('도메인 자동 연결 실패:', e)
+    logger.log('error', '도메인 자동 연결 실패:', { e })
     return NextResponse.json({ success: false, error: e }, { status: 500 })
   }
 }

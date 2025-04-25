@@ -4,8 +4,7 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { logger } from '@/lib/logger'
-import { sendAlertFromClient } from '@/lib/alert'
+import logger from '@/lib/logger'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
@@ -40,12 +39,7 @@ export default function ContactPage() {
       setTimeout(() => setResult(''), 2000)
     } else {
       setResult('오류: ' + data.message)
-      logger.error('Error', data.message)
-      await sendAlertFromClient({
-        type: 'error',
-        message: '메시지 전송 오류',
-        meta: { error: data.message },
-      })
+      logger.log('error', 'Error', data.message)
     }
   }
 

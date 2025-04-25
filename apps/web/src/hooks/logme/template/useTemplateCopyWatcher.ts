@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useEffect } from 'react'
 
@@ -21,16 +22,13 @@ export const useTemplateCopyWatcher = ({
 
     const checkCopyStatus = async () => {
       try {
-        const response = await fetch(
-          `/api/logme/templates/check-copy`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ notionPageId, templateId }),
-          }
-        )
+        const response = await fetch(`/api/logme/templates/check-copy`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ notionPageId, templateId }),
+        })
 
         const data = await response.json()
         if (data.isCopied) {
@@ -39,7 +37,7 @@ export const useTemplateCopyWatcher = ({
           timeoutId = setTimeout(checkCopyStatus, 1000)
         }
       } catch (err) {
-        console.error('❌ 템플릿 확인 오류:', err)
+        logger.log('error', '❌ 템플릿 확인 오류:', { err })
         onError?.(err)
       }
     }

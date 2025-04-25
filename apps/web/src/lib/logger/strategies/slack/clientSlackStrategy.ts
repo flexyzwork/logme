@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import logger from '@/lib/logger'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
 export class ClientSlackStrategy implements LoggerStrategy {
@@ -10,7 +11,7 @@ export class ClientSlackStrategy implements LoggerStrategy {
         body: JSON.stringify({ type: level, message, meta }),
       })
     } catch (err) {
-      console.error('🔴 Failed to send alert from client:', err)
+      logger.log('error', '🔴 Failed to send alert from client:', { err })
     }
   }
 }

@@ -2,6 +2,7 @@ import { db, Prisma } from '@repo/db'
 import { NextResponse } from 'next/server'
 import { createId } from '@paralleldrive/cuid2'
 import { generateFallbackEmail } from '@/lib/utils'
+import logger from '@/lib/logger'
 
 export async function POST(req: Request) {
   try {
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ providerUserId: providerUserIdStr, userId: provider?.userId })
   } catch (err) {
-    console.error('❌ Provider 저장 오류:', err)
+    logger.log('error', '❌ Provider 저장 오류:', { err })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -7,7 +7,7 @@ import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useDeploymentActions } from '@/services/logme/deployment'
 import { useSession } from 'next-auth/react'
 import { useSiteBuilderUI } from '@/hooks/logme/site/useSiteBuilderUI'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 import { RESERVED_SUBDOMAINS } from '@/constants/reserved'
 
 export default function Step2_InputSiteInfo() {
@@ -26,9 +26,7 @@ export default function Step2_InputSiteInfo() {
   const [isSaving, setIsSaving] = useState(false)
 
   const checkSubAvailable = async (sub: string): Promise<boolean> => {
-    const isReserved = RESERVED_SUBDOMAINS.some((word) =>
-      sub.toLowerCase().startsWith(word)
-    )
+    const isReserved = RESERVED_SUBDOMAINS.some((word) => sub.toLowerCase().startsWith(word))
     if (isReserved) {
       alert('❌ 사용할 수 없는 서브 도메인입니다.')
       return false
@@ -66,7 +64,7 @@ export default function Step2_InputSiteInfo() {
         siteTitle: siteInfo.title,
         siteDescription: siteInfo.description,
       })
-      logger.info('✅ Site 업데이트:', {
+      logger.log('info', '✅ Site 업데이트:', {
         sub: siteInfo.sub,
         title: siteInfo.title,
         description: siteInfo.description,
@@ -78,13 +76,13 @@ export default function Step2_InputSiteInfo() {
           setDeployUrl(deployUrl)
           setSub(siteInfo.sub)
           setGitRepoUrl(gitRepoUrl)
-          logger.info('배포 중...', siteInfo)
+          logger.log('info', '배포 중...', siteInfo)
           setIsSaving(false)
           setBuilderStep(4)
         }
       )
     } else {
-      console.error('❌ Site ID가 없습니다.')
+      logger.log('error', '❌ Site ID가 없습니다.')
     }
   }
 

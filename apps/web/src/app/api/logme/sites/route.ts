@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 
 // POST /api/logme/sites - 사이트 생성
 export async function POST(req: Request) {
@@ -19,7 +20,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json(site)
   } catch (err) {
-    console.error('❌ 사이트 생성 실패:', err)
+    logger.log('error', '❌ 사이트 생성 실패:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
@@ -81,7 +82,7 @@ export async function GET() {
 
     return NextResponse.json(sites)
   } catch (err) {
-    console.error('❌ 사이트 목록 불러오기 실패:', err)
+    logger.log('error', '❌ 사이트 목록 불러오기 실패:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

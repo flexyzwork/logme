@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 
 export default function SiteBuilder() {
   const { isDeploying } = useSiteBuilderUI()
@@ -57,7 +57,7 @@ export default function SiteBuilder() {
       return () => clearTimeout(timeout)
     }
   }, [shouldRedirectToAccount, router])
-  logger.info('📌 현재 온보딩 상태:', { step })
+  logger.log('info', '📌 현재 온보딩 상태:', { step })
 
   if (step === undefined || step === null) return null
 

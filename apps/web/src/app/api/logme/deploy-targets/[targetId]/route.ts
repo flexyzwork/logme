@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 
 // GET /api/logme/deployTarget/[id] - 배포 프로젝트 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {
@@ -39,7 +40,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ targe
 
     return NextResponse.json(updated)
   } catch (err) {
-    console.error('❌ 배포 프로젝트 수정 실패:', err)
+    logger.log('error', '❌ 배포 프로젝트 수정 실패:', { err })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -62,7 +63,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ targ
 
     return NextResponse.json(deleted)
   } catch (err) {
-    console.error('❌ 배포 프로젝트 삭제 실패:', err)
+    logger.log('error', '❌ 배포 프로젝트 삭제 실패:', { err })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

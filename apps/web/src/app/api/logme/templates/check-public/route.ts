@@ -1,5 +1,6 @@
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -31,7 +32,6 @@ export async function POST(req: NextRequest) {
     },
   })
 
-
   const encryptedNotionTokenData = providerExtended?.extendedValue
 
   if (!encryptedNotionTokenData) {
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ isPublic })
   } catch (error) {
-    console.error('Notion API 오류:', error)
+    logger.log('error', 'Notion API 오류:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

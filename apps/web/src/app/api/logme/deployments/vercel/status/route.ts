@@ -1,5 +1,6 @@
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data)
   } catch (e) {
-    console.error('❌ 배포 상태 조회 실패:', e)
+    logger.log('error', '❌ 배포 상태 조회 실패:', { e })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

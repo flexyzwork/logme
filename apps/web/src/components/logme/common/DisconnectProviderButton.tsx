@@ -1,7 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { sendAlertFromClient } from '@/lib/alert'
+import logger from '@/lib/logger'
+
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 
@@ -27,13 +28,11 @@ export function DisconnectProviderButton({ providerType, onSuccess }: Props) {
         toast.success(`${providerType} 연결이 해제되었습니다`)
         onSuccess?.()
       } catch (err) {
-        console.error(err)
-        toast.error(`연결 해제 중 오류가 발생했습니다.`)
-        await sendAlertFromClient({
-          type: 'error',
-          message: '연결 해제 중 오류가 발생했습니다.',
-          meta: { providerType, error: err instanceof Error ? err.message : String(err) },
+        logger.log('error', '연결 해제 중 오류가 발생했습니다.', {
+          providerType,
+          error: err instanceof Error ? err.message : String(err),
         })
+        toast.error(`연결 해제 중 오류가 발생했습니다.`)
       }
     })
   }

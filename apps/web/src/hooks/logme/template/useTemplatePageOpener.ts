@@ -1,5 +1,6 @@
 import { useBuilderStore } from '@/stores/logme/builderStore'
 import { useUpdateContentSource } from '@/hooks/logme/contentSource/useUpdateContentSource'
+import logger from '@/lib/logger'
 
 export const useTemplatePageOpener = () => {
   const { templateId } = useBuilderStore()
@@ -34,7 +35,7 @@ export const useTemplatePageOpener = () => {
         alert('❌ Notion 페이지를 불러오는데 실패했습니다.')
       }
     } catch (e) {
-      console.error('❌ Notion URL fetch error:', e)
+      logger.log('error', '❌ Notion URL fetch error:', { e })
       onError?.(e)
     }
   }

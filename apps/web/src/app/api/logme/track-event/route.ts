@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
+import logger from '@/lib/logger'
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('🔴 Failed to track event:', err)
+    logger.log('error', '🔴 Failed to track event:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

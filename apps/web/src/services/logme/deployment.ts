@@ -6,8 +6,8 @@ import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeploymen
 import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
-import { logger } from '@/lib/logger'
-import { sendAlertFromClient } from '@/lib/alert'
+import logger from '@/lib/logger'
+
 import { useCreateDomain } from '@/hooks/logme/domain/useCreateDomain'
 import { TEMPLATE_OWNER, TEMPLATE_REPO } from '@/lib/config/client'
 
@@ -45,7 +45,7 @@ export const useDeploymentActions = () => {
         status = data.readyState || data.status
 
         if (status === 'READY') {
-          logger.info('✅ 배포 완료:', data)
+          logger.log('info', '✅ 배포 완료:', data)
           onSuccess(deployUrl, `https://github.com/${githubOwner}/logme-${sub}`)
           await createDomain({
             sub,
@@ -58,7 +58,9 @@ export const useDeploymentActions = () => {
               domain: `https://${sub}.logme.click`,
               status: SiteStatus.published,
             })
-            logger.info('✅ 사이트 도메인 업데이트 완료:', { domain: `https://${sub}.logme.click` })
+            logger.log('info', '✅ 사이트 도메인 업데이트 완료:', {
+              domain: `https://${sub}.logme.click`,
+            })
           }
           return
         }
@@ -66,14 +68,8 @@ export const useDeploymentActions = () => {
         await new Promise((resolve) => setTimeout(resolve, 5000))
       }
     } catch (error) {
-      logger.error('❌ 배포 상태 확인 오류:', { error })
-      await sendAlertFromClient({
-        type: 'error',
-        message: '배포 상태 확인 실패',
-        meta: {
-          error,
-        },
-      })
+      logger.log('error', '❌ 배포 상태 확인 오류:', { error })
+
       alert('배포 상태 확인 중 오류가 발생했습니다.')
     }
   }
@@ -90,23 +86,16 @@ export const useDeploymentActions = () => {
       onDeploying?.()
       const { sub } = params
       if (!githubOwner) {
-        logger.error('❌ githubOwner가 없습니다.')
-        await sendAlertFromClient({
-          type: 'error',
-          message: 'githubOwner가 없습니다.',
-        })
+        logger.log('error', '❌ githubOwner가 없습니다.')
         return
       }
-      logger.info('🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
+      logger.log('info', '🚀 githubOwner 배포 요청: githubOwner', { githubOwner })
       if (!githubInstallationId) {
-        logger.error('❌ githubInstallationId가 없습니다.')
-        await sendAlertFromClient({
-          type: 'error',
-          message: 'githubInstallationId가 없습니다.',
-        })
+        logger.log('error', '❌ githubInstallationId가 없습니다.')
+
         return
       }
-      logger.info('🚀 githubInstallationId 배포 요청: githubInstallationId', {
+      logger.log('info', '🚀 githubInstallationId 배포 요청: githubInstallationId', {
         githubInstallationId,
       })
 
@@ -127,7 +116,7 @@ export const useDeploymentActions = () => {
 
       const data = await response.json()
       if (data.url && data.id) {
-        logger.info('✅ 배포 응답!!!!!!!!! :', data)
+        logger.log('info', '✅ 배포 응답!!!!!!!!! :', data)
 
         const repo = await createRepoDB({
           repoId: `${data.repoId}`,
@@ -136,14 +125,14 @@ export const useDeploymentActions = () => {
           repoOwner: githubOwner,
           repoBranch: data.repoBranch,
         })
-        logger.info('✅ Repo DB 생성:', repo)
+        logger.log('info', '✅ Repo DB 생성:', repo)
 
         const deployTarget = await createDeployTargetDB({
           targetId: data.targetId,
           targetName: data.targetName,
           targetUrl: data.url,
         })
-        logger.info('✅ Deploy Target DB 생성:', deployTarget)
+        logger.log('info', '✅ Deploy Target DB 생성:', deployTarget)
 
         const deployment = await createDeploymentDB({
           deployTargetId: deployTarget.id,
@@ -151,7 +140,7 @@ export const useDeploymentActions = () => {
           deployUrl: data.deployUrl,
         })
 
-        logger.info('✅ Deployment DB 생성:', deployment)
+        logger.log('info', '✅ Deployment DB 생성:', deployment)
 
         if (siteId) {
           await updateSiteDB({
@@ -160,38 +149,28 @@ export const useDeploymentActions = () => {
             deployTargetId: deployTarget.id,
             status: SiteStatus.draft,
           })
-          logger.info('✅ Site 업데이트:', {
+          logger.log('info', '✅ Site 업데이트:', {
             siteId,
             repoId: repo.id,
             deployTargetId: deployTarget.id,
           })
         } else {
-          logger.error('❌ Site ID가 없습니다.')
-          await sendAlertFromClient({
-            type: 'error',
-            message: '사이트 ID가 없습니다.',
+          logger.log('error', '❌ Site ID가 없습니다.', {
+            siteId,
+            repoId: repo.id,
+            deployTargetId: deployTarget.id,
           })
         }
 
         setBuilderStep(3)
         checkDeploymentStatus(data.id, data.targetId, sub, data.deployUrl, onReady || (() => {}))
       } else {
-        logger.error('❌ 배포 실패:', data)
-        await sendAlertFromClient({
-          type: 'error',
-          message: '배포 실패',
-          meta: { error: data.error || '알 수 없는 오류' },
-        })
+        logger.log('error', '❌ 배포 실패:', data)
 
         alert('배포 실패: ' + (data.error || '알 수 없는 오류'))
       }
     } catch (error) {
-      logger.error('❌ 배포 요청 오류:', { error })
-      await sendAlertFromClient({
-        type: 'error',
-        message: '배포 요청 오류',
-        meta: { error },
-      })
+      logger.log('error', '❌ 배포 요청 오류:', { error })
       alert('배포 중 오류가 발생했습니다.')
     }
   }

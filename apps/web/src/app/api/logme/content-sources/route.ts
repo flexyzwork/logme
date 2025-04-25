@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
+import logger from '@/lib/logger'
 
 // POST /api/logme/contentSources - 컨텐츠 소스 생성
 export async function POST(req: Request) {
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json(contentSource)
   } catch (err) {
-    console.error('❌ 컨텐츠 소스 생성 실패:', err)
+    logger.log('error', '❌ 컨텐츠 소스 생성 실패:', { err })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

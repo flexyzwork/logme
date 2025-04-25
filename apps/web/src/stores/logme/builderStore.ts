@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
@@ -43,59 +43,60 @@ export const useBuilderStore = create<BuilderState>()(
         gitRepoUrl: null,
 
         setBuilderStep: (step) => {
-          logger.info(`🚀 온보딩 스텝 변경:`, { step })
+          logger.log('info', `🚀 온보딩 스텝 변경:`, { step })
           set({ step })
         },
 
         setIsNotionFetching: (status) => set({ isNotionFetching: status }),
 
         setUserId: (id: string | null) => {
-          logger.info(`🚀 userId:`, { id })
+          logger.log('info', `🚀 userId:`, { id })
           set({ userId: id })
         },
 
         setNotionLastProcessedCode: (code) => {
-          logger.info('🔹 마지막 처리된 코드:', { code })
+          logger.log('info', '🔹 마지막 처리된 코드:', { code })
           set({ notionLastProcessedCode: code })
         },
         setNotionPageId: (id) => {
-          logger.info(`🚀 새 템플릿 복사본 저장:`, { id })
+          logger.log('info', `🚀 새 템플릿 복사본 저장:`, { id })
           set({ notionPageId: id })
         },
 
         setSiteId: (id) => {
-          logger.info(`🚀 새 블로그 저장:`, { id })
+          logger.log('info', `🚀 새 블로그 저장:`, { id })
           set({ siteId: id })
         },
         setTemplateId: (id) => {
-          logger.info(`🚀 템플릿 ID 저장:`, { id })
+          logger.log('info', `🚀 템플릿 ID 저장:`, { id })
           set({ templateId: id })
         },
 
         setDeployUrl: (url) => {
-          logger.info(`🚀 배포 URL 저장:`, { url })
+          logger.log('info', `🚀 배포 URL 저장:`, { url })
           set({ deployUrl: url })
         },
         setSub: (sub) => {
-          logger.info(`🚀 서브 도메인 정보 저장:`, { sub })
+          logger.log('info', `🚀 서브 도메인 정보 저장:`, { sub })
           set({ sub })
         },
         setGitRepoUrl: (url) => {
-          logger.info(`🚀 Git Repo URL 저장:`, { url })
+          logger.log('info', `🚀 Git Repo URL 저장:`, { url })
           set({ gitRepoUrl: url })
         },
-        reset: () => set({
-          step: 0,
-          isNotionFetching: false,
-          userId: null,
-          notionLastProcessedCode: null,
-          notionPageId: null,
-          siteId: null,
-          templateId: null,
-          deployUrl: null,
-          sub: null,
-          gitRepoUrl: null,
-        }),
+        reset: () =>
+          set({
+            step: 0,
+            isNotionFetching: false,
+            userId: null,
+            notionLastProcessedCode: null,
+            notionPageId: null,
+            siteId: null,
+            templateId: null,
+            deployUrl: null,
+            sub: null,
+            gitRepoUrl: null,
+          }),
       }),
       {
         name: 'builder-storage',

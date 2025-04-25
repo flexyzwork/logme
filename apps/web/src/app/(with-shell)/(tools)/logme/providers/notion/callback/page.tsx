@@ -10,8 +10,8 @@ import { useAuthStore } from '@/stores/logme/authStore'
 import { useSession } from 'next-auth/react'
 import { encrypt } from '@/lib/crypto'
 import { trackEvent } from '@/lib/tracking'
-import { logger } from '@/lib/logger'
-import { sendAlertFromClient } from '@/lib/alert'
+import logger from '@/lib/logger'
+
 import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
 
 export default function NotionCallbackPage() {
@@ -57,14 +57,10 @@ export default function NotionCallbackPage() {
       console.warn('❌ 유효하지 않은 인증 요청입니다. (state 없거나 불일치)')
       setError('❌ 유효하지 않은 인증 요청입니다. (state 불일치)')
       setLoading(false)
-      sendAlertFromClient({
-        type: 'error',
-        message: '❌ 유효하지 않은 인증 요청입니다. (state 불일치)',
-        meta: {
-          state,
-          notionAuthState: notion?.authState,
-          sessionUserId: session?.user.id,
-        },
+      logger.log('warn', '❌ 유효하지 않은 인증 요청입니다. (state 불일치)', {
+        state,
+        notionAuthState: notion?.authState,
+        sessionUserId: session?.user.id,
       })
       return
     }
@@ -90,7 +86,7 @@ export default function NotionCallbackPage() {
 
         const data = await response.json()
 
-        logger.info('Notion 인증 응답:', { data })
+        logger.log('info', 'Notion 인증 응답:', { data })
 
         if (data.access_token && data.duplicated_template_id) {
           const accessToken = data.access_token
@@ -120,7 +116,7 @@ export default function NotionCallbackPage() {
             extendedValue: encryptedToken,
           })
 
-          logger.info('✅ Notion 인증 완료:', {
+          logger.log('info', '✅ Notion 인증 완료:', {
             userId: currentUserId,
             providerUserId: data.owner?.user?.id,
             accessToken: encryptedToken,
@@ -139,34 +135,27 @@ export default function NotionCallbackPage() {
             sourceId: data.duplicated_template_id,
           }
           const contentSource = await createContentSourceDB(contentSourceData)
-          logger.info('✅ Content Source 생성:', contentSource)
+          logger.log('info', '✅ Content Source 생성:', contentSource)
 
           if (siteId) {
             await updateSiteDB({
               id: siteId,
               contentSourceId: contentSource.id,
             })
-            logger.info('✅ Site 업데이트 완료:', { siteId, contentSourceId: contentSource.id })
+            logger.log('info', '✅ Site 업데이트 완료:', {
+              siteId,
+              contentSourceId: contentSource.id,
+            })
           } else {
             setError('Failed to get site ID')
-            logger.error('❌ Site ID가 없습니다.')
-            await sendAlertFromClient({
-              type: 'error',
-              message: 'Vercel 토큰 저장 실패',
-              meta: { siteId, error: '❌ Site ID가 없습니다.' },
-            })
+            logger.log('error', '❌ Site ID가 없습니다.')
           }
         } else {
           setError('Failed to get access token or template ID')
         }
       } catch (err) {
-        logger.error('❌ Notion 인증 중 오류:', { err })
+        logger.log('error', '❌ Notion 인증 중 오류:', { err })
         setError('Internal server error')
-        await sendAlertFromClient({
-          type: 'error',
-          message: 'Notion 인증 중 오류',
-          meta: { err },
-        })
       } finally {
         setIsNotionFetching(false)
         setLoading(false)

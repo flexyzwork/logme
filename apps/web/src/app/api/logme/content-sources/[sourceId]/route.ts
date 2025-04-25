@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 
 // GET /api/logme/contentSources/[id] - 컨텐츠 소스 조회 (단건)
 export async function GET(req: NextRequest, context: { params: Promise<{ sourceId: string }> }) {
@@ -37,7 +38,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ sourc
 
     return NextResponse.json(updated)
   } catch (err) {
-    console.error('❌ 컨텐츠 소스 수정 실패:', err)
+    logger.log('error', '❌ 컨텐츠 소스 수정 실패:', {err})
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -59,7 +60,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ sour
 
     return NextResponse.json(deleted)
   } catch (err) {
-    console.error('❌ 컨텐츠 소스 삭제 실패:', err)
+    logger.log('error', '❌ 컨텐츠 소스 삭제 실패:', {err})
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

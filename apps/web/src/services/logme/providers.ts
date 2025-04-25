@@ -5,6 +5,7 @@ import { createAppAuth } from '@octokit/auth-app'
 import { ProviderType } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import os from 'os'
+import logger from '@/lib/logger'
 
 const GITHUB_APP_ID = process.env.GITHUB_APP_ID!
 let GITHUB_PRIVATE_KEY = ''
@@ -111,7 +112,7 @@ export async function handleGithub(req: Request, userId: string) {
       expires_at: data.expires_at,
     })
   } catch (error) {
-    console.error('GitHub App 토큰 발급 실패:', error)
+    logger.log('error', 'GitHub App 토큰 발급 실패:', { error })
     return NextResponse.json({ error: '서버 오류', detail: String(error) }, { status: 500 })
   }
 }

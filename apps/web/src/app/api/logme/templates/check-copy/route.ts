@@ -1,14 +1,14 @@
 import { getAuthSession } from '@/lib/auth'
 import { decrypt } from '@/lib/crypto'
-import { logger } from '@/lib/logger'
+import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
   const { notionPageId, templateId } = await req.json()
 
-  logger.info('Notion page ID:', notionPageId)
-  logger.info('Template ID:', templateId)
+  logger.log('info', 'Notion page ID:', notionPageId)
+  logger.log('info', 'Template ID:', templateId)
 
   if (!notionPageId) {
     return NextResponse.json({ error: 'Unauthorized or missing parameters' }, { status: 401 })
@@ -37,13 +37,13 @@ export async function POST(req: NextRequest) {
   })
 
   const encryptedNotionTokenData = providerExtended?.extendedValue
-  logger.info('Encrypted notion token:', {encryptedNotionTokenData})
+  logger.log('info', 'Encrypted notion token:', { encryptedNotionTokenData })
 
   if (!encryptedNotionTokenData) {
     return NextResponse.json({ error: 'Notion token not found' }, { status: 400 })
   }
   const notionToken = decrypt(encryptedNotionTokenData)
-  logger.info('Notion token:', {notionToken})
+  logger.log('info', 'Notion token:', { notionToken })
   try {
     const notionApiUrl = `https://api.notion.com/v1/pages/${notionPageId}`
     const response = await fetch(notionApiUrl, {
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ isCopied: true })
   } catch (error) {
-    console.error('Notion API Error:', error)
+    logger.log('error', 'Notion API Error:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
