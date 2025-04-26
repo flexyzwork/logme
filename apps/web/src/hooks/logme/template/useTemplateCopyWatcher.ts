@@ -38,7 +38,7 @@ export const useTemplateCopyWatcher = ({
         }
       } catch (error) {
         logger.log('error', '❌ 템플릿 확인 오류:', { error })
-        onError?.(err)
+        onError?.(error)
       }
     }
 

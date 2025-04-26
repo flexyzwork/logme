@@ -65,7 +65,7 @@ export default function LogmeDashboard() {
                       <input
                         type="text"
                         value={editingTitle}
-                        onChange={(e) => setEditingTitle(e.target.value)}
+                        onChange={ e => setEditingTitle(e.target.value)}
                         placeholder="사이트 제목"
                         className="w-full p-1 border rounded mb-2"
                       />

@@ -86,6 +86,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, domain: subdomain })
   } catch (error) {
     logger.log('error', '도메인 자동 연결 실패:', { error })
-    return NextResponse.json({ success: false, error: e }, { status: 500 })
+    return NextResponse.json({ success: false, error }, { status: 500 })
   }
 }

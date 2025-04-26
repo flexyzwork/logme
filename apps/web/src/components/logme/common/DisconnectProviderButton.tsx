@@ -30,7 +30,7 @@ export function DisconnectProviderButton({ providerType, onSuccess }: Props) {
       } catch (error) {
         logger.log('error', '연결 해제 중 오류가 발생했습니다.', {
           providerType,
-          error: err instanceof Error ? err.message : String(err),
+          error: error instanceof Error ? error.message : String(error),
         })
         toast.error(`연결 해제 중 오류가 발생했습니다.`)
       }

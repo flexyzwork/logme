@@ -36,7 +36,7 @@ export const useTemplatePageOpener = () => {
       }
     } catch (error) {
       logger.log('error', '❌ Notion URL fetch error:', { error })
-      onError?.(e)
+      onError?.(error)
     }
   }
 

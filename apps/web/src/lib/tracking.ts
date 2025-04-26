@@ -19,6 +19,6 @@ export async function trackEvent({
       body: JSON.stringify({ userId, event, meta }),
     })
   } catch (error) {
-    logger.log('error', '🔴 Failed to track event:', { userId, event, err })
+    logger.log('error', '🔴 Failed to track event:', { userId, event, error })
   }
 }
