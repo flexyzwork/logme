@@ -91,7 +91,7 @@ jobs:
               sleep 5
               docker system prune -a -f
           }
-          trap rollback error
+          trap rollback ERR
 
           cd ~/app
 

@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { clientBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ClientBetterStackStrategy'
+import { ClientBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ClientBetterStackStrategy'
 import { ServerBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ServerBetterStackStrategy'
-import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 import { ClientSentryStrategy } from '@/lib/logger/strategies/sentry/ClientSentryStrategy'
 import { ServerSentryStrategy } from '@/lib/logger/strategies/sentry/ServerSentryStrategy'
 import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackStrategy'
 import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/ServerSlackStrategy'
+import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
 class Logger {
   private strategies: LoggerStrategy[] = []
 
   constructor() {
     if (typeof window === 'undefined') {
-      // 서버 전용
       this.strategies.push(new ServerBetterStackStrategy())
       this.strategies.push(new ServerSlackStrategy())
       this.strategies.push(new ServerSentryStrategy())
     } else {
-      // 클라이언트 전용
-      this.strategies.push(new clientBetterStackStrategy())
+      this.strategies.push(new ClientBetterStackStrategy())
       this.strategies.push(new ClientSlackStrategy())
       this.strategies.push(new ClientSentryStrategy())
     }
