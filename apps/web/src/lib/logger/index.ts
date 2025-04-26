@@ -3,9 +3,9 @@ import { ClientBetterStackStrategy } from '@/lib/logger/strategies/better-stack/
 import { ServerBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ServerBetterStackStrategy'
 import { ClientSentryStrategy } from '@/lib/logger/strategies/sentry/ClientSentryStrategy'
 import { ServerSentryStrategy } from '@/lib/logger/strategies/sentry/ServerSentryStrategy'
-import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackStrategy'
-import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/ServerSlackStrategy'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
+import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/ServerSlackStrategy'
+import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackStrategy'
 
 class Logger {
   private strategies: LoggerStrategy[] = []
