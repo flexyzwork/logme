@@ -24,8 +24,8 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     })
 
     return NextResponse.json(deleted)
-  } catch (err) {
-    logger.log('error', '❌ 사이트 삭제 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 사이트 삭제 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

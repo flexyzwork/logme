@@ -60,8 +60,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ providerUserId: providerUserIdStr, userId: provider?.userId })
-  } catch (err) {
-    logger.log('error', '❌ Provider 저장 오류:', { err })
+  } catch (error) {
+    logger.log('error', '❌ Provider 저장 오류:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

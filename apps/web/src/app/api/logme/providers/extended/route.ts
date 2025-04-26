@@ -67,8 +67,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ success: true, id: result.id })
-  } catch (err) {
-    logger.log('error', '❌ providerExtended 저장 오류:', { err })
+  } catch (error) {
+    logger.log('error', '❌ providerExtended 저장 오류:', { error })
     return NextResponse.json({ error: 'providerExtended 저장 실패' }, { status: 500 })
   }
 }
@@ -108,8 +108,8 @@ export async function GET(req: NextRequest) {
     })
 
     return NextResponse.json({ value: extended?.extendedValue ?? null })
-  } catch (err) {
-    logger.log('error', '❌ Vercel 토큰 조회 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ Vercel 토큰 조회 실패:', { error })
     return NextResponse.json({ error: '서버 에러' }, { status: 500 })
   }
 }

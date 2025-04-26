@@ -29,8 +29,8 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
     return NextResponse.json(templates)
-  } catch (err) {
-    logger.log('error', '❌ 템플릿 목록 불러오기 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 템플릿 목록 불러오기 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

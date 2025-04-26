@@ -15,8 +15,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (err) {
-    logger.log('error', '🔴 Failed to track event:', { err })
+  } catch (error) {
+    logger.log('error', '🔴 Failed to track event:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

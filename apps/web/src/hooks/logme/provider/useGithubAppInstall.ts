@@ -80,8 +80,8 @@ export const useGithubAppInstall = () => {
           await fetchGithubInstallationToken(installationId)
 
           setIsLogmeAppInstalled(true)
-        } catch (err) {
-          logger.log('error', '❌ 연결 토큰 저장 실패:', { err })
+        } catch (error) {
+          logger.log('error', '❌ 연결 토큰 저장 실패:', { error })
         } finally {
           isFetching.current = false
         }

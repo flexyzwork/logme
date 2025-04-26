@@ -37,8 +37,8 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ sourc
     })
 
     return NextResponse.json(updated)
-  } catch (err) {
-    logger.log('error', '❌ 컨텐츠 소스 수정 실패:', {err})
+  } catch (error) {
+    logger.log('error', '❌ 컨텐츠 소스 수정 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -59,8 +59,8 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ sour
     })
 
     return NextResponse.json(deleted)
-  } catch (err) {
-    logger.log('error', '❌ 컨텐츠 소스 삭제 실패:', {err})
+  } catch (error) {
+    logger.log('error', '❌ 컨텐츠 소스 삭제 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

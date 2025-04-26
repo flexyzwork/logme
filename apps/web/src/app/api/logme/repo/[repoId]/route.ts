@@ -38,8 +38,8 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ repoI
     })
 
     return NextResponse.json(updated)
-  } catch (err) {
-    logger.log('error', '❌ 레포 수정 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 레포 수정 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -60,8 +60,8 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ repo
     })
 
     return NextResponse.json(deleted)
-  } catch (err) {
-    logger.log('error', '❌ 레포 삭제 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 레포 삭제 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

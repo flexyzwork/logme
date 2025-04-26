@@ -25,8 +25,8 @@ export async function deleteVercelProject(token: string, projectId: string) {
   const text = await response.text()
   try {
     return JSON.parse(text)
-  } catch (err) {
-    logger.log('error', 'Vercel 삭제 응답 파싱 실패:', { err })
+  } catch (error) {
+    logger.log('error', 'Vercel 삭제 응답 파싱 실패:', { error })
     throw new Error('Vercel 프로젝트 삭제 응답이 올바르지 않습니다.')
   }
 }

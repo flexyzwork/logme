@@ -12,8 +12,8 @@ export async function POST(req: Request) {
       },
     })
     return NextResponse.json(deployTarget)
-  } catch (err) {
-    logger.log('error', '❌ 배포 프로젝트 생성 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 배포 프로젝트 생성 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

@@ -153,8 +153,8 @@ export default function NotionCallbackPage() {
         } else {
           setError('Failed to get access token or template ID')
         }
-      } catch (err) {
-        logger.log('error', '❌ Notion 인증 중 오류:', { err })
+      } catch (error) {
+        logger.log('error', '❌ Notion 인증 중 오류:', { error })
         setError('Internal server error')
       } finally {
         setIsNotionFetching(false)

@@ -1,4 +1,4 @@
-import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/serverSlackStrategy'
+import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/ServerSlackStrategy'
 
 const slackLogger = new ServerSlackStrategy()
 

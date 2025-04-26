@@ -36,8 +36,8 @@ export const useTemplateCopyWatcher = ({
         } else {
           timeoutId = setTimeout(checkCopyStatus, 1000)
         }
-      } catch (err) {
-        logger.log('error', '❌ 템플릿 확인 오류:', { err })
+      } catch (error) {
+        logger.log('error', '❌ 템플릿 확인 오류:', { error })
         onError?.(err)
       }
     }

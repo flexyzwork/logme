@@ -34,8 +34,8 @@ export const useTemplatePageOpener = () => {
       } else {
         alert('❌ Notion 페이지를 불러오는데 실패했습니다.')
       }
-    } catch (e) {
-      logger.log('error', '❌ Notion URL fetch error:', { e })
+    } catch (error) {
+      logger.log('error', '❌ Notion URL fetch error:', { error })
       onError?.(e)
     }
   }

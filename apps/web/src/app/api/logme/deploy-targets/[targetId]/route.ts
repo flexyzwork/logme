@@ -39,8 +39,8 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ targe
     })
 
     return NextResponse.json(updated)
-  } catch (err) {
-    logger.log('error', '❌ 배포 프로젝트 수정 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 배포 프로젝트 수정 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
@@ -62,8 +62,8 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ targ
     })
 
     return NextResponse.json(deleted)
-  } catch (err) {
-    logger.log('error', '❌ 배포 프로젝트 삭제 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 배포 프로젝트 삭제 실패:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

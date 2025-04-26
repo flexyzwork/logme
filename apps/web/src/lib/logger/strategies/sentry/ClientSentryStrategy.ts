@@ -2,16 +2,18 @@
 import logger from '@/lib/logger'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
-export class ClientSlackStrategy implements LoggerStrategy {
+export class ClientSentryStrategy implements LoggerStrategy {
   async log(level: LogLevel, message: string, meta?: Record<string, any>) {
     try {
-      await fetch('/api/internal/alert', {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+
+      await fetch(`${baseUrl}/api/internal/error`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: level, message, meta }),
       })
     } catch ( error ) {
-      logger.log('error', '🔴 Failed to send alert from client:', { error })
+      logger.log('error', '🔴 Failed to send log from client:', { error })
     }
   }
 }

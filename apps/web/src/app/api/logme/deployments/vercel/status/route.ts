@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
     const data = await res.json()
 
     return NextResponse.json(data)
-  } catch (e) {
-    logger.log('error', '❌ 배포 상태 조회 실패:', { e })
+  } catch (error) {
+    logger.log('error', '❌ 배포 상태 조회 실패:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

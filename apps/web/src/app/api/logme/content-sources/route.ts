@@ -12,8 +12,8 @@ export async function POST(req: Request) {
       },
     })
     return NextResponse.json(contentSource)
-  } catch (err) {
-    logger.log('error', '❌ 컨텐츠 소스 생성 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 컨텐츠 소스 생성 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

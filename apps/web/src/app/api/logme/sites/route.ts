@@ -19,8 +19,8 @@ export async function POST(req: Request) {
       },
     })
     return NextResponse.json(site)
-  } catch (err) {
-    logger.log('error', '❌ 사이트 생성 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 사이트 생성 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
@@ -81,8 +81,8 @@ export async function GET() {
     })
 
     return NextResponse.json(sites)
-  } catch (err) {
-    logger.log('error', '❌ 사이트 목록 불러오기 실패:', { err })
+  } catch (error) {
+    logger.log('error', '❌ 사이트 목록 불러오기 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
