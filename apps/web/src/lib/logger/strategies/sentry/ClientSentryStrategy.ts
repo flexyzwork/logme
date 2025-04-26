@@ -5,7 +5,7 @@ import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy
 export class ClientSentryStrategy implements LoggerStrategy {
   async log(level: LogLevel, message: string, meta?: Record<string, any>) {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL
 
       await fetch(`${baseUrl}/api/internal/error`, {
         method: 'POST',

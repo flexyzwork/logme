@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     DEBUG: process.env.DEBUG,
     NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
     NEXT_PUBLIC_BETTER_STACK_INGESTING_URL: process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],
