@@ -1,7 +1,11 @@
+import { withBetterStack, BetterStackRequest } from '@logtail/next'
 import { NextResponse } from 'next/server'
-import { sendBetterStackLog } from '@/lib/logger/sendBetterStackLog'
 
-export async function GET() {
-  await sendBetterStackLog('info', '🟢 BetterStack 테스트 로그', { test: true, timestamp: new Date().toISOString() })
-  return NextResponse.json({ status: 'success', message: 'BetterStack로 로그 전송 완료' })
-}
+export const GET = withBetterStack((req: BetterStackRequest) => {
+  req.log.info('유저 로그인 성공', { userId: '12345' })
+
+  const log = req.log.with({ scope: 'user' })
+  log.info('User accessed profile', { userId: '12345' })
+
+  return NextResponse.json({ status: 'ok' })
+})

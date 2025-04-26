@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const BETTERSTACK_ENDPOINT = process.env.BETTERSTACK_ENDPOINT!
-const TOKEN = process.env.BETTERSTACK_TOKEN
+const NEXT_PUBLIC_BETTER_STACK_INGESTING_URL = process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_URL!
+const TOKEN = process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN
 
 if (!TOKEN) {
-  throw new Error('BETTERSTACK_TOKEN is not defined in environment variables')
+  throw new Error('NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN is not defined in environment variables')
 }
 
 export async function POST(req: NextRequest) {
   const { level = 'info', message, meta } = await req.json()
 
   try {
-    const response = await fetch(BETTERSTACK_ENDPOINT, {
+    const response = await fetch(NEXT_PUBLIC_BETTER_STACK_INGESTING_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,3 +36,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ status: 'error', error: String(error) }, { status: 500 })
   }
 }
+

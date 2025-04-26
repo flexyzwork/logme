@@ -1,4 +1,5 @@
 import { withSentryConfig } from '@sentry/nextjs'
+import { withBetterStack } from '@logtail/next'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -6,25 +7,18 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@repo/db', '@repo/typescript-config', '@repo/eslint-config'],
   output: 'standalone',
   env: {
-    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
-    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
     SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
     DEBUG: process.env.DEBUG,
-    BETTERSTACK_TOKEN: process.env.BETTERSTACK_TOKEN,
+    NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
+    NEXT_PUBLIC_BETTER_STACK_INGESTING_URL: process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_URL,
   },
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],
   },
-  webpack: (config) => {
-    config.externals.push('@logtail/node')
-    return config
-  },
 }
 
-module.exports = nextConfig
-
-export default withSentryConfig(nextConfig, {
+const sentryConfig = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
@@ -55,3 +49,7 @@ export default withSentryConfig(nextConfig, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 })
+
+export default withBetterStack(sentryConfig)
+
+module.exports = nextConfig
