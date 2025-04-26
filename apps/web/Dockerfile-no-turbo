@@ -1,5 +1,5 @@
 # 1. Next.js 빌드
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 RUN npm install -g pnpm@10.4.1
 
@@ -11,7 +11,7 @@ RUN pnpm build || (echo "Build failed" && exit 1)
 
 
 # 2. 실행 환경 (최소한의 파일만 유지)
-FROM node:20-alpine AS runtime
+FROM node:22-alpine AS runtime
 RUN apk update && apk add curl
 
 WORKDIR /app
