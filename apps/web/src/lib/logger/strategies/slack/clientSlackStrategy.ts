@@ -10,7 +10,7 @@ export class ClientSlackStrategy implements LoggerStrategy {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: level, message, meta }),
       })
-    } catch ( error ) {
+    } catch (error) {
       logger.log('error', '🔴 Failed to send alert from client:', { error })
     }
   }
