@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoggerStrategy, LogLevel } from './strategies/LoggerStrategy'
 
 export class Logger {
@@ -17,7 +18,7 @@ export class Logger {
     }
     for (const strategy of this.strategies) {
       try {
-        await strategy.log(level, message, meta)
+        await strategy.log(level, message, meta, forceSlack)
       } catch (error) {
         console.error(`Failed to log with strategy ${strategy.constructor.name}`, error)
       }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { serverLogger } from './serverLogger'
 import { clientLogger } from './clientLogger'
 
