@@ -159,7 +159,7 @@ export default function Landing() {
         <p className="text-base text-muted-foreground">
           이 서비스가 마음에 드셨다면,{' '}
           <a
-            href="https://buymeacoffee.com/flexyzworkr"
+            href="https://buymeacoffee.com/flexyzwork"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-base text-muted-foreground hover:underline"
