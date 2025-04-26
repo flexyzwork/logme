@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Logger } from '@logtail/next'
-import { withBetterStack, BetterStackRequest } from '@logtail/next'
+import { Logger, withBetterStack, BetterStackRequest } from '@logtail/next'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
 export class ServerBetterStackStrategy implements LoggerStrategy {

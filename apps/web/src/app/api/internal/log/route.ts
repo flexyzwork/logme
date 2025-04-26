@@ -42,7 +42,7 @@ import { ServerBetterStackStrategy } from '@/lib/logger/strategies/better-stack/
 const betterStackLogger = new ServerBetterStackStrategy()
 
 export async function POST(req: Request) {
-  const { type, message, meta } = await req.json()
-  await betterStackLogger.log(type, message, meta)
+  const { level, message, meta } = await req.json()
+  await betterStackLogger.log(level, message, meta)
   return new Response('ok')
 }
