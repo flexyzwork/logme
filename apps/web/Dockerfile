@@ -5,12 +5,8 @@ FROM node:22-slim AS base
 
 
 FROM base AS pruner
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine 
-# to understand why libc6-compat might be needed.
 
-#### # RUN apk update && apk add --no-cache libc6-compat 
 RUN npm install -g turbo pnpm
-# Set working directory
 WORKDIR /app
 COPY . .
 # 필터링하지 말고 전체 터보 푸룬 도커
@@ -20,7 +16,6 @@ RUN turbo prune web --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS builder
-##### # RUN apk update && apk add --no-cache libc6-compat && 
 RUN npm install -g pnpm
 WORKDIR /app
 # First install the dependencies (as they change less often)
