@@ -19,6 +19,7 @@ services:
       - app-${ACTIVE}
     environment:
       - ACTIVE=${ACTIVE}
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     env_file:
       - .env
     entrypoint: ['/bin/sh', '/entrypoint.sh']
@@ -33,6 +34,8 @@ services:
       - '3000:3000'
     env_file:
       - apps/web/.env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     networks:
       - app-network
 
@@ -46,6 +49,8 @@ services:
       - '3002:3000'
     env_file:
       - ./apps/web/.env
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     networks:
       - app-network
 
