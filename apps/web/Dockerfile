@@ -56,9 +56,7 @@ WORKDIR /app
 
 RUN groupadd --system --gid 1001 nodejs \
   && useradd --system --uid 1001 --gid nodejs nextjs \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 
 USER nextjs
@@ -70,6 +68,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
 # 불필요한 캐시 제거 (의미 없음... 크기 변화 없음)
-# RUN rm -rf .next/cache
+RUN rm -rf .next/cache
 
 CMD node apps/web/server.js
