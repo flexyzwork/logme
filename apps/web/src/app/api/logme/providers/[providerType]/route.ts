@@ -52,6 +52,11 @@ export async function GET(
   context: { params: Promise<{ providerType: string }> }
 ) {
   try {
+    const session = await getAuthSession()
+    if (!session) {
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+    const userId = session.user.id
     const { providerType } = (await context.params) as {
       providerType: 'notion' | 'github' | 'vercel'
     }
@@ -61,7 +66,10 @@ export async function GET(
     }
 
     const provider = await db.provider.findFirst({
-      where: { providerType },
+      where: {
+        providerType,
+        userId,
+       },
       include: {
         providerExtended: true,
       },
