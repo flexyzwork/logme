@@ -2,6 +2,9 @@ services:
   nginx:
     build:
       context: ./apps/nginx
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     restart: always
     ports:
       - '80:80'
@@ -22,6 +25,9 @@ services:
 
   app-green:
     image: kix.ocir.io/axunckhvyv1v/logme-app:green
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     restart: always
     ports:
       - '3000:3000'
@@ -32,6 +38,9 @@ services:
 
   app-blue:
     image: kix.ocir.io/axunckhvyv1v/logme-app:blue
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     restart: always
     ports:
       - '3002:3000'
