@@ -9,6 +9,8 @@
 //   return <div>Server Log Test</div>
 // }
 
+export const dynamic = 'force-dynamic'
+
 import { logger2 } from '@/lib/logger'
 
 export default function ServerComponent() {
