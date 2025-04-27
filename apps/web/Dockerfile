@@ -65,7 +65,6 @@ RUN groupadd --system --gid 1001 nodejs \
   && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/*
 
-RUN addgroup -S nodejs && adduser -S -G nodejs nextjs
 
 USER nextjs
 
