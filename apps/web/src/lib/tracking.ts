@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import logger from '@/lib/logger'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export async function trackEvent({
   userId,
   event,

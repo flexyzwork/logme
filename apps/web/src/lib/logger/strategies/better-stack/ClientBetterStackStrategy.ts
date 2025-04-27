@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import logger from '@/lib/logger'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
 export class ClientBetterStackStrategy implements LoggerStrategy {
@@ -16,7 +15,7 @@ export class ClientBetterStackStrategy implements LoggerStrategy {
         body: JSON.stringify({ type: level, message, meta }),
       })
     } catch ( error ) {
-      logger.log('error', '🔴 Failed to send log from client:', { error })
+      console.log('error', '🔴 Failed to send log from client:', { error })
     }
   }
 }
