@@ -58,6 +58,13 @@ WORKDIR /app
 #   && adduser --system --uid 1001 nextjs \
 #   && apk add --no-cache curl
 
+
+RUN groupadd --system --gid 1001 nodejs \
+  && useradd --system --uid 1001 --gid nodejs nextjs \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN addgroup -S nodejs && adduser -S -G nodejs nextjs
 
 USER nextjs
