@@ -13,7 +13,7 @@ export class ClientBetterStackStrategy implements LoggerStrategy {
       await fetch(`${baseUrl}/api/internal/log`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ level, message, meta }),
+        body: JSON.stringify({ type: level, message, meta }),
       })
     } catch ( error ) {
       logger.log('error', '🔴 Failed to send log from client:', { error })

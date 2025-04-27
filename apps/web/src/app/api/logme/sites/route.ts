@@ -12,14 +12,18 @@ export async function POST(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
     const userId = session.user.id
+    console.log('사이트 생성 요청:', data)
+    console.log('사용자 ID:', userId)
     const site = await db.site.create({
       data: {
         ...data,
         userId,
       },
     })
+    console.log('사이트 생성 성공:', site)
     return NextResponse.json(site)
   } catch (error) {
+    // console.error('사이트 생성 실패:', error)
     logger.log('error', '❌ 사이트 생성 실패:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
