@@ -58,6 +58,8 @@ WORKDIR /app
 #   && adduser --system --uid 1001 nextjs \
 #   && apk add --no-cache curl
 
+RUN addgroup -S nodejs && adduser -S -G nodejs nextjs
+
 USER nextjs
 
 # Automatically leverage output traces to reduce image size
