@@ -2,9 +2,6 @@ services:
   nginx:
     build:
       context: ./apps/nginx
-    # dns:
-    #   - 8.8.8.8
-    #   - 1.1.1.1
     restart: always
     ports:
       - '80:80'
@@ -19,38 +16,27 @@ services:
       - app-${ACTIVE}
     environment:
       - ACTIVE=${ACTIVE}
-      # - NODE_OPTIONS=--dns-result-order=ipv4first
     env_file:
       - .env
     entrypoint: ['/bin/sh', '/entrypoint.sh']
 
   app-green:
     image: kix.ocir.io/axunckhvyv1v/logme-app:green
-    # dns:
-    #   - 8.8.8.8
-    #   - 1.1.1.1
     restart: always
     ports:
       - '3000:3000'
     env_file:
       - apps/web/.env
-    # environment:
-    #   - NODE_OPTIONS=--dns-result-order=ipv4first
     networks:
       - app-network
 
   app-blue:
     image: kix.ocir.io/axunckhvyv1v/logme-app:blue
-    # dns:
-    #   - 8.8.8.8
-    #   - 1.1.1.1
     restart: always
     ports:
       - '3002:3000'
     env_file:
       - ./apps/web/.env
-    # environment:
-    #   - NODE_OPTIONS=--dns-result-order=ipv4first
     networks:
       - app-network
 

@@ -82,8 +82,8 @@ jobs:
       - name: Turbo Build
         run: pnpm turbo run build
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and Push Image
         uses: docker/build-push-action@v6
@@ -92,8 +92,8 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
