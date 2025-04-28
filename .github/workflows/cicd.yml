@@ -10,32 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-test:
-    runs-on: ubuntu-latest
-    name: Lint & Test (병렬 실행)
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Run Lint
-        run: pnpm turbo run lint
-
-      - name: Run Test
-        run: pnpm turbo run test
-
   deploy:
     name: Build and Deploy to EC2
     runs-on: ubuntu-latest
-    needs: lint-test # ✅ lint/test 성공 시에만 실행
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -77,6 +54,14 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install
+
+      - name: Run Lint
+        run: pnpm turbo run lint
+
+      - name: Run Test
+        run: pnpm turbo run test
+        env:
+          ENCRYPTION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 
       - name: Turbo Build
         run: pnpm turbo run build
