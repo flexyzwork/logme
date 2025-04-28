@@ -6,9 +6,9 @@ import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackSt
 const strategies = []
 
 if (process.env.NODE_ENV === 'production') {
-  if (process.env.ENABLE_BETTERSTACK) strategies.push(new ClientBetterStackStrategy())
-  if (process.env.ENABLE_SLACK) strategies.push(new ClientSlackStrategy())
-  if (process.env.ENABLE_SENTRY) strategies.push(new ClientSentryStrategy())
+  if (process.env.NEXT_PUBLIC_ENABLE_BETTERSTACK) strategies.push(new ClientBetterStackStrategy())
+  if (process.env.NEXT_PUBLIC_ENABLE_SLACK) strategies.push(new ClientSlackStrategy())
+  if (process.env.NEXT_PUBLIC_ENABLE_SENTRY) strategies.push(new ClientSentryStrategy())
 }
 
 export const clientLogger = new Logger(strategies)
