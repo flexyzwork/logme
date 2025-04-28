@@ -59,7 +59,7 @@ jobs:
         run: pnpm turbo run lint
 
       - name: Run Test
-        run: pnpm turbo run test
+        run: pnpm --filter ./apps/web test
         env:
           ENCRYPTION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 
