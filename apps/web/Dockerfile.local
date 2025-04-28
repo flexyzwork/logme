@@ -31,11 +31,11 @@ COPY ./apps/web/.env.local  ./apps/web/.env
 # RUN pnpm add -D dotenv-cli --ignore-workspace-root-check
 
 # Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
+ARG TURBO_API
+ENV TURBO_API=$TURBO_API
 
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 # Turborepo 전체에서 build 실행
 RUN pnpm turbo run build

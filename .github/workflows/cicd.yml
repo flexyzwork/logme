@@ -73,6 +73,9 @@ jobs:
           tags: |
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
+          build-args: |
+            TURBO_API=${{ env.TURBO_API }}
+            TURBO_TOKEN=${{ env.TURBO_TOKEN }}
 
       - name: Deploy on EC2
         run: |
