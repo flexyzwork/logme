@@ -8,8 +8,8 @@ RUN groupadd --system --gid 1001 nodejs \
 
 USER nextjs
 
-COPY .next/ ./.next/
-COPY public/ ./public/
+COPY apps/web/.next/ ./.next/
+COPY apps/web/public/ ./public/
 COPY package.json .
 
 CMD ["node", ".next/standalone/server.js"]
