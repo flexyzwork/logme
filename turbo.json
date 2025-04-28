@@ -8,7 +8,12 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [
+        "apps/web/.next/standalone/**",
+        "apps/web/.next/static/**",
+        "!apps/web/.next/cache/**",
+        "dist/**"
+      ]
     },
     "check-types": { "dependsOn": ["^check-types"] },
     "dev": { "cache": false, "persistent": true },

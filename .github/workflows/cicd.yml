@@ -20,9 +20,6 @@ jobs:
       - name: Create .env
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
-      - name: Check .env exists
-        run: ls -al apps/web/.env
-
       - name: Log in to OCI Registry
         run: |
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login kix.ocir.io -u "${{ secrets.OCI_USERNAME }}" --password-stdin
@@ -37,27 +34,6 @@ jobs:
           echo "  User ubuntu" >> ~/.ssh/config
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-
-      - name: Copy docker-compose.yaml and nginx
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-
-      - name: Determine Active
-        id: active_version
-        run: |
-          ACTIVE=$(ssh ec2 "docker ps --format '{{.Names}}' | grep -q 'app-blue' && echo blue || echo green")
-          echo "ACTIVE=$ACTIVE" >> $GITHUB_ENV
-          if [[ \"$ACTIVE\" == \"blue\" ]]; then
-              echo "NEW=green" >> $GITHUB_ENV
-          else
-              echo "NEW=blue" >> $GITHUB_ENV
-          fi
-
-      - name: Check GITHUB_ENV
-        run: echo $GITHUB_ENV
 
       - name: Cache pnpm store
         uses: actions/cache@v4
@@ -97,6 +73,27 @@ jobs:
           tags: |
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
+
+      - name: Copy docker-compose.yaml and nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+
+      - name: Determine Active
+        id: active_version
+        run: |
+          ACTIVE=$(ssh ec2 "docker ps --format '{{.Names}}' | grep -q 'app-blue' && echo blue || echo green")
+          echo "ACTIVE=$ACTIVE" >> $GITHUB_ENV
+          if [[ \"$ACTIVE\" == \"blue\" ]]; then
+              echo "NEW=green" >> $GITHUB_ENV
+          else
+              echo "NEW=blue" >> $GITHUB_ENV
+          fi
+
+      - name: Check GITHUB_ENV
+        run: echo $GITHUB_ENV
 
       - name: Deploy on EC2
         run: |
