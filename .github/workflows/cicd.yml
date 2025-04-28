@@ -124,8 +124,18 @@ jobs:
           docker-compose pull app-${{ env.NEW }}
           docker-compose up -d app-${{ env.NEW }}
 
+          # Health Check
+          echo "🩺 헬스 체크 수행 중..."
           sleep 10
-          docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
+          if curl -f http://localhost:3000/api/health | grep -q '"status":"ok"'; then
+              echo "✅ 헬스 체크 성공! 전환 진행"
+          else
+              echo "❌ 헬스 체크 실패! 롤백 수행"
+              rollback
+          fi
+
+          # sleep 10
+          # docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
 
           echo "✅ 배포 성공!"
           echo "ACTIVE=${{ env.NEW }}" > .env
