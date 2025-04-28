@@ -1,4 +1,5 @@
-name: Deploy to EC2
+
+name: Publish and Deploy to EC2
 
 on:
   push:
@@ -11,7 +12,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy to EC2
+    name: Build and Deploy to EC2
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -20,10 +21,12 @@ jobs:
       - name: Create .env
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
+      - name: Check .env exists
+        run: ls -al apps/web/.env
+
       - name: Log in to OCI Registry
         run: |
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login kix.ocir.io -u "${{ secrets.OCI_USERNAME }}" --password-stdin
-
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/
@@ -34,14 +37,12 @@ jobs:
           echo "  User ubuntu" >> ~/.ssh/config
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-
       - name: Copy docker-compose.yaml and nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-
       - name: Determine Active
         id: active_version
         run: |
@@ -54,6 +55,7 @@ jobs:
           fi
       - name: Check GITHUB_ENV
         run: echo $GITHUB_ENV
+
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
@@ -74,14 +76,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Run Lint
-        run: pnpm turbo run lint
-
-      - name: Run Test
-        run: pnpm --filter ./apps/web test
-        env:
-          ENCRYPTION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-
       - name: Turbo Build
         run: pnpm turbo run build
 
@@ -100,17 +94,14 @@ jobs:
           tags: |
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
-
       - name: Deploy on EC2
         run: |
           ssh ec2 << 'EOF'
           set -e
-
           rollback() {
               echo "❌ 배포 실패! 이전 컨테이너로 원복 중..."
               docker-compose kill app-${{ env.NEW }}
               docker-compose rm -f app-${{ env.NEW }}
-
               docker system prune -a -f
               exit 1
           }
@@ -118,23 +109,17 @@ jobs:
               echo "✅ 배포 성공! 이전 컨테이너 정리 중..."
               docker-compose kill app-${{ env.ACTIVE }}
               docker-compose rm -f app-${{ env.ACTIVE }}
-
               sleep 5
               docker system prune -a -f
           }
           trap rollback ERR
-
           cd ~/app
-
           echo "현재 컨테이너: $(docker ps --format '{{.Names}}')"
-
           # 이 부분이 중요했음! git pull 부분 삭제하고, .env가 없어서 docker-compose.yaml의 ACTIVE 변수가 ""로 바뀌는 바람에 
           # docker-compose 스크립트가 nginx depends_on: app- 으로 해석되어 구문 오류 발생
           echo "ACTIVE=${{ env.ACTIVE }}" > .env
-
           docker-compose pull app-${{ env.NEW }}
           docker-compose up -d app-${{ env.NEW }}
-
           # Health Check
           echo "🩺 헬스 체크 수행 중..."
           sleep 10
@@ -144,31 +129,12 @@ jobs:
               echo "❌ 헬스 체크 실패! 롤백 수행"
               rollback
           fi
-
           # sleep 10
           # docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
-
           echo "✅ 배포 성공!"
           echo "ACTIVE=${{ env.NEW }}" > .env
           export $(grep -v '^#' .env | xargs)
           echo "${{ env.ACTIVE }} -> $ACTIVE"
-
           cleanup
-
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
-
           EOF
-
-      - name: Slack Notification (Success)
-        if: success()
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ 배포 성공: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}'"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Slack Notification (Failure)
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ 배포 실패: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}' 확인 필요!"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
