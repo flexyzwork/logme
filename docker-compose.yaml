@@ -8,6 +8,7 @@ services:
       - '443:443'
     volumes:
       - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
+      - ./apps/nginx/maintenance.html:/usr/share/nginx/html/maintenance.html:ro
       - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
       - /home/ubuntu/certs:/etc/nginx/ssl:rw
     networks:
