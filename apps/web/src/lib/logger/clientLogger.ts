@@ -3,23 +3,16 @@ import { ClientBetterStackStrategy } from '@/lib/logger/strategies/better-stack/
 import { ClientSentryStrategy } from '@/lib/logger/strategies/sentry/ClientSentryStrategy'
 import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackStrategy'
 
-const requiredEnv = [
-  'NEXT_PUBLIC_ENABLE_BETTERSTACK',
-  'NEXT_PUBLIC_ENABLE_SENTRY',
-  'NEXT_PUBLIC_ENABLE_SLACK',
-]
-requiredEnv.forEach((key) => {
-  if (!process.env[key]) {
-    console.warn(`⚠️ Missing environment variable: ${key}`)
-  }
-})
-
 const strategies = []
 
+const isBetterStackEnabled = process.env.NEXT_PUBLIC_ENABLE_BETTERSTACK === 'true'
+const isSentryEnabled = process.env.NEXT_PUBLIC_ENABLE_SENTRY === 'true'
+const isSlackEnabled = process.env.NEXT_PUBLIC_ENABLE_SLACK === 'true'
+
 if (process.env.NODE_ENV === 'production') {
-  if (process.env.NEXT_PUBLIC_ENABLE_BETTERSTACK) strategies.push(new ClientBetterStackStrategy())
-  if (process.env.NEXT_PUBLIC_ENABLE_SENTRY) strategies.push(new ClientSentryStrategy())
-  if (process.env.NEXT_PUBLIC_ENABLE_SLACK) strategies.push(new ClientSlackStrategy())
+  if (isBetterStackEnabled) strategies.push(new ClientBetterStackStrategy())
+  if (isSentryEnabled) strategies.push(new ClientSentryStrategy())
+  if (isSlackEnabled) strategies.push(new ClientSlackStrategy())
 }
 
 export const clientLogger = new Logger(strategies)
