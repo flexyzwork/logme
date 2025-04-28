@@ -10,3 +10,9 @@ code:
 	else \
 		echo "🚫 삭제를 취소했습니다."; \
 	fi
+
+# .PHONY: build
+# build:
+# 	@echo "🚀 Starting Turbo Build with Remote Cache"
+# 	@set -a && source .github/workflows/.env && set +a && \
+# 	TURBO_TEAM=$$TURBO_TEAM TURBO_TOKEN=$$TURBO_TOKEN pnpm build
