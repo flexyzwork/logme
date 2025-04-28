@@ -3,6 +3,9 @@ import { SLACK_WEBHOOK_URL } from '@/lib/config/server'
 import { LoggerStrategy, LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
 
 export class ServerSlackStrategy implements LoggerStrategy {
+  shouldLog(level: LogLevel, forceSlack = false): boolean {
+    return forceSlack || level === 'error'
+  }
   async log(level: LogLevel, message: string, meta?: Record<string, any>, forceSlack = false) {
     if (!SLACK_WEBHOOK_URL) return
 

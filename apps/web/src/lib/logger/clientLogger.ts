@@ -1,10 +1,14 @@
-import { ClientBetterStackStrategy } from './strategies/better-stack/ClientBetterStackStrategy'
-// import { ClientSlackStrategy } from './strategies/slack/ClientSlackStrategy';
-// import { ClientSentryStrategy } from './strategies/sentry/ClientSentryStrategy';
 import { Logger } from '@/lib/logger/Logger'
+import { ClientBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ClientBetterStackStrategy'
+import { ClientSentryStrategy } from '@/lib/logger/strategies/sentry/ClientSentryStrategy'
+import { ClientSlackStrategy } from '@/lib/logger/strategies/slack/ClientSlackStrategy'
 
-export const clientLogger = new Logger([
-  new ClientBetterStackStrategy(),
-  // new ClientSlackStrategy(),
-  // new ClientSentryStrategy(),
-])
+const strategies = []
+
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.ENABLE_BETTERSTACK) strategies.push(new ClientBetterStackStrategy())
+  if (process.env.ENABLE_SLACK) strategies.push(new ClientSlackStrategy())
+  if (process.env.ENABLE_SENTRY) strategies.push(new ClientSentryStrategy())
+}
+
+export const clientLogger = new Logger(strategies)

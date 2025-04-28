@@ -14,11 +14,13 @@ export class Logger {
         `[${level.toUpperCase()}] ${message}`,
         meta ? JSON.stringify(meta, null, 2) : ''
       )
-      // return
+      return
     }
     for (const strategy of this.strategies) {
       try {
-        await strategy.log(level, message, meta, forceSlack)
+        if (strategy.shouldLog(level, forceSlack)) {
+          await strategy.log(level, message, meta, forceSlack)
+        }
       } catch (error) {
         console.error(`Failed to log with strategy ${strategy.constructor.name}`, error)
       }

@@ -8,17 +8,10 @@ export class ServerBetterStackStrategy implements LoggerStrategy {
   constructor() {
     this.logger = new Logger()
   }
-
+  shouldLog(): boolean {
+    return true
+  }
   async log(level: LogLevel, message: string, meta?: Record<string, any>) {
-    console.log(
-      'NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN:',
-      process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN
-    )
-    console.log(
-      'NEXT_PUBLIC_BETTER_STACK_INGESTING_URL:',
-      process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_URL
-    )
-    console.log(level, message, meta)
     this.logger[level](message, meta)
     await this.logger.flush()
   }
