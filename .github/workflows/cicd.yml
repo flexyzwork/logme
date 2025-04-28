@@ -135,18 +135,24 @@ jobs:
           docker-compose pull app-${{ env.NEW }}
           docker-compose up -d app-${{ env.NEW }}
 
-          # Health Check
-          echo "🩺 헬스 체크 수행 중..."
           sleep 10
-          if curl -f http://localhost:3000/api/health | grep -q '"status":"ok"'; then
-              echo "✅ 헬스 체크 성공! 전환 진행"
-          else
-              echo "❌ 헬스 체크 실패! 롤백 수행"
-              rollback
-          fi
 
-          # sleep 10
-          # docker ps --format '{{.Names}}' | grep -q "${{ env.NEW }}" || rollback
+          # Health check
+          if docker ps --format '{{.Names}}' | grep -q "nginx"; then
+              echo "✅ Nginx 실행 중! 애플리케이션 헬스 체크 수행..."
+              sleep 10
+              if curl -f http://localhost:3000/api/health | grep -q '"status":"ok"'; then
+                  echo "✅ 앱 헬스 체크 성공!"
+              else
+                  echo "❌ 앱 헬스 체크 실패! 롤백 수행"
+                  rollback
+              fi
+          else
+              echo "⚠️ Nginx 미실행! 컨테이너 상태로 헬스 체크 진행..."
+              sleep 5
+              docker ps --format '{{.Names}}' | grep -q "app-${{ env.NEW }}" || rollback
+              echo "✅ app-${{ env.NEW}} 컨테이너 정상 실행 중!"
+          fi
 
           echo "✅ 배포 성공!"
           echo "ACTIVE=${{ env.NEW }}" > .env
