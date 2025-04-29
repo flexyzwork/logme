@@ -1,7 +1,6 @@
-# LM - EC2
+# Logme SaaS Monorepo
 
-이 프로젝트는 **EC2 환경에서 블루-그린 배포(Blue-Green Deployment)** 를 자동화하는 시스템입니다.
-**Pulumi**를 사용하여 EC2 환경을 구축하며, **GitHub Actions**를 이용하여 배포를 자동화합니다.
+이 프로젝트는 EC2 환경에서의 블루-그린 배포 자동화 시스템을 포함한 SaaS형 통합 개발 환경을 제공합니다. Pulumi로 인프라를 구성하고, GitHub Actions로 배포를 자동화합니다. 현재는 모노레포 기반으로 프론트엔드, 백엔드, 공통 패키지 및 IaC까지 관리됩니다.
 
 ---
 
@@ -10,6 +9,8 @@
 ```sh
 cp .env.example .env 
 ```
+- `.env`: 로컬 개발용 환경 설정  
+- `.env.cicd`: CI/CD용 환경 설정
 
 ---
 
@@ -24,7 +25,7 @@ pnpm build
 ```sh
 pnpm dev
 ```
-이 명령어를 실행하면 Docker 컨테이너와 모든 애플리케이션이 실행됩니다.
+이 명령어를 실행하면 모든 앱이 Docker 환경에서 실행됩니다.
 
 ### 2️⃣ 데이터베이스 마이그레이션 실행
 ```sh
@@ -78,23 +79,21 @@ pnpm infra:down
 ---
 
 ## 📂 프로젝트 구조
-```bash
-lm-e2c-bg-deploy/
-├── apps/
-│   ├── client/            # Next.js 웹 애플리케이션
-│   ├── server/            # Express.js API 서버
-│   ├── nginx              # Nginx 서버
-│
-├── packages/              # 공통 패키지
-│   ├── docker/            # 로컬 개발용 Docker 설정
-│
-├── infra/
-│   ├── pulumi-aws         # Pulumi 기반 인프라 자동화
-│
-├── .github/workflows/      # CI/CD 자동화 (GitHub Actions)
-├── README.md               # 프로젝트 문서
-├── package.json            # Node.js 패키지 관리 파일
-└── pnpm-lock.yaml          # 패키지 종속성 관리 파일
+```
+.
+├── apps/                  # 주요 앱 (웹 프론트엔드, Nginx 등)
+│   ├── web                # Next.js 기반 프론트엔드
+│   └── nginx              # Nginx 리버스 프록시
+├── packages/              # 공통 모듈 및 설정
+│   ├── db                 # Prisma ORM 및 DB 클라이언트
+│   ├── types              # 공통 enum/타입 정의
+│   ├── docker             # 개발용 도커 설정
+│   ├── eslint-config      # Lint 규칙 공유
+│   └── typescript-config  # tsconfig 설정 공유
+├── infra/                 # Pulumi 기반 IaC (AWS 인프라)
+├── scripts/               # 외부 서비스 삭제 스크립트 등
+├── docker-compose.yaml    # 로컬 개발용 도커 설정
+└── turbo.json             # Turborepo 설정
 ```
 
 ---
@@ -178,8 +177,7 @@ GitHub의 **Deploy Keys**에 추가 후 다시 시도.
 ---
 
 ## 🎯 결론
-이 프로젝트는 **Pulumi를 이용해 EC2 환경을 자동화 구축하고, GitHub Actions로 블루-그린 배포를 실행하는 시스템**입니다.
-추후 **Kubernetes(K8s) 또는 AWS ECS** 로 확장할 수 있도록 설계되었습니다. 🚀🔥
+이 프로젝트는 **Pulumi를 이용해 EC2 환경을 자동화 구축하고, GitHub Actions로 블루-그린 배포를 실행하는 시스템**입니다.  
+또한 전체 프로젝트는 모노레포(Turborepo) 기반으로 구성되어 있어, 유지보수성과 확장성을 극대화합니다.
 
 > 💡 **기여 및 문의**: 프로젝트 개선 제안이나 피드백이 있다면 언제든지 PR 또는 이슈를 등록해주세요!
-
