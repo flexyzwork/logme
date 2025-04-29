@@ -1,15 +1,16 @@
 [sources.nginx]
 type = "docker_logs"
-include_containers = ["nginx"]
-include_containers_glob = ["*nginx*"]
+include_containers = ["app-nginx-1"]
 
 [transforms.parse_nginx]
 type = "remap"
 inputs = ["nginx"]
 source = '''
 structured, err = parse_json(.message)
-if err != null {
-  structured = {}
+if err == null {
+  . = structured
+} else {
+  log("Failed to parse JSON", level: "warn")
 }
 '''
 
