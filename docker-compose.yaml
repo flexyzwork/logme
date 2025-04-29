@@ -25,7 +25,7 @@ services:
     image: timberio/vector:latest-debian
     restart: always
     volumes:
-      - ./apps/nginx/vector/vector.toml:/etc/vector/vector.toml:ro
+      - ./apps/nginx/vector.toml:/etc/vector/vector.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ./apps/nginx/.env
