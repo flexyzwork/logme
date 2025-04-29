@@ -17,8 +17,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create .env
+      - name: Create .env (NEXTJS)
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
+
+      - name: Create .env (NGINX)
+        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
 
       - name: Log in to OCI Registry
         run: |
@@ -104,6 +107,17 @@ jobs:
           tags: |
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
+
+      - name: Ensure Vector container is running
+        run: |
+          ssh ec2 << 'EOF'
+          if ! docker ps --format '{{.Names}}' | grep -q "^vector$"; then
+            echo "🔧 Vector 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
+            docker-compose up -d vector
+          else
+            echo "✅ Vector 컨테이너 실행 중"
+          fi
+          EOF
 
       - name: Deploy on EC2
         run: |

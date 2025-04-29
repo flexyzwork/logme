@@ -21,6 +21,17 @@ services:
       - .env
     entrypoint: ['/bin/sh', '/entrypoint.sh']
 
+  vector:
+    image: timberio/vector:latest-debian
+    restart: always
+    volumes:
+      - ./vector/vector.toml:/etc/vector/vector.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ./apps/nginx/.env
+    networks:
+      - app-network
+
   app-green:
     image: kix.ocir.io/axunckhvyv1v/logme-app:green
     restart: always
