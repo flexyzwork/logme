@@ -1,39 +1,22 @@
-[sources.nginx]
+[sources.docker_logs]
 type = "docker_logs"
-include_containers = ["app-nginx-1"]
+include_containers_glob = ["*nginx*"]
 
-[transforms.parse_nginx]
+[transforms.parse_json]
 type = "remap"
-inputs = ["nginx"]
+inputs = ["docker_logs"]
 source = '''
 structured, err = parse_json(.message)
-if err == null {
-  . = structured
-} else {
-  log("Failed to parse JSON", level: "warn")
+if err != null {
+  log("JSON 파싱 실패", level: "warn", error: err)
+  structured = {}
 }
 '''
 
 [sinks.betterstack]
 type = "http"
-inputs = ["parse_nginx"]
+inputs = ["parse_json"]
+uri = "https://s1290540.eu-nbg-2.betterstackdata.com"
 method = "post"
-uri = "${BETTER_STACK_INGESTING_URL}"
 encoding.codec = "json"
 headers.authorization = "Bearer ${BETTER_STACK_SOURCE_TOKEN}"
-
-# Enhanced Better Stack sink configuration for completeness and stability
-healthcheck.enabled = true
-
-request.headers = { 
-  "Content-Type": "application/json",
-  "Authorization": "Bearer ${BETTER_STACK_SOURCE_TOKEN}"
-}
-
-batch.max_bytes = 1048576  # 1MB
-batch.timeout_secs = 5
-
-# Optional: Add retry strategy
-retry.max_retries = 5
-retry.initial_backoff_secs = 2
-retry.max_backoff_secs = 30
