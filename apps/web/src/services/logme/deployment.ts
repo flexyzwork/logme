@@ -3,15 +3,21 @@ import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
 import { useCreateRepo } from '@/hooks/logme/repo/useCreateRepo'
 import { useCreateDeployTarget } from '@/hooks/logme/deployTarget/useCreateDeployTarget'
 import { useCreateDeployment } from '@/hooks/logme/deployment/useCreateDeployment'
-// import { SiteStatus, ProviderType } from '@prisma/client'
 import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProviderExtended'
 import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 import logger from '@/lib/logger'
-
 import { useCreateDomain } from '@/hooks/logme/domain/useCreateDomain'
 import { TEMPLATE_OWNER, TEMPLATE_REPO } from '@/lib/config/client'
-import { ProviderType, SiteStatus } from '@repo/db'
 
+export enum SiteStatus {
+  draft = 'draft',
+  published = 'published',
+}
+
+export enum ProviderType {
+  github = 'github',
+  notion = 'notion',
+}
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
   const { mutateAsync: createRepoDB } = useCreateRepo()
