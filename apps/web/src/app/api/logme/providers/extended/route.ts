@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createId } from '@paralleldrive/cuid2'
-import { ProviderType } from '@prisma/client'
+import { ProviderType } from '@repo/types'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@repo/db'
 import logger from '@/lib/logger'

@@ -8,16 +8,8 @@ import { useFetchProvider } from '@/hooks/logme/provider/useFetchProvider'
 import logger from '@/lib/logger'
 import { useCreateDomain } from '@/hooks/logme/domain/useCreateDomain'
 import { TEMPLATE_OWNER, TEMPLATE_REPO } from '@/lib/config/client'
+import { ProviderType, SiteStatus } from '@repo/types'
 
-export enum SiteStatus {
-  draft = 'draft',
-  published = 'published',
-}
-
-export enum ProviderType {
-  github = 'github',
-  notion = 'notion',
-}
 export const useDeploymentActions = () => {
   const { setBuilderStep, siteId, notionPageId } = useBuilderStore()
   const { mutateAsync: createRepoDB } = useCreateRepo()
