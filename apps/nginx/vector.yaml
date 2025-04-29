@@ -1,0 +1,42 @@
+sources:
+  docker_logs:
+    type: docker_logs
+    include_containers:
+      - nginx
+
+transforms:
+  parse_nginx_json:
+    type: remap
+    inputs:
+      - docker_logs
+    source: |
+      if exists(.message) && is_string(.message) {
+        parsed, err = parse_json(.message)
+        if err == null {
+          . = parsed
+        } else {
+          log("Failed to parse JSON: " + err, level: "warn")
+        }
+      } else {
+        log("Skipping event without message field or non-string message", level: "debug")
+      }
+
+sinks:
+  console_debug:
+    type: console
+    inputs:
+      - parse_nginx_json
+    encoding:
+      codec: json
+
+  better_stack:
+    type: http
+    method: post
+    inputs:
+      - parse_nginx_json
+    uri: '${BETTER_STACK_INGESTING_URL}/'
+    encoding:
+      codec: json
+    auth:
+      strategy: bearer
+      token: ${BETTER_STACK_SOURCE_TOKEN}

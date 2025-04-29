@@ -9,7 +9,6 @@ services:
       - '443:443'
     volumes:
       - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
-      - ./apps/nginx/maintenance.html:/usr/share/nginx/html/maintenance.html:ro
       - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
       - /home/ubuntu/certs:/etc/nginx/ssl:rw
     networks:
@@ -27,7 +26,7 @@ services:
     image: timberio/vector:latest-debian
     restart: always
     volumes:
-      - ./apps/nginx/vector.toml:/etc/vector/vector.toml:ro
+      - ./apps/nginx/vector.yaml:/etc/vector/vector.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ./apps/nginx/.env

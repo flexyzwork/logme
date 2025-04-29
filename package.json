@@ -7,7 +7,7 @@
     "db": "pnpm --filter @repo/db",
     "db:m": "pnpm db migrate dev --name",
     "dev": "turbo run dev",
-    "docker-dev": "pnpm --filter @repo/docker-dev",
+    "docker": "pnpm --filter @repo/docker dev",
     "format": "prettier --write .",
     "lint": "turbo run lint",
     "test": "turbo run test",

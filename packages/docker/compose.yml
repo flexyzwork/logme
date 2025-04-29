@@ -9,7 +9,11 @@ services:
       - '15432:5432'
     volumes:
       - /var/lib/postgresql/data
+    networks:
+      - shared-network
 
 networks:
-  apps-network:
-    driver: bridge
+  shared-network:
+    external: true
+
+# docker network create shared-network

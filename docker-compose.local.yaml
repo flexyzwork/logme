@@ -1,21 +1,40 @@
-# docker network create app-network
-
 services:
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: saas_dev
+  nginx:
+    container_name: nginx
+    build:
+      context: ./apps/nginx
+    restart: always
     ports:
-      - '15432:5432'
+      - '80:80'
+      - '443:443'
     volumes:
-      - /var/lib/postgresql/data
+      - ./apps/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template.ssl:ro
+      - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
     networks:
-      - app-network
+      - shared-network
+    depends_on:
+      - app-${ACTIVE}
+    environment:
+      - ACTIVE=${ACTIVE}
+    env_file:
+      - .env
+    entrypoint: ['/bin/sh', '/entrypoint.sh']
+
+  vector:
+    container_name: vector
+    image: timberio/vector:latest-debian
+    restart: always
+    volumes:
+      - ./apps/nginx/vector.yaml:/etc/vector/vector.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ./apps/nginx/.env
+    networks:
+      - shared-network
 
   app-green:
-    # image: web
+    container_name: app-green
+    # image: kix.ocir.io/axunckhvyv1v/logme-app:green
     build:
       dockerfile: apps/web/Dockerfile.local
       context: .
@@ -25,12 +44,9 @@ services:
     env_file:
       - apps/web/.env.local
     networks:
-      - app-network
-
-# networks:
-#   app-network:
-#     external: true
+      - shared-network
 
 networks:
-  app-network:
-    driver: bridge
+  shared-network:
+    external: true
+# docker network create shared-network
