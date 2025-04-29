@@ -32,15 +32,15 @@ jobs:
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
 
+      - name: Create .env (NEXTJS)
+        run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
+
       - name: Copy docker-compose.yaml and nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-
-      - name: Create .env (NEXTJS)
-        run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
       - name: Create .env (NGINX)
         run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
@@ -58,7 +58,7 @@ jobs:
 
       - name: Check GITHUB_ENV
         run: echo $GITHUB_ENV
-        
+
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
