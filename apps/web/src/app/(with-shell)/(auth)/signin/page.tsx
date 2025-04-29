@@ -47,9 +47,9 @@ export default function SignInPage() {
               <Button variant="default" onClick={() => signIn('google', { callbackUrl })}>
                 Google로 로그인
               </Button>
-              <Button variant="secondary" onClick={() => signIn('github', { callbackUrl })}>
+              {/* <Button variant="secondary" onClick={() => signIn('github', { callbackUrl })}>
                 GitHub로 로그인
-              </Button>
+              </Button> */}
 
               <Button variant="outline" onClick={() => setEmailMode(true)}>
                 이메일로 로그인하기
