@@ -113,7 +113,7 @@ jobs:
       - name: Ensure Vector container is running
         run: |
           ssh ec2 << 'EOF'
-          if ! docker ps --format '{{.Names}}' | grep -q "^vector$"; then
+          if ! docker ps --format '{{.Names}}' | grep -q "vector"; then
             echo "🔧 Vector 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
             cd ~/app
             docker-compose up -d vector
