@@ -65,7 +65,7 @@ export default function LogmeDashboard() {
                       <input
                         type="text"
                         value={editingTitle}
-                        onChange={ e => setEditingTitle(e.target.value)}
+                        onChange={(e) => setEditingTitle(e.target.value)}
                         placeholder="사이트 제목"
                         className="w-full p-1 border rounded mb-2"
                       />
@@ -110,12 +110,12 @@ export default function LogmeDashboard() {
                         <p className="mt-1 text-sm">
                           도메인:{' '}
                           <a
-                            href={`https://${site.sub}.logme.click`}
+                            href={`https://logme-${site.sub}.vercel.app`}
                             className="text-blue-500 underline"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {`${site.sub}.logme.click`}
+                            {`logme-${site.sub}.vercel.app`}
                           </a>
                         </p>
                       )}
@@ -209,7 +209,7 @@ export default function LogmeDashboard() {
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                        <ShareButton url={`https://${site.sub}.logme.click`} />
+                        <ShareButton url={`https://logme-${site.sub}.vercel.app`} />
                       </div>
                     </>
                   )}

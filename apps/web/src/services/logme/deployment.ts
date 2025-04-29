@@ -54,11 +54,11 @@ export const useDeploymentActions = () => {
             await updateSiteDB({
               id: siteId,
               sub,
-              domain: `https://${sub}.logme.click`,
+              domain: `https://logme-${sub}.vercel.app`,
               status: SiteStatus.published,
             })
             logger.log('info', '✅ 사이트 도메인 업데이트 완료:', {
-              domain: `https://${sub}.logme.click`,
+              domain: `https://logme-${sub}.vercel.app`,
             })
           }
           return

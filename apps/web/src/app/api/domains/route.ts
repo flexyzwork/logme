@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { sub, vercelProjectId } = body
 
     // 1. 사용자 서브도메인 생성 (예: user123.logme.click)
-    const subdomain = `${sub}.logme.click`
+    const subdomain = `logme-${sub}.vercel.app`
     logger.log('info', 'subdomain:', { subdomain })
 
     const session = await getAuthSession()
