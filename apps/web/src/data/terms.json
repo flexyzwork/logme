@@ -1,7 +1,7 @@
 {
   "ko": {
     "title": "이용약관",
-    "lastUpdated": "2024-04-19",
+    "lastUpdated": "2025-04-29",
     "sections": [
       {
         "title": "1. 목적",
@@ -27,7 +27,7 @@
         "title": "4. 서비스의 이용",
         "content": [
           "회원은 본 약관에 따라 서비스를 이용할 수 있습니다.",
-          "제공 서비스: 블로그 생성, 템플릿 제공, 외부 서비스 연동 등.",
+          "제공 서비스: 블로그 생성, 템플릿 제공, 외부 서비스 연동, 외부 API 호출을 통한 콘텐츠 생성 및 배포 등.",
           "운영자는 서비스의 일부를 사전 공지 없이 변경하거나 중단할 수 있습니다."
         ]
       },
@@ -38,7 +38,8 @@
           "- 타인의 정보를 무단으로 사용하는 행위",
           "- 서비스의 정상적인 운영을 방해하는 행위",
           "- 악성 코드 또는 바이러스 유포 행위",
-          "- 기타 법령 및 약관을 위반하는 행위"
+          "- 기타 법령 및 약관을 위반하는 행위",
+          "- 외부 서비스 인증 정보를 부정 사용하거나, 무단 접근을 시도하는 행위"
         ]
       },
       {
@@ -61,7 +62,8 @@
         "title": "8. 지식재산권",
         "content": [
           "서비스와 관련된 모든 콘텐츠 및 템플릿에 대한 지식재산권은 운영자에게 귀속됩니다.",
-          "회원이 생성한 콘텐츠에 대한 권리는 회원에게 있으며, 운영자는 서비스 제공 목적 내에서 이를 사용할 수 있습니다."
+          "회원이 생성한 콘텐츠에 대한 권리는 회원에게 있으며, 운영자는 서비스 제공 목적 내에서 이를 사용할 수 있습니다.",
+          "회원이 생성한 콘텐츠는 회원에게 권리가 귀속되며, 운영자는 서비스 운영 및 홍보 목적으로 범위 내에서 이를 사용할 수 있습니다."
         ]
       },
       {
@@ -80,7 +82,7 @@
   },
   "en": {
     "title": "Terms of Service",
-    "lastUpdated": "2024-04-19",
+    "lastUpdated": "2025-04-29",
     "sections": [
       {
         "title": "1. Purpose",
@@ -106,7 +108,7 @@
         "title": "4. Use of the Service",
         "content": [
           "Members may use the service in accordance with these terms.",
-          "Provided services include: blog creation, template provision, external service integration, etc.",
+          "Provided services include: blog creation, template provision, external service integration, content creation and deployment through external API calls, etc.",
           "The operator may change or discontinue parts of the service without prior notice."
         ]
       },
@@ -117,7 +119,8 @@
           "- Unauthorized use of others' information",
           "- Disrupting the normal operation of the service",
           "- Spreading malicious code or viruses",
-          "- Any act that violates laws and these terms"
+          "- Any act that violates laws and these terms",
+          "- Unauthorized use of external service authentication information or attempting unauthorized access"
         ]
       },
       {
@@ -140,7 +143,8 @@
         "title": "8. Intellectual Property",
         "content": [
           "All intellectual property rights related to the service, including content and templates, belong to the operator.",
-          "The rights to content created by members belong to the members, but the operator may use it within the scope of service provision."
+          "The rights to content created by members belong to the members, but the operator may use it within the scope of service provision.",
+          "The content created by members belongs to the members, and the operator may use it within the scope of service operation and promotion."
         ]
       },
       {

@@ -1,17 +1,17 @@
 {
   "ko": {
     "title": "개인정보처리방침",
-    "lastUpdated": "2024-04-19",
+    "lastUpdated": "2024-04-29",
     "sections": [
       {
         "title": "📌 수집하는 개인정보 항목",
         "content": [
-          "서비스 제공을 위해 아래와 같은 개인정보를 수집합니다.",
+          "서비스 제공을 위해 다음과 같은 개인정보를 필수로 수집합니다.",
           "수집 항목:",
-          "- [필수] 이메일 주소, 로그인 기록",
-          "- [선택] 프로필 사진, 사용자 설정",
-          "- [자동 수집] IP 주소, 브라우저 정보, 접속 시간, 사용자 행동 로그",
-          "- 외부 서비스 인증 토큰 (예: Notion, GitHub, Vercel)"
+          "- [필수] 이메일 주소, 이름, 프로필 이미지",
+          "- [필수] 외부 서비스 인증 토큰 (예: Notion, GitHub, Vercel)",
+          "- [자동 수집] 세션 토큰, 사용자 행동 로그",
+          "- [자동 수집] IP 주소, 브라우저 정보, 접속 시간"
         ]
       },
       {
@@ -19,7 +19,7 @@
         "content": [
           "개인정보는 다음 목적과 법적 근거에 따라 사용됩니다:",
           "- [계약 이행] 로그인 및 사용자 인증",
-          "- [정당한 이익] 템플릿 복사 및 사이트 생성 등 맞춤형 기능 제공",
+          "- [계약 이행] 외부 서비스 연결을 통한 배포, 저장소 생성, 콘텐츠 관리",
           "- [정당한 이익] 에러 추적 및 고객 지원",
           "- [정당한 이익] 통계 분석 및 서비스 개선",
           "- [법적 의무] 관련 법령 준수를 위한 기록 보관"
@@ -28,14 +28,15 @@
       {
         "title": "🔒 보관 및 보호",
         "content": [
-          "개인정보는 관련 법령에 따라 최소 보관 기간을 준수하며, 탈퇴 또는 삭제 요청 시 지체 없이 파기됩니다.",
+          "개인정보는 관련 법령에 따라 최소 보관 기간을 준수하며, 이용자가 개인정보 삭제를 요청하는 경우 30일 이내에 요청을 처리하고 개인정보를 파기합니다.",
           "개인정보는 Vercel(미국), GitHub(미국) 등의 외부 서비스를 통해 국외로 이전될 수 있습니다.",
           "제3자 제공: 법령에 따른 경우를 제외하고 제3자에게 제공하지 않습니다.",
-          "수탁업체: AWS, Vercel, GitHub 등 서비스 제공을 위한 필수 업체",
+          "수탁업체: AWS, Vercel, GitHub, Notion 등 서비스 제공을 위한 필수 업체",
           "보호를 위해 다음과 같은 조치를 취하고 있습니다:",
-          "- 암호화 및 안전한 저장",
-          "- 접근 제어 및 인증 관리",
-          "- 보안 점검 및 정기 감사"
+          "- 개인정보 암호화 저장 및 관리",
+          "- 외부 서비스 인증 토큰 포함 민감정보 암호화 보호",
+          "- 접근 권한 최소화 및 인증 관리 강화",
+          "- 정기적 보안 점검 및 감사 실시"
         ]
       },
       {
@@ -52,7 +53,8 @@
         "title": "🍪 쿠키 및 추적",
         "content": [
           "사이트는 쿠키를 사용하여 사용자 경험을 향상시킵니다.",
-          "브라우저 설정을 통해 쿠키 사용을 제어할 수 있습니다."
+          "브라우저 설정을 통해 쿠키 사용을 제어할 수 있습니다.",
+          "쿠키는 세션 유지 목적을 위해 최소한으로 사용됩니다."
         ]
       },
       {
@@ -67,38 +69,42 @@
   },
   "en": {
     "title": "Privacy Policy",
-    "lastUpdated": "2024-04-19",
+    "lastUpdated": "2025-04-29",
     "sections": [
       {
         "title": "📌 Data Collection",
         "content": [
-          "We collect only the necessary personal information to provide our services.",
-          "Collected items include:",
-          "- Email address",
-          "- Usage logs",
-          "- API tokens for third-party integrations (e.g., Notion, GitHub, Vercel)"
+          "We collect the following personal information as required to provide our services.",
+          "Collected items:",
+          "- [Required] Email address, name, profile image",
+          "- [Required] External service authentication tokens (e.g., Notion, GitHub, Vercel)",
+          "- [Automatically collected] Session tokens, user activity logs",
+          "- [Automatically collected] IP address, browser information, access time"
         ]
       },
       {
         "title": "🔍 Purpose of Use",
         "content": [
-          "Personal data is used for:",
-          "- Login and user authentication",
-          "- Personalized service features such as template copying and site creation",
-          "- Error tracking and customer support",
-          "- Statistical analysis and service improvements"
+          "Personal information is used for the following purposes and legal bases:",
+          "- [Contract fulfillment] Login and user authentication",
+          "- [Contract fulfillment] Deployment, repository creation, and content management through external services",
+          "- [Legitimate interests] Error tracking and customer support",
+          "- [Legitimate interests] Statistical analysis and service improvement",
+          "- [Legal obligations] Compliance with applicable laws and regulations"
         ]
       },
       {
         "title": "🔒 Retention & Protection",
         "content": [
-          "Data is retained according to the minimum retention period required by relevant laws and is promptly destroyed upon user deletion request or account termination.",
-          "Data may be transferred overseas through external services such as Vercel (USA) and GitHub (USA).",
-          "We implement the following measures:",
-          "- Encryption and secure storage",
-          "- Access control and authentication",
-          "- Security checks and audits",
-          "Trusted service providers: AWS, Vercel, GitHub, etc."
+          "Personal information is retained according to the minimum retention period required by applicable laws and is promptly destroyed upon deletion request or account termination.",
+          "Personal information may be transferred overseas through external services such as Vercel (USA) and GitHub (USA).",
+          "Third-party provision: Personal information will not be provided to third parties without user consent unless required by law.",
+          "Trusted service providers: AWS, Vercel, GitHub, Notion, etc.",
+          "We implement the following security measures:",
+          "- Secure encryption and storage of personal information",
+          "- Encryption protection of all sensitive information, including external service authentication tokens",
+          "- Minimization of access rights and enhanced authentication management",
+          "- Regular security checks and audits"
         ]
       },
       {
@@ -113,8 +119,9 @@
       {
         "title": "🍪 Cookies & Tracking",
         "content": [
-          "We use cookies to enhance user experience.",
-          "Users can control cookie settings via browser preferences."
+          "Cookies are used minimally for session maintenance.",
+          "Users can control cookie settings through their browser preferences.",
+          "Cookies are minimally used for session maintenance."
         ]
       },
       {
