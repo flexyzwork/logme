@@ -82,6 +82,10 @@ jobs:
         env:
           ENCRYPTION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 
+      - name: Prisma generate (for db)
+        working-directory: packages/db
+        run: pnpm prisma generate
+
       - name: Turbo Build
         run: pnpm turbo run build
 
