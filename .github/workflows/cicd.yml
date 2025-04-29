@@ -20,9 +20,6 @@ jobs:
       - name: Create .env (NEXTJS)
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
-      - name: Create .env (NGINX)
-        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
-
       - name: Log in to OCI Registry
         run: |
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login kix.ocir.io -u "${{ secrets.OCI_USERNAME }}" --password-stdin
@@ -44,6 +41,9 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+
+      - name: Create .env (NGINX)
+        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
 
       - name: Determine Active
         id: active_version
