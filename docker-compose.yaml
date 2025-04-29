@@ -1,5 +1,6 @@
 services:
   nginx:
+    container_name: nginx
     build:
       context: ./apps/nginx
     restart: always
@@ -22,6 +23,7 @@ services:
     entrypoint: ['/bin/sh', '/entrypoint.sh']
 
   vector:
+    container_name: vector
     image: timberio/vector:latest-debian
     restart: always
     volumes:
@@ -33,6 +35,7 @@ services:
       - app-network
 
   app-green:
+    container_name: app-green
     image: kix.ocir.io/axunckhvyv1v/logme-app:green
     restart: always
     ports:
@@ -43,6 +46,7 @@ services:
       - app-network
 
   app-blue:
+    container_name: app-blue
     image: kix.ocir.io/axunckhvyv1v/logme-app:blue
     restart: always
     ports:

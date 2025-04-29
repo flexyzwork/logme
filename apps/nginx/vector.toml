@@ -1,6 +1,7 @@
 [sources.nginx]
 type = "docker_logs"
 include_containers = ["nginx"]
+include_containers_glob = ["*nginx*"]
 
 [transforms.parse_nginx]
 type = "remap"
