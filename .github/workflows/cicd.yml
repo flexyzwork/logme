@@ -115,6 +115,7 @@ jobs:
           ssh ec2 << 'EOF'
           if ! docker ps --format '{{.Names}}' | grep -q "^vector$"; then
             echo "🔧 Vector 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
+            cd ~/app
             docker-compose up -d vector
           else
             echo "✅ Vector 컨테이너 실행 중"
