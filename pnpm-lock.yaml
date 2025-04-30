@@ -204,12 +204,6 @@ importers:
       '@repo/db':
         specifier: workspace:^
         version: link:../../packages/db
-      '@repo/eslint-config':
-        specifier: workspace:^
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:^
-        version: link:../../packages/typescript-config
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -220,6 +214,12 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
     devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:^
+        version: link:../../packages/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:^
+        version: link:../../packages/typescript-config
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
