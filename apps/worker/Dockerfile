@@ -8,6 +8,6 @@ RUN groupadd --system --gid 1001 nodejs \
 
 USER nodejs
 
-COPY /app ./
+COPY . .
 
 CMD node apps/worker/dist/index.js
