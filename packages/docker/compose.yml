@@ -11,9 +11,14 @@ services:
       - /var/lib/postgresql/data
     networks:
       - shared-network
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - '6379:6379'
+    networks:
+      - shared-network
 
 networks:
   shared-network:
     external: true
-
 # docker network create shared-network

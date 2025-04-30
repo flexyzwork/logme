@@ -105,10 +105,33 @@ export default function LogmeDashboard() {
 
                   {editingSite !== site.id && (
                     <>
-                      <p className="mt-2 text-sm">상태: {site.status}</p>
+                      <p className="mt-2 text-sm">
+                        상태: {site.status === 'published' ? '배포' : '미완료'}
+                      </p>
+                      {site.template && (
+                        <p className="mt-1 text-sm">템플릿: {site.template.templateTitle}</p>
+                      )}
+                      {site.domainVerifications?.length > 0 ? (
+                        <div className="mt-1 text-sm">
+                          서브도메인:{' '}
+                          <a
+                            href={`https://${site.domainVerifications[0].subdomain}`}
+                            className="text-blue-500 underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {site.domainVerifications[0].subdomain}
+                          </a>{' '}
+                          {site.domainVerifications[0].verified
+                            ? `${' '} ✅ 연결 완료`
+                            : '⏳ 발급 중'}
+                        </div>
+                      ) : (
+                        <div className="mt-1 text-sm text-red-500">❌ 서브도메인 생성 실패</div>
+                      )}
                       {site.domainType === 'sub' && site.sub && (
                         <p className="mt-1 text-sm">
-                          도메인:{' '}
+                          배포 URL:{' '}
                           <a
                             href={`https://logme-${site.sub}.vercel.app`}
                             className="text-blue-500 underline"
@@ -120,12 +143,9 @@ export default function LogmeDashboard() {
                         </p>
                       )}
 
-                      {site.template && (
-                        <p className="mt-1 text-sm">템플릿: {site.template.templateTitle}</p>
-                      )}
                       {site.contentSource && (
                         <p className="mt-1 text-sm">
-                          컨텐츠:{' '}
+                          노션컨텐츠:{' '}
                           <a
                             href={site.contentSource.sourceUrl}
                             className="text-blue-500 underline"
@@ -138,7 +158,7 @@ export default function LogmeDashboard() {
                       )}
                       {site.repo && (
                         <p className="mt-1 text-sm">
-                          저장소:{' '}
+                          깃헙저장소:{' '}
                           <a
                             href={site.repo.repoUrl}
                             className="text-blue-500 underline"
@@ -151,7 +171,7 @@ export default function LogmeDashboard() {
                       )}
                       {site.deployTarget?.deployments[0]?.deployUrl && (
                         <p className="mt-1 text-sm">
-                          배포:{' '}
+                          베르셀배포:{' '}
                           <a
                             href={site.deployTarget.deployments[0]?.deployUrl}
                             className="text-blue-500 underline"
@@ -159,19 +179,6 @@ export default function LogmeDashboard() {
                             rel="noopener noreferrer"
                           >
                             {site.deployTarget.targetName}
-                          </a>
-                        </p>
-                      )}
-                      {site.contentSourceId && (
-                        <p className="mt-1 text-sm">
-                          컨텐츠:{' '}
-                          <a
-                            href={`https://www.notion.so/${site.contentSourceId}`}
-                            className="text-blue-500 underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Notion 링크
                           </a>
                         </p>
                       )}
@@ -209,7 +216,13 @@ export default function LogmeDashboard() {
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                        <ShareButton url={`https://logme-${site.sub}.vercel.app`} />
+                        <ShareButton
+                          url={
+                            site.domainVerifications?.[0]?.verified
+                              ? `https://${site.domainVerifications[0].subdomain}`
+                              : `https://logme-${site.sub}.vercel.app`
+                          }
+                        />
                       </div>
                     </>
                   )}

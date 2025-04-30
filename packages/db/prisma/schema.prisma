@@ -148,6 +148,7 @@ model Site {
   repo            Repo?           @relation(fields: [repoId], references: [id])
   deployTarget    DeployTarget?   @relation(fields: [deployTargetId], references: [id])
   builds          Build[]
+  domainVerifications  DomainVerification[]
 
   @@index([sub])
   @@index([userId])
@@ -269,6 +270,20 @@ model DeployTarget {
 
   site          Site?
   deployments   Deployment[]
+}
+
+model DomainVerification {
+  id              String   @id @default(cuid())
+  subdomain       String
+  vercelProjectId String
+  providerId      String
+  verified        Boolean  @default(false)
+  retries         Int      @default(0)
+  siteId          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  site            Site?    @relation(fields: [siteId], references: [id])
 }
 
 
@@ -421,4 +436,5 @@ enum TargetType {
   cloudflare
   custom
 }
+
 

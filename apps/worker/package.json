@@ -12,9 +12,12 @@
   },
   "dependencies": {
     "@repo/db": "workspace:^",
+    "@repo/queue": "workspace:^",
+    "bullmq": "^5.35.1",
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:^",

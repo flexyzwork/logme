@@ -64,8 +64,8 @@ export default function SiteBuilder() {
   const stepTitleMap: Record<number, string | ((isDeploying: boolean) => string)> = {
     0: '템플릿을 선택하세요',
     1: '템플릿을 공유해주세요',
-    2: '사이트 정보를 입력해 주세요.',
-    3: (deploying) => (deploying ? '배포 중...' : 'Vercel 배포를 진행합니다.'),
+    2: '사이트 정보를 입력해 주세요',
+    3: (deploying) => (deploying ? '배포 중...' : '배포를 진행합니다'),
     4: '배포가 완료되었습니다.',
   }
 

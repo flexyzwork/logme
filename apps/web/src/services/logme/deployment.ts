@@ -46,11 +46,12 @@ export const useDeploymentActions = () => {
         if (status === 'READY') {
           logger.log('info', '✅ 배포 완료:', data)
           onSuccess(deployUrl, `https://github.com/${githubOwner}/logme-${sub}`)
-          await createDomain({
-            sub,
-            vercelProjectId: targetId,
-          })
           if (siteId) {
+            await createDomain({
+              sub,
+              vercelProjectId: targetId,
+              siteId,
+            })
             await updateSiteDB({
               id: siteId,
               sub,
