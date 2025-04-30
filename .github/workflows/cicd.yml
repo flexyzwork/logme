@@ -35,6 +35,12 @@ jobs:
       - name: Create .env (NEXTJS)
         run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
+      - name: Create .env (NGINX)
+        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
+
+      - name: Create .env (WORKER)
+        run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
+
       - name: Copy docker-compose.yaml and nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/nginx && mkdir -pv ~/app/apps/web"
@@ -42,12 +48,6 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-
-      - name: Create .env (NGINX)
-        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
-
-      - name: Create .env (WORKER)
-        run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
 
       - name: Determine Active
         id: active_version
@@ -137,7 +137,7 @@ jobs:
             echo "✅ Worker 컨테이너 실행 중"
           fi
           EOF
-          
+
       - name: Deploy on EC2
         run: |
           ssh ec2 << 'EOF'
