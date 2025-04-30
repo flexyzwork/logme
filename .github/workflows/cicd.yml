@@ -114,17 +114,17 @@ jobs:
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
 
-      # - name: Build and Push Image (WORKER)
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     file: ./apps/worker/Dockerfile
-      #     context: .
-      #     push: true
-      #     platforms: linux/amd64
-      #     cache-from: type=gha
-      #     cache-to: type=gha,mode=max
-      #     tags: |
-      #       kix.ocir.io/axunckhvyv1v/logme-worker:latest
+      - name: Build and Push Image (WORKER)
+        uses: docker/build-push-action@v6
+        with:
+          file: ./apps/worker/Dockerfile
+          context: .
+          push: true
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            kix.ocir.io/axunckhvyv1v/logme-worker:latest
 
       - name: Ensure Vector container is running
         run: |
