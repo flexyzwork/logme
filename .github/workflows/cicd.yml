@@ -67,7 +67,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml', '**/package.json') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v3
@@ -198,8 +199,8 @@ jobs:
 
           cleanup
 
-          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker --pull always
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
+          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker --pull always
 
           EOF
 
