@@ -14,7 +14,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],
   },
-  swcMinify: false,
 }
 
 const sentryConfig = withSentryConfig(nextConfig, {
@@ -50,5 +49,6 @@ const sentryConfig = withSentryConfig(nextConfig, {
 })
 
 export default withBetterStack(sentryConfig)
+// export default withBetterStack(nextConfig)
 
 module.exports = nextConfig
