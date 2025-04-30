@@ -101,7 +101,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push Image
+      - name: Build and Push Image (WEB)
         uses: docker/build-push-action@v6
         with:
           file: ./apps/web/Dockerfile
@@ -114,6 +114,18 @@ jobs:
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
 
+      - name: Build and Push Image (WORKER)
+        uses: docker/build-push-action@v6
+        with:
+          file: ./apps/worker/Dockerfile
+          context: .
+          push: true
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            kix.ocir.io/axunckhvyv1v/logme-worker:latest
+
       - name: Ensure Vector container is running
         run: |
           ssh ec2 << 'EOF'
@@ -123,18 +135,6 @@ jobs:
             docker-compose up -d vector
           else
             echo "✅ Vector 컨테이너 실행 중"
-          fi
-          EOF
-
-      - name: Ensure Worker container is running
-        run: |
-          ssh ec2 << 'EOF'
-          if ! docker ps --format '{{.Names}}' | grep -q "worker"; then
-            echo "🔧 Worker 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
-            cd ~/app
-            docker-compose up -d worker
-          else
-            echo "✅ Worker 컨테이너 실행 중"
           fi
           EOF
 
@@ -198,6 +198,7 @@ jobs:
 
           cleanup
 
+          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
 
           EOF
