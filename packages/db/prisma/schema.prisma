@@ -284,6 +284,41 @@ model EventLog {
 }
 
 
+model YoutubeChannelStats {
+  id               String   @id @default(cuid())
+  channelId        String
+  subscriber_count Int
+  view_count       Int?
+  video_count      Int?
+  checked_at       DateTime @default(now())
+
+  @@index([channelId, checked_at])
+}
+
+model YoutubeVideoStats {
+  id             String   @id @default(cuid())
+  videoId        String
+  channelId      String
+  title          String
+  view_count     Int?
+  like_count     Int?
+  comment_count  Int?
+  checked_at     DateTime @default(now())
+
+  @@index([videoId, checked_at])
+}
+
+model YoutubeAlertLog {
+  id         String   @id @default(cuid())
+  type       String   // 'channel' | 'video'
+  targetId   String   // channelId or videoId
+  message    String?
+  notifiedAt DateTime @default(now())
+
+  @@index([type, targetId])
+}
+
+
 
 //
 // ENUM 정의
@@ -304,7 +339,7 @@ enum SiteType {
   portfolio
 }
 
-/// 도메인 타닙
+/// 도메인 타입
 enum DomainType {
   sub     // 서브도메인 (예: xxx.logme.click)
   custom  // 사용자 커스텀 도메인
@@ -386,3 +421,4 @@ enum TargetType {
   cloudflare
   custom
 }
+

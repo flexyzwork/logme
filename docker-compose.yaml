@@ -33,6 +33,18 @@ services:
     networks:
       - app-network
 
+  worker:
+    container_name: worker
+    build:
+      dockerfile: apps/worker/Dockerfile
+      context: .
+    restart: always
+    env_file:
+      - apps/worker/.env
+    networks:
+      - app-network
+
+
   app-green:
     container_name: app-green
     image: kix.ocir.io/axunckhvyv1v/logme-app:green

@@ -28,7 +28,18 @@ services:
       - ./apps/nginx/vector.yaml:/etc/vector/vector.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
-      - ./apps/nginx/.env
+      - ./apps/nginx/.env.local
+    networks:
+      - shared-network
+
+  worker:
+    container_name: worker
+    build:
+      dockerfile: apps/worker/Dockerfile
+      context: .
+    restart: always
+    env_file:
+      - apps/worker/.env.local
     networks:
       - shared-network
 
@@ -50,3 +61,5 @@ networks:
   shared-network:
     external: true
 # docker network create shared-network
+# p docker
+# docker compose -f docker-compose.local.yaml up -d

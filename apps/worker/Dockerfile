@@ -1,0 +1,40 @@
+FROM node:22-slim AS base
+
+
+FROM base AS pruner
+RUN npm install -g turbo pnpm
+WORKDIR /app
+COPY . .
+# 필터링하지 말고 전체 터보 푸룬 도커
+RUN turbo prune worker --docker
+
+
+
+FROM base AS builder
+RUN npm install -g pnpm
+WORKDIR /app
+# First install the dependencies (as they change less often)
+COPY --from=pruner /app/out/json/ .
+RUN pnpm install --frozen-lockfile
+
+# Build the project
+COPY --from=pruner /app/out/full/ .
+# Turborepo 전체에서 build 실행
+RUN pnpm turbo run build
+
+
+
+FROM base AS runner
+WORKDIR /app
+
+# Don't run production as root
+RUN groupadd --system --gid 1001 nodejs \
+  && useradd --system --uid 1001 --gid nodejs nodejs \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder --chown=nodejs:nodejs /app ./
+
+# 불필요한 캐시 제거 (의미 없음... 크기 변화 없음)
+RUN rm -rf .next/cache
+
+CMD node apps/worker/dist/index.js

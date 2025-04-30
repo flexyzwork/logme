@@ -41,9 +41,13 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
 
       - name: Create .env (NGINX)
         run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
+
+      - name: Create .env (WORKER)
+        run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
 
       - name: Determine Active
         id: active_version
@@ -122,6 +126,18 @@ jobs:
           fi
           EOF
 
+      - name: Ensure Worker container is running
+        run: |
+          ssh ec2 << 'EOF'
+          if ! docker ps --format '{{.Names}}' | grep -q "worker"; then
+            echo "🔧 Worker 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
+            cd ~/app
+            docker-compose up -d worker
+          else
+            echo "✅ Worker 컨테이너 실행 중"
+          fi
+          EOF
+          
       - name: Deploy on EC2
         run: |
           ssh ec2 << 'EOF'

@@ -10,13 +10,11 @@ const nextConfig: NextConfig = {
     ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
     SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
     DEBUG: process.env.DEBUG,
-    // NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
-    // NEXT_PUBLIC_BETTER_STACK_INGESTING_URL: process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_URL,
-    // NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],
   },
+  swcMinify: false,
 }
 
 const sentryConfig = withSentryConfig(nextConfig, {
