@@ -4,3 +4,4 @@ packages:
   - infra/*
 onlyBuiltDependencies:
   - '@sentry/cli'
+  - sharp
