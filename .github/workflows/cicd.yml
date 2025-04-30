@@ -47,7 +47,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+          # scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
 
       - name: Determine Active
         id: active_version
@@ -67,8 +67,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml', '**/package.json') }}
-          restore-keys: ${{ runner.os }}-pnpm-
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v3
@@ -115,17 +114,17 @@ jobs:
             kix.ocir.io/axunckhvyv1v/logme-app:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-app:latest
 
-      - name: Build and Push Image (WORKER)
-        uses: docker/build-push-action@v6
-        with:
-          file: ./apps/worker/Dockerfile
-          context: .
-          push: true
-          platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: |
-            kix.ocir.io/axunckhvyv1v/logme-worker:latest
+      # - name: Build and Push Image (WORKER)
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     file: ./apps/worker/Dockerfile
+      #     context: .
+      #     push: true
+      #     platforms: linux/amd64
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      #     tags: |
+      #       kix.ocir.io/axunckhvyv1v/logme-worker:latest
 
       - name: Ensure Vector container is running
         run: |
@@ -200,7 +199,7 @@ jobs:
           cleanup
 
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
-          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker --pull always
+          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker
 
           EOF
 
