@@ -42,9 +42,9 @@ jobs:
       - name: Copy files with rsync
         run: |
           HOST="ubuntu@${{ secrets.SSH_HOST }}"
-      
+
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github $HOST "mkdir -pv ~/app/apps/{web,worker,api}"
-      
+
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" docker-compose.yaml $HOST:~/app/
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/nginx/ $HOST:~/app/apps/nginx/
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/web/.env $HOST:~/app/apps/web/
@@ -212,8 +212,8 @@ jobs:
 
 
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
-          docker ps --format '{{.Names}}' | grep -q "api" || docker-compose up -d --force-recreate api
-          docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker
+          docker ps --format '{{.Names}}' | grep -q "api" || (docker-compose pull api && docker-compose up -d --force-recreate api)
+          docker ps --format '{{.Names}}' | grep -q "worker" || (docker-compose pull worker && docker-compose up -d --force-recreate worker)
 
           cleanup
 
