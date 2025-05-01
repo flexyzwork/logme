@@ -12,6 +12,7 @@ const dockerUsername = process.env.DOCKER_USERNAME || ''
 const dockerPassword = process.env.DOCKER_PASSWORD || ''
 const existingEipAllocId = process.env.EXISTING_EIP_ALLOC_ID || ''
 const rdsSecurityGroupId = process.env.RDS_SECURITY_GROUP_ID || ''
+
 // 최신 Ubuntu AMI 가져오기
 const ubuntuAmi = aws.ec2.getAmi({
   mostRecent: true,
@@ -58,6 +59,10 @@ const instance = new aws.ec2.Instance('app-server', {
   instanceType: instanceType,
   vpcSecurityGroupIds: [securityGroup.id],
   keyName: keyPair.keyName,
+  rootBlockDevice: {
+    volumeSize: 20, // GiB
+    volumeType: 'gp3', // Optional: General Purpose SSD
+  },
   tags: { Name: 'Pulumi-App-Server' },
   userData: `#!/bin/bash
     LOGFILE=/home/ubuntu/user-data.log
