@@ -6,6 +6,7 @@
     "check-types": "turbo run check-types",
     "db": "pnpm --filter @repo/db",
     "db:m": "pnpm db migrate dev --name",
+    "db:g": "pnpm db build:prisma",
     "dev": "turbo run dev",
     "docker": "pnpm --filter @repo/docker dev",
     "format": "prettier --write .",

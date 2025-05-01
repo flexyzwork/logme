@@ -4,6 +4,7 @@ import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
+
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN!
 const CLOUDFLARE_ZONE_ID = process.env.CLOUDFLARE_ZONE_ID!
 const VERCEL_API_URL = 'https://api.vercel.com/v9'
@@ -150,18 +151,21 @@ export async function POST(req: NextRequest) {
         vercelProjectId,
         providerId: provider.id,
         verified: false,
-        siteId
+        siteId,
       },
     })
 
-    // // Enqueue background verification job
-    // const { queue, JobType } = await import('@repo/queue')
-    // await queue.add(JobType.CheckDomain, {
-    //   domain: subdomain,
-    //   vercelProjectId,
-    //   vercelToken,
-    //   providerId: provider.id,
-    // })
+    // Enqueue background verification job via API
+    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/jobs/check-domain`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        domain: subdomain,
+        vercelProjectId,
+        vercelToken,
+        providerId: provider.id,
+      }),
+    })
 
     return NextResponse.json({ success: true, domain: subdomain })
   } catch (error) {

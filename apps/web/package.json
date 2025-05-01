@@ -29,7 +29,6 @@
     "@radix-ui/react-tooltip": "^1.2.0",
     "@repo/db": "workspace:^",
     "@repo/eslint-config": "workspace:^",
-    "@repo/queue": "workspace:^",
     "@repo/types": "workspace:^",
     "@repo/typescript-config": "workspace:^",
     "@sentry/nextjs": "^9.14.0",

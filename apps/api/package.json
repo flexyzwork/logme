@@ -1,0 +1,46 @@
+{
+  "name": "api",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "exports": {},
+  "scripts": {
+    "build": "tsup --clean",
+    "check-types": "tsc --noEmit",
+    "dev": "tsup --watch & nodemon",
+    "start": "node dist/main"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/core": "^11",
+    "@nestjs/platform-express": "^11",
+    "@nestjs/swagger": "^11.1.6",
+    "@prisma/client": "^6",
+    "@repo/types": "workspace:^",
+    "@repo/queue": "workspace:^",
+    "class-validator": "^0.14.1",
+    "drizzle-orm": "^0.39.1",
+    "express": "^4.21.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7",
+    "stripe": "^17.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:^",
+    "@repo/typescript-config": "workspace:^",
+    "@swc/core": "^1",
+    "@types/express": "^5.0.0",
+    "nodemon": "^3",
+    "tsup": "^8"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "dist"
+    ],
+    "ext": "js",
+    "exec": "node dist/main.js"
+  }
+}

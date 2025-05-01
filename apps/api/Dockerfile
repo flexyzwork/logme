@@ -1,17 +1,13 @@
 FROM node:22-slim AS runner
-RUN npm install -g pnpm
+
 WORKDIR /app
 
 RUN groupadd --system --gid 1001 nodejs \
   && useradd --system --uid 1001 --gid nodejs nodejs \
-  && apt-get update -y && apt-get install -y openssl \
   && rm -rf /var/lib/apt/lists/*
 
 USER nodejs
 
 COPY . .
 
-RUN pnpm db:g
-
-
-CMD node apps/worker/dist/index.js
+CMD node apps/api/dist/main.js

@@ -1,5 +1,5 @@
 import cron from 'node-cron'
-import { JobType, QUEUE_NAME, redis } from '@repo/queue'
+import { JobType, QUEUE_NAME, connection } from '@repo/queue'
 import { Worker } from 'bullmq'
 import { runCheckDomain } from './jobs/check-domain'
 import { checkStats } from './youtube/checkStats'
@@ -26,5 +26,5 @@ new Worker(
     await runner(job.data)
     console.log(`[${job.id}] ${job.name} - Completed`)
   },
-  { connection: redis }
+  { connection }
 )

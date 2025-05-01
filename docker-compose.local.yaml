@@ -35,11 +35,24 @@ services:
   worker:
     container_name: worker
     build:
-      dockerfile: apps/worker/Dockerfile
+      dockerfile: apps/worker/Dockerfile.local
       context: .
     restart: always
     env_file:
-      - apps/worker/.env.local
+      - apps/worker/.env
+    networks:
+      - shared-network
+
+  api:
+    container_name: api
+    build:
+      dockerfile: apps/api/Dockerfile.local
+      context: .
+    restart: always
+    env_file:
+      - apps/api/.env
+    ports:
+      - '4000:4000'
     networks:
       - shared-network
 
@@ -60,6 +73,7 @@ services:
 networks:
   shared-network:
     external: true
+    
 # docker network create shared-network
 # p docker
 # docker compose -f docker-compose.local.yaml up -d
