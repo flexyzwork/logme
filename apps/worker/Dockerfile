@@ -8,6 +8,11 @@ RUN groupadd --system --gid 1001 nodejs \
 
 USER nodejs
 
-COPY . .
+COPY --chown=nodejs:nodejs apps/worker ./apps/worker
+COPY --chown=nodejs:nodejs packages ./packages
+COPY --chown=nodejs:nodejs pnpm-lock.yaml ./
+COPY --chown=nodejs:nodejs turbo.json ./
+COPY --chown=nodejs:nodejs tsconfig.* ./
+COPY --chown=nodejs:nodejs .turbo ./.turbo
 
 CMD node apps/worker/dist/index.js

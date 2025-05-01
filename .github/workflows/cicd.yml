@@ -39,14 +39,18 @@ jobs:
           echo "${{ secrets.ENV_FILE_WORKER }}" > apps/api/.env
           echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
 
-      - name: Copy files
+      - name: Copy files with rsync
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/{web,worker,api}"
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/api/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/api/.env
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/worker/.env
+          RSYNC="rsync -avz -e 'ssh -o StrictHostKeyChecking=no -i ~/.ssh/github'"
+          HOST="ubuntu@${{ secrets.SSH_HOST }}"
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github $HOST "mkdir -pv ~/app/apps/{web,worker,api}"
+
+          $RSYNC docker-compose.yaml $HOST:~/app/
+          $RSYNC apps/nginx/ $HOST:~/app/apps/nginx/
+          $RSYNC apps/web/.env $HOST:~/app/apps/web/
+          $RSYNC apps/api/.env $HOST:~/app/apps/api/
+          $RSYNC apps/worker/.env $HOST:~/app/apps/worker/
 
       - name: Determine Active
         id: active_version
@@ -207,12 +211,13 @@ jobs:
           export $(grep -v '^#' .env | xargs)
           echo "${{ env.ACTIVE }} -> $ACTIVE"
 
-          cleanup
-
+          
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
           docker ps --format '{{.Names}}' | grep -q "api" || docker-compose up -d --force-recreate api
           docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker
-
+          
+          cleanup
+          
           EOF
 
       - name: Slack Notification (Success)
