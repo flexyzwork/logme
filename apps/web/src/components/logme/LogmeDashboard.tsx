@@ -122,9 +122,7 @@ export default function LogmeDashboard() {
                           >
                             {site.domainVerifications[0].subdomain}
                           </a>{' '}
-                          {site.domainVerifications[0].verified
-                            ? `${' '} ✅ 연결 완료`
-                            : '⏳ 발급 중'}
+                          {site.domainVerifications[0].verified ? ` ✅ 연결 완료` : '⏳ 발급 중'}
                         </div>
                       ) : (
                         <div className="mt-1 text-sm text-red-500">❌ 서브도메인 생성 실패</div>
@@ -143,45 +141,50 @@ export default function LogmeDashboard() {
                         </p>
                       )}
 
-                      {site.contentSource && (
-                        <p className="mt-1 text-sm">
-                          노션컨텐츠:{' '}
-                          <a
-                            href={site.contentSource.sourceUrl}
-                            className="text-blue-500 underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {site.contentSource.sourceId}
-                          </a>
-                        </p>
-                      )}
-                      {site.repo && (
-                        <p className="mt-1 text-sm">
-                          깃헙저장소:{' '}
-                          <a
-                            href={site.repo.repoUrl}
-                            className="text-blue-500 underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {site.repo.repoName}
-                          </a>
-                        </p>
-                      )}
-                      {site.deployTarget?.deployments[0]?.deployUrl && (
-                        <p className="mt-1 text-sm">
-                          베르셀배포:{' '}
-                          <a
-                            href={site.deployTarget.deployments[0]?.deployUrl}
-                            className="text-blue-500 underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {site.deployTarget.targetName}
-                          </a>
-                        </p>
-                      )}
+                      <details className="mt-2 text-sm">
+                        <summary className="cursor-pointer text-blue-500">상세 정보</summary>
+                        <div className="mt-2 space-y-1">
+                          {site.contentSource && (
+                            <p>
+                              노션컨텐츠:{' '}
+                              <a
+                                href={site.contentSource.sourceUrl}
+                                className="text-blue-500 underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {site.contentSource.sourceId}
+                              </a>
+                            </p>
+                          )}
+                          {site.repo && (
+                            <p>
+                              깃헙저장소:{' '}
+                              <a
+                                href={site.repo.repoUrl}
+                                className="text-blue-500 underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {site.repo.repoName}
+                              </a>
+                            </p>
+                          )}
+                          {site.deployTarget?.deployments[0]?.deployUrl && (
+                            <p>
+                              베르셀배포:{' '}
+                              <a
+                                href={site.deployTarget.deployments[0]?.deployUrl}
+                                className="text-blue-500 underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {site.deployTarget.targetName}
+                              </a>
+                            </p>
+                          )}
+                        </div>
+                      </details>
 
                       <div className="mt-4 flex justify-end-safe gap-2">
                         <Button

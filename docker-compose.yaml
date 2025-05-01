@@ -14,9 +14,9 @@ services:
     networks:
       - app-network
     depends_on:
-      - app-${ACTIVE}
+      - app-${ACTIVE:-green}
     environment:
-      - ACTIVE=${ACTIVE}
+      - ACTIVE=${ACTIVE:-green}
     env_file:
       - .env
     entrypoint: ['/bin/sh', '/entrypoint.sh']

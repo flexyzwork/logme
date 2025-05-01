@@ -13,9 +13,9 @@ services:
     networks:
       - shared-network
     depends_on:
-      - app-${ACTIVE}
+      - app-${ACTIVE:-green}
     environment:
-      - ACTIVE=${ACTIVE}
+      - ACTIVE=${ACTIVE:-green}
     env_file:
       - .env
     entrypoint: ['/bin/sh', '/entrypoint.sh']
@@ -38,6 +38,9 @@ services:
       dockerfile: apps/worker/Dockerfile.local
       context: .
     restart: always
+    environment:
+      - DATABASE_URL="postgresql://postgres:postgres@postgres:5432/saas_dev"
+      - REDIS_URL=redis://redis:6379
     env_file:
       - apps/worker/.env
     networks:
@@ -49,6 +52,9 @@ services:
       dockerfile: apps/api/Dockerfile.local
       context: .
     restart: always
+    environment:
+      - DATABASE_URL="postgresql://postgres:postgres@postgres:5432/saas_dev"
+      - REDIS_URL=redis://redis:6379
     env_file:
       - apps/api/.env
     ports:
@@ -65,6 +71,9 @@ services:
     restart: always
     ports:
       - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://api:4000
+      - DATABASE_URL="postgresql://postgres:postgres@postgres:5432/saas_dev"
     env_file:
       - apps/web/.env.local
     networks:
@@ -73,7 +82,6 @@ services:
 networks:
   shared-network:
     external: true
-    
 # docker network create shared-network
 # p docker
 # docker compose -f docker-compose.local.yaml up -d

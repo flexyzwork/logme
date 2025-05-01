@@ -1,11 +1,7 @@
 import { Queue, QueueEvents } from 'bullmq'
 import Redis from 'ioredis'
 
-const REDIS_URL = process.env.REDIS_URL
-
-if (!REDIS_URL) {
-  throw new Error('REDIS_URL is not defined')
-}
+const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379'
 
 export const connection = new Redis(REDIS_URL, {
   ...(process.env.NODE_ENV === 'production' ? { tls: {} } : {}),
@@ -34,7 +30,7 @@ export async function enqueue<T extends JobType>(type: T, data: JobData[T]) {
   return queue.add(type, data)
 }
 
-const queueEvents = new QueueEvents(QUEUE_NAME, {connection}) // 이게 범인!!
+const queueEvents = new QueueEvents(QUEUE_NAME, { connection }) // 이게 범인!!
 export async function enqueueAndWait<T extends JobType>(type: T, data: JobData[T]) {
   const job = await enqueue(type, data)
   await job.waitUntilFinished(queueEvents)

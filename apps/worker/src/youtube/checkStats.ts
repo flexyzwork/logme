@@ -15,8 +15,8 @@ const yt = google.youtube({
   auth: API_KEY,
 })
 
-const SUB_DELTA_THRESHOLD = parseInt(process.env.YOUTUBE_ALERT_SUB_DELTA || '10')
-const VIEW_DELTA_THRESHOLD = parseInt(process.env.YOUTUBE_ALERT_VIEW_DELTA || '100')
+const SUB_DELTA_THRESHOLD = parseInt(process.env.YOUTUBE_ALERT_SUB_DELTA || '2')
+const VIEW_DELTA_THRESHOLD = parseInt(process.env.YOUTUBE_ALERT_VIEW_DELTA || '20')
 
 export async function checkStats() {
   try {
@@ -61,9 +61,10 @@ export async function checkStats() {
       maxResults: 10,
     })
 
-    const videoIds = playlistRes.data.items
-      ?.map(item => item.contentDetails?.videoId)
-      .filter((id): id is string => !!id) || []
+    const videoIds =
+      playlistRes.data.items
+        ?.map((item) => item.contentDetails?.videoId)
+        .filter((id): id is string => !!id) || []
     if (videoIds.length === 0) throw new Error('No video IDs found')
 
     const videoRes = await yt.videos.list({
