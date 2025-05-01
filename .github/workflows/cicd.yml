@@ -32,17 +32,12 @@ jobs:
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
 
-      - name: Create .env (NEXTJS)
-        run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
-
-      - name: Create .env (NGINX)
-        run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
-
-      - name: Create .env (API)
-        run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/api/.env
-
-      - name: Create .env (WORKER)
-        run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
+      - name: Create .env
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > apps/web/.env
+          echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
+          echo "${{ secrets.ENV_FILE_WORKER }}" > apps/api/.env
+          echo "${{ secrets.ENV_FILE_WORKER }}" > apps/worker/.env
 
       - name: Copy files
         run: |

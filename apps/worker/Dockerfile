@@ -1,5 +1,4 @@
 FROM node:22-slim AS runner
-RUN npm install -g pnpm
 WORKDIR /app
 
 RUN groupadd --system --gid 1001 nodejs \
@@ -10,8 +9,5 @@ RUN groupadd --system --gid 1001 nodejs \
 USER nodejs
 
 COPY . .
-
-RUN pnpm db:g
-
 
 CMD node apps/worker/dist/index.js
