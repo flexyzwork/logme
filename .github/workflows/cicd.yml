@@ -41,7 +41,7 @@ jobs:
 
       - name: Copy files with rsync
         run: |
-          RSYNC="rsync -avz -e 'ssh -o StrictHostKeyChecking=no -i ~/.ssh/github'"
+          RSYNC="rsync -avz -e \"ssh -o StrictHostKeyChecking=no -i ~/.ssh/github\""
           HOST="ubuntu@${{ secrets.SSH_HOST }}"
 
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github $HOST "mkdir -pv ~/app/apps/{web,worker,api}"
@@ -211,13 +211,13 @@ jobs:
           export $(grep -v '^#' .env | xargs)
           echo "${{ env.ACTIVE }} -> $ACTIVE"
 
-          
+
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
           docker ps --format '{{.Names}}' | grep -q "api" || docker-compose up -d --force-recreate api
           docker ps --format '{{.Names}}' | grep -q "worker" || docker-compose up -d --force-recreate worker
-          
+
           cleanup
-          
+
           EOF
 
       - name: Slack Notification (Success)
