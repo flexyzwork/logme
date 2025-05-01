@@ -41,12 +41,12 @@ jobs:
 
       - name: Copy files
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/web"
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/{web,worker,api}"
           scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
           scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/api ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/api/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/api/.env
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/worker/.env
 
       - name: Determine Active
         id: active_version
