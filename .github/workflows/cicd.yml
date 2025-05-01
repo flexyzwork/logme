@@ -41,16 +41,15 @@ jobs:
 
       - name: Copy files with rsync
         run: |
-          RSYNC="rsync -avz -e \"ssh -o StrictHostKeyChecking=no -i ~/.ssh/github\""
           HOST="ubuntu@${{ secrets.SSH_HOST }}"
-
+      
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github $HOST "mkdir -pv ~/app/apps/{web,worker,api}"
-
-          $RSYNC docker-compose.yaml $HOST:~/app/
-          $RSYNC apps/nginx/ $HOST:~/app/apps/nginx/
-          $RSYNC apps/web/.env $HOST:~/app/apps/web/
-          $RSYNC apps/api/.env $HOST:~/app/apps/api/
-          $RSYNC apps/worker/.env $HOST:~/app/apps/worker/
+      
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" docker-compose.yaml $HOST:~/app/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/nginx/ $HOST:~/app/apps/nginx/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/web/.env $HOST:~/app/apps/web/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/api/.env $HOST:~/app/apps/api/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/github" apps/worker/.env $HOST:~/app/apps/worker/
 
       - name: Determine Active
         id: active_version
