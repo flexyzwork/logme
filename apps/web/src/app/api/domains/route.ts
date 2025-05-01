@@ -154,14 +154,14 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Enqueue background verification job
-    const { queue, JobType } = await import('@repo/queue')
-    await queue.add(JobType.CheckDomain, {
-      domain: subdomain,
-      vercelProjectId,
-      vercelToken,
-      providerId: provider.id,
-    })
+    // // Enqueue background verification job
+    // const { queue, JobType } = await import('@repo/queue')
+    // await queue.add(JobType.CheckDomain, {
+    //   domain: subdomain,
+    //   vercelProjectId,
+    //   vercelToken,
+    //   providerId: provider.id,
+    // })
 
     return NextResponse.json({ success: true, domain: subdomain })
   } catch (error) {
