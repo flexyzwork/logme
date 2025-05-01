@@ -32,11 +32,11 @@ jobs:
           echo "  IdentityFile ~/.ssh/github" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
 
+      - name: Create .env (NEXTJS)
+        run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
+
       - name: Create .env (NGINX)
         run: echo "${{ secrets.ENV_FILE_NGINX }}" > apps/nginx/.env
-
-      - name: Create .env (WEB)
-        run: echo "${{ secrets.ENV_FILE }}" > apps/web/.env
 
       - name: Create .env (API)
         run: echo "${{ secrets.ENV_FILE_WORKER }}" > apps/api/.env
@@ -46,7 +46,12 @@ jobs:
 
       - name: Copy files
         run: |
-          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/ ubuntu@${{ secrets.SSH_HOST }}:~/app/
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github ubuntu@${{ secrets.SSH_HOST }} "mkdir -pv ~/app/apps/web"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github apps/web/.env ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/web/.env
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/github docker-compose.yaml ubuntu@${{ secrets.SSH_HOST }}:~/app/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/nginx ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/worker ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
+          scp -r -o StrictHostKeyChecking=no -i ~/.ssh/github apps/api ubuntu@${{ secrets.SSH_HOST }}:~/app/apps/
 
       - name: Determine Active
         id: active_version
