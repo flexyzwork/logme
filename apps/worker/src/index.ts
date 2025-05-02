@@ -4,7 +4,7 @@ import { Worker } from 'bullmq'
 import { runCheckDomain } from './jobs/check-domain'
 import { checkStats } from './youtube/checkStats'
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('* */3 * * *', async () => {
   console.log('🔄 Running YouTube stats check...')
   await checkStats()
 })
