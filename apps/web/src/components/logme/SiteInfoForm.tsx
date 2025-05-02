@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { CheckCircle } from 'lucide-react'
 
 export function SiteInfoForm({
+  author,
   title,
   description = '',
   sub = '',
@@ -13,6 +14,7 @@ export function SiteInfoForm({
   onSave,
   isSaving = false,
 }: {
+  author: string
   title: string
   description?: string
   sub: string
@@ -21,7 +23,8 @@ export function SiteInfoForm({
   isSaving?: boolean
 }) {
   const isTitleTooLong = title.length > 40
-  const isDisabled = title.trim() === '' || isTitleTooLong || sub.trim() === ''
+  const isAuthorTooLong = title.length > 10
+  const isDisabled = title.trim() === '' || isTitleTooLong || isAuthorTooLong || sub.trim() === ''
 
   const [justSaved, setJustSaved] = useState(false)
 
@@ -33,7 +36,20 @@ export function SiteInfoForm({
   }, [justSaved])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-2xl mx-auto">
+      <div>
+        <Label htmlFor="author">
+          이름 <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="author"
+          value={author}
+          onChange={(e) => onChange('title', e.target.value)}
+          placeholder="예: 하늘이"
+          required
+        />
+        {isAuthorTooLong && <p className="text-sm text-red-500 mt-1">10자 이내로 입력해주세요.</p>}
+      </div>
       <div>
         <Label htmlFor="site-title">
           사이트 이름 <span className="text-red-500">*</span>
@@ -63,13 +79,14 @@ export function SiteInfoForm({
 
       <div>
         <Label htmlFor="site-sub">
-          도메인 주소 (영문 소문자만, 예: `myblog`) <span className="text-red-500">*</span>
+          도메인 주소 <span className="text-red-500">*</span>
+          영문소문자,숫자,하이픈(-)가능{' '}
         </Label>
         <Input
           id="site-sub"
           value={sub}
           onChange={(e) => onChange('sub', e.target.value)}
-          placeholder="예: myblog"
+          placeholder="예: my-blog12"
           required
         />
       </div>

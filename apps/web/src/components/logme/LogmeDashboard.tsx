@@ -53,7 +53,7 @@ export default function LogmeDashboard() {
                 className="border rounded-md p-4 shadow flex flex-col sm:flex-row w-full"
               >
                 <Image
-                  src="/placeholder.png"
+                  src={site.template?.thumbnailUrl ?? '/placeholder.png'}
                   alt="Site preview"
                   width={400}
                   height={300}

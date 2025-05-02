@@ -77,6 +77,9 @@ export const useDeploymentActions = () => {
   const startDeploy = async (
     params: {
       sub: string
+      siteTitle?: string
+      siteDescription?: string
+      author?: string
     },
 
     onDeploying?: () => void,
@@ -84,7 +87,7 @@ export const useDeploymentActions = () => {
   ) => {
     try {
       onDeploying?.()
-      const { sub } = params
+      const { sub, siteTitle, siteDescription, author } = params
       if (!githubOwner) {
         logger.log('error', '❌ githubOwner가 없습니다.')
         return
@@ -104,6 +107,9 @@ export const useDeploymentActions = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sub,
+          siteTitle,
+          siteDescription,
+          author,
           notionPageId,
           githubInstallationId,
           templateOwner,

@@ -32,12 +32,12 @@ export async function POST(req: Request) {
 
     // 기존 providerExtended 여부 확인
     if (templateId) {
-      existing = await db.providerExtended.findFirst({
-        where: { providerId, templateId, extendedKey },
+      existing = await db.providerExtended.findUnique({
+        where: { providerId_extendedKey_templateId: { providerId, extendedKey, templateId } },
       })
     } else {
-      existing = await db.providerExtended.findUnique({
-        where: { providerId_extendedKey: { providerId, extendedKey } },
+      existing = await db.providerExtended.findFirst({
+        where: { providerId, extendedKey },
       })
     }
 

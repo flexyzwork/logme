@@ -9,6 +9,8 @@ interface BuilderState {
   notionLastProcessedCode: string | null
   notionPageId: string | null
   siteId: string | null
+  siteTitle: string | null
+  siteDescription: string | null
   templateId: string | null
   deployUrl: string | null
   sub: string | null
@@ -19,6 +21,8 @@ interface BuilderState {
   setNotionLastProcessedCode: (code: string) => void
   setNotionPageId: (id: string) => void
   setSiteId: (id: string) => void
+  setSiteTitle: (title: string) => void
+  setSiteDescription: (description: string) => void
   setTemplateId: (id: string) => void
   setUserId: (userId: string | null) => void
   setDeployUrl: (id: string) => void
@@ -37,6 +41,8 @@ export const useBuilderStore = create<BuilderState>()(
         notionLastProcessedCode: null,
         notionPageId: null,
         siteId: null,
+        siteTitle: null,
+        siteDescription: null,
         templateId: null,
         deployUrl: null,
         sub: null,
@@ -67,6 +73,17 @@ export const useBuilderStore = create<BuilderState>()(
           logger.log('info', `🚀 새 블로그 저장:`, { id })
           set({ siteId: id })
         },
+
+        setSiteTitle: (title) => {
+          logger.log('info', `🚀 블로그 제목 저장:`, { title })
+          set({ siteTitle: title })
+        },
+
+        setSiteDescription: (description) => {
+          logger.log('info', `🚀 블로그 설명 저장:`, { description })
+          set({ siteDescription: description })
+        },
+
         setTemplateId: (id) => {
           logger.log('info', `🚀 템플릿 ID 저장:`, { id })
           set({ templateId: id })
@@ -106,6 +123,8 @@ export const useBuilderStore = create<BuilderState>()(
           userId: state.userId,
           notionPageId: state.notionPageId,
           siteId: state.siteId,
+          siteTitle: state.siteTitle,
+          siteDescription: state.siteDescription,
           templateId: state.templateId,
           deployUrl: state.deployUrl,
           notionLastProcessedCode: state.notionLastProcessedCode,

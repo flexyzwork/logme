@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
       templateRepo,
       githubOwner,
       githubRepoName,
+      author,
+      siteTitle,
+      siteDescription,
+      sub,
     } = await req.json()
 
     if (!githubInstallationId) {
@@ -79,12 +83,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Vercel provider not found' }, { status: 404 })
     }
 
-    const providerExtended = await db.providerExtended.findUnique({
+    const providerExtended = await db.providerExtended.findFirst({
       where: {
-        providerId_extendedKey: {
-          providerId: provider.id,
-          extendedKey: 'token',
-        },
+        providerId: provider.id,
+        extendedKey: 'token',
       },
     })
 
@@ -170,6 +172,30 @@ export async function POST(req: NextRequest) {
             type: 'plain',
             target: ['production'],
           },
+          {
+            key: 'NEXT_PUBLIC_SUB',
+            value: sub,
+            type: 'plain',
+            target: ['production'],
+          },
+          {
+            key: 'NEXT_PUBLIC_AUTHOR',
+            value: author,
+            type: 'plain',
+            target: ['production'],
+          },
+          {
+            key: 'NEXT_PUBLIC_SITE_TITLE',
+            value: siteTitle,
+            type: 'plain',
+            target: ['production'],
+          },
+          {
+            key: 'NEXT_PUBLIC_SITE_DESCRIPTION',
+            value: siteDescription,
+            type: 'plain',
+            target: ['production'],
+          },
         ]),
       }
     )
@@ -203,6 +229,9 @@ export async function POST(req: NextRequest) {
         },
         meta: {
           NEXT_PUBLIC_ROOT_NOTION_PAGE_ID: notionPageId, // ✅ 환경 변수 설정 (Notion Page ID)
+          NODE_ENV: 'production', // ✅ 환경 변수 설정 (NODE_ENV)
+          NEXT_PUBLIC_NODE_ENV: 'production', // ✅ 환경 변수 설정 (NEXT_PUBLIC_NODE_ENV)
+          NEXT_PUBLIC_AUTHOR: notionPageId, // ✅ 환경 변수 설정 (Notion Page ID)
         },
         alias: [`${projectData.name}.vercel.app`], // ✅ Vercel 프로젝트 URL 자동 설정
       }),

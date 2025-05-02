@@ -227,7 +227,7 @@ model ProviderExtended {
 
   provider       Provider  @relation(fields: [providerId], references: [id])
 
-  @@unique([providerId, extendedKey])
+  @@unique([providerId, extendedKey, templateId])
 }
 
 /// 컨텐츠 소스 - 노션 페이지

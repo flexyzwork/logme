@@ -49,6 +49,7 @@ export async function GET() {
         template: {
           select: {
             templateTitle: true,
+            thumbnailUrl: true,
           },
         },
         contentSource: {
@@ -80,7 +81,7 @@ export async function GET() {
             subdomain: true,
             verified: true,
           },
-        }
+        },
       },
       orderBy: {
         createdAt: 'desc',

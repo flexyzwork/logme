@@ -2,7 +2,7 @@ import { db } from '@repo/db'
 import { JobData, JobType } from '@repo/queue'
 import fetch from 'node-fetch'
 
-const MAX_RETRIES = 20
+const MAX_RETRIES = 100
 const RETRY_DELAY_MS = 1000 * 20
 
 function sleep(ms: number) {

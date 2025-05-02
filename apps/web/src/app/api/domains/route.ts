@@ -4,7 +4,6 @@ import logger from '@/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
-
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN!
 const CLOUDFLARE_ZONE_ID = process.env.CLOUDFLARE_ZONE_ID!
 const VERCEL_API_URL = 'https://api.vercel.com/v9'
@@ -34,12 +33,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Vercel provider not found' }, { status: 404 })
     }
 
-    const providerExtended = await db.providerExtended.findUnique({
+    const providerExtended = await db.providerExtended.findFirst({
       where: {
-        providerId_extendedKey: {
-          providerId: provider.id,
-          extendedKey: 'token',
-        },
+        providerId: provider.id,
+        extendedKey: 'token',
       },
     })
 

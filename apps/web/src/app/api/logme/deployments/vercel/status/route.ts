@@ -28,12 +28,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Vercel provider not found' }, { status: 404 })
     }
 
-    const providerExtended = await db.providerExtended.findUnique({
+    const providerExtended = await db.providerExtended.findFirst({
       where: {
-        providerId_extendedKey: {
-          providerId: provider.id,
-          extendedKey: 'token',
-        },
+        providerId: provider.id,
+        extendedKey: 'token',
       },
     })
 

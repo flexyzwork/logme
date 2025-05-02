@@ -13,6 +13,7 @@ import { useFetchProviderExtended } from '@/hooks/logme/provider/useFetchProvide
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import logger from '@/lib/logger'
+import { cn } from '@/lib/utils'
 
 export default function SiteBuilder() {
   const { isDeploying } = useSiteBuilderUI()
@@ -74,6 +75,13 @@ export default function SiteBuilder() {
       ? (stepTitleMap[step] as (d: boolean) => string)(isDeploying)
       : (stepTitleMap[step] ?? '')
 
+  const stepWidthMap: Record<number, string> = {
+    0: 'max-w-3xl',
+    1: 'max-w-lg',
+    2: 'max-w-2xl',
+    3: 'max-w-lg',
+    4: 'max-w-lg',
+  }
   return (
     <>
       {shouldRedirectToAccount && (
@@ -84,7 +92,7 @@ export default function SiteBuilder() {
         </div>
       )}
       <div className="flex min-h-screen items-center justify-center p-4">
-        <Card className="w-full max-w-md p-6 shadow-lg">
+        <Card className={cn('w-full p-6 shadow-lg', stepWidthMap[step])}>
           <CardHeader>
             <CardTitle className="text-center text-2xl font-bold">{stepTitle}</CardTitle>
           </CardHeader>

@@ -13,7 +13,15 @@ import { RESERVED_SUBDOMAINS } from '@/constants/reserved'
 export default function Step2_InputSiteInfo() {
   const { mutateAsync: updateSiteDB } = useUpdateSite()
   const { startDeploy } = useDeploymentActions()
-  const { siteId, setBuilderStep, setDeployUrl, setSub, setGitRepoUrl } = useBuilderStore()
+  const {
+    siteId,
+    setBuilderStep,
+    setDeployUrl,
+    setSub,
+    setGitRepoUrl,
+    setSiteTitle,
+    setSiteDescription,
+  } = useBuilderStore()
   const { data: session } = useSession()
   const { setIsDeploying } = useSiteBuilderUI()
 
@@ -49,6 +57,7 @@ export default function Step2_InputSiteInfo() {
 
   const handleSave = async () => {
     const userId = session?.user?.id
+    const userName = session?.user?.name
     if (!userId) {
       alert('❌ 로그인이 필요합니다.')
       return
@@ -70,11 +79,18 @@ export default function Step2_InputSiteInfo() {
         description: siteInfo.description,
       })
       startDeploy(
-        { sub: siteInfo.sub },
+        {
+          sub: siteInfo.sub,
+          siteTitle: siteInfo.title,
+          siteDescription: siteInfo.description,
+          author: userName || '',
+        },
         () => setIsDeploying(true),
         (deployUrl, gitRepoUrl) => {
           setDeployUrl(deployUrl)
           setSub(siteInfo.sub)
+          setSiteTitle(siteInfo.title)
+          setSiteDescription(siteInfo.description)
           setGitRepoUrl(gitRepoUrl)
           logger.log('info', '배포 중...', siteInfo)
           setIsSaving(false)
@@ -94,6 +110,7 @@ export default function Step2_InputSiteInfo() {
         저장을 누르면 Vercel 배포를 진행합니다.
       </p>
       <SiteInfoForm
+        author={session?.user?.name || 'Unknown'}
         title={siteInfo.title}
         description={siteInfo.description}
         sub={siteInfo.sub}
