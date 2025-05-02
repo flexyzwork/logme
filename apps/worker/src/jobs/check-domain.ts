@@ -14,6 +14,17 @@ export const runCheckDomain = async (data: JobData[JobType.CheckDomain]) => {
 
   await new Promise((resolve) => setTimeout(resolve, 60 * 1000))
   console.log('🔍 Starting domain verification job with data:', { domain, vercelProjectId })
+  console.log('🔁 Triggering domain verification...')
+  await fetch(
+    `https://api.vercel.com/v9/projects/${vercelProjectId}/domains/${domain}/verify`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${vercelToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  )
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {

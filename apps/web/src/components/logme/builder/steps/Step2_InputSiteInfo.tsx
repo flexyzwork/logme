@@ -26,6 +26,7 @@ export default function Step2_InputSiteInfo() {
   const { setIsDeploying } = useSiteBuilderUI()
 
   const [siteInfo, setSiteInfo] = useState({
+    author: session?.user?.name || '',
     title: '',
     description: '',
     sub: '',
@@ -48,7 +49,7 @@ export default function Step2_InputSiteInfo() {
     return true
   }
 
-  const handleChange = (field: 'title' | 'description' | 'sub', value: string) => {
+  const handleChange = (field: 'author' | 'title' | 'description' | 'sub', value: string) => {
     setSiteInfo((prev) => ({
       ...prev,
       [field]: value,
@@ -110,7 +111,7 @@ export default function Step2_InputSiteInfo() {
         저장을 누르면 Vercel 배포를 진행합니다.
       </p>
       <SiteInfoForm
-        author={session?.user?.name || 'Unknown'}
+        author={siteInfo.author}
         title={siteInfo.title}
         description={siteInfo.description}
         sub={siteInfo.sub}

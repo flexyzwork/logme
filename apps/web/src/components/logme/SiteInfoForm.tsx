@@ -18,12 +18,12 @@ export function SiteInfoForm({
   title: string
   description?: string
   sub: string
-  onChange: (field: 'title' | 'description' | 'sub', value: string) => void
+  onChange: (field:  'author' | 'title' | 'description' | 'sub', value: string) => void
   onSave: () => void
   isSaving?: boolean
 }) {
   const isTitleTooLong = title.length > 40
-  const isAuthorTooLong = title.length > 10
+  const isAuthorTooLong = author.length > 10
   const isDisabled = title.trim() === '' || isTitleTooLong || isAuthorTooLong || sub.trim() === ''
 
   const [justSaved, setJustSaved] = useState(false)
@@ -44,7 +44,7 @@ export function SiteInfoForm({
         <Input
           id="author"
           value={author}
-          onChange={(e) => onChange('title', e.target.value)}
+          onChange={(e) => onChange('author', e.target.value)}
           placeholder="예: 하늘이"
           required
         />
