@@ -34,7 +34,7 @@ export const useTemplateCopyWatcher = ({
         if (data.isCopied) {
           onComplete?.()
         } else {
-          timeoutId = setTimeout(checkCopyStatus, 1000)
+          timeoutId = setTimeout(checkCopyStatus, 2000)
         }
       } catch (error) {
         logger.log('error', '❌ 템플릿 확인 오류:', { error })

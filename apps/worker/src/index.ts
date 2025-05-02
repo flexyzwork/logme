@@ -1,13 +1,13 @@
-import cron from 'node-cron'
+// import cron from 'node-cron'
 import { JobType, QUEUE_NAME, connection } from '@repo/queue'
 import { Worker } from 'bullmq'
 import { runCheckDomain } from './jobs/check-domain'
 import { checkStats } from './youtube/checkStats'
 
-cron.schedule('* */3 * * *', async () => {
-  console.log('🔄 Running YouTube stats check...')
-  await checkStats()
-})
+// cron.schedule('* */3 * * *', async () => {
+//   console.log('🔄 Running YouTube stats check...')
+//   await checkStats()
+// })
 
 const runners = {
   [JobType.CheckDomain]: runCheckDomain,
