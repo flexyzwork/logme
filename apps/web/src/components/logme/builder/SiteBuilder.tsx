@@ -78,7 +78,7 @@ export default function SiteBuilder() {
   const stepWidthMap: Record<number, string> = {
     0: 'max-w-3xl',
     1: 'max-w-lg',
-    2: 'max-w-2xl',
+    2: 'max-w-lg',
     3: 'max-w-lg',
     4: 'max-w-lg',
   }
