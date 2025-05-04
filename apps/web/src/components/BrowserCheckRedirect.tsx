@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import logger from '@/lib/logger'
 
 export const isUnsafeInApp = () => {
   const ua = navigator.userAgent.toLowerCase()
@@ -14,6 +15,7 @@ export const isUnsafeInApp = () => {
 
 export default function BrowserCheckRedirect() {
   const router = useRouter()
+  logger.log('info', 'platform check:', { ua: navigator.userAgent, result: isUnsafeInApp() })
 
   useEffect(() => {
     if (isUnsafeInApp()) {
