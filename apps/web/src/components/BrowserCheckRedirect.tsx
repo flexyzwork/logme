@@ -7,10 +7,9 @@ import logger from '@/lib/logger'
 export const isUnsafeInApp = () => {
   const ua = navigator.userAgent.toLowerCase()
   const isIOS = /iphone|ipad|ipod/.test(ua)
-  const isInAppBrowser = /(kakao|naver|instagram|facebook|line|youtube|inapp|wv)/.test(ua)
-  const forceBlockedOnIOS = isIOS && /(youtube)/.test(ua)
+  const isInAppBrowser = /(kakaotalk|naver|instagram|facebook|line|youtube|inapp|wv)/.test(ua)
 
-  return (isInAppBrowser && !isIOS) || forceBlockedOnIOS
+  return isInAppBrowser && !isIOS
 }
 
 export default function BrowserCheckRedirect() {
