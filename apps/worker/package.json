@@ -11,13 +11,16 @@
     "one": "npx tsx src/run.ts"
   },
   "dependencies": {
+    "@logtail/node": "^0.5.4",
+    "@logtail/winston": "^0.5.4",
     "@repo/db": "workspace:^",
     "@repo/queue": "workspace:^",
     "bullmq": "^5.35.1",
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
     "node-cron": "^3.0.3",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:^",

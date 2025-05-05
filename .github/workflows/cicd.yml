@@ -212,8 +212,8 @@ jobs:
 
 
           docker ps --format '{{.Names}}' | grep -q "nginx" && docker-compose exec -e ACTIVE="$ACTIVE" nginx /bin/sh -c "envsubst '\$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf && nginx -t && nginx -s reload" || docker-compose up -d --force-recreate nginx
-          docker-compose pull api && docker-compose up -d --force-recreate api
-          docker-compose pull worker && docker-compose up -d --force-recreate worker
+          docker-compose pull api && docker-compose rm -f api && docker-compose up -d api
+          docker-compose pull worker && docker-compose rm -f worker && docker-compose up -d worker
 
           cleanup
 
