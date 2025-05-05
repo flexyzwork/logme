@@ -20,7 +20,7 @@ export default function BrowserCheckRedirect() {
     if (isUnsafeInApp()) {
       router.replace('/open-in-browser')
     }
-  }, [])
+  }, [router])
 
   return null
 }

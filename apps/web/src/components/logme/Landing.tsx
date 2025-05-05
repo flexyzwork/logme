@@ -105,7 +105,8 @@ export default function Landing() {
                 <div>
                   <p className="text-base font-bold mb-1">🔍 Auto-generated preview thumbnails</p>
                   <p>
-                    Preview thumbnails (OG images) are auto-generated, making your shared links look attractive effortlessly.
+                    Preview thumbnails (OG images) are auto-generated, making your shared links look
+                    attractive effortlessly.
                   </p>
                 </div>
               </TooltipTrigger>
@@ -124,7 +125,8 @@ export default function Landing() {
                 <div>
                   <p className="text-base font-bold mb-1">🖼️ Full image support</p>
                   <p>
-                    Images attached in Notion are seamlessly reflected in your blog, automatically optimized in resolution and aspect ratio.
+                    Images attached in Notion are seamlessly reflected in your blog, automatically
+                    optimized in resolution and aspect ratio.
                   </p>
                 </div>
               </TooltipTrigger>
@@ -145,7 +147,7 @@ export default function Landing() {
       <section className="mb-32 text-center">
         <h2 className="text-xl font-semibold mb-4">📦 Pricing</h2>
         <p className="text-base text-muted-foreground">
-          We're currently in beta—enjoy it for free!
+          We&apos;re currently in beta — you can use it completely free of charge!
         </p>
       </section>
 
@@ -153,8 +155,7 @@ export default function Landing() {
       <section className="mb-32 text-center">
         <h2 className="text-lg font-semibold mb-4">☕ Buy us a coffee</h2>
         <p className="text-base text-muted-foreground">
-          If you like this service, consider supporting us with a coffee!
-          {' '}
+          If you like this service, consider supporting us with a coffee!{' '}
           <a
             href="https://buymeacoffee.com/flexyzwork"
             target="_blank"
