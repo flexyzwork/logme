@@ -14,8 +14,8 @@ export default function Step6_Done() {
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="text-center text-gray-700 text-sm">
-        🎉 Vercel 배포가 완료되었습니다! <br />
-        블로그를 확인해보세요.
+        🎉 Your blog has been deployed to Vercel! <br />
+        Check it out below.
       </p>
       <ShareButton url={`https://logme-${sub}.vercel.app`} />
       {sub ? (
@@ -23,10 +23,10 @@ export default function Step6_Done() {
           className="w-full mt-2 bg-green-600 hover:bg-green-700 text-white text-sm"
           onClick={() => window.open(`https://logme-${sub}.vercel.app`, '_blank')}
         >
-          🌍 블로그 보기
+          🌍 View Blog
         </Button>
       ) : (
-        <p className="text-center text-red-500">❌ 블로그 URL을 가져올 수 없습니다.</p>
+        <p className="text-center text-red-500">❌ Failed to generate blog URL.</p>
       )}
 
       <Button
@@ -38,7 +38,7 @@ export default function Step6_Done() {
           })
         }}
       >
-        📖 컨텐츠 편집하기
+        📖 Edit Content
       </Button>
 
       <Button
@@ -47,7 +47,7 @@ export default function Step6_Done() {
           router.push('/dashboard')
         }}
       >
-        🔙 대시보드로 가기
+        🔙 Go to Dashboard
       </Button>
     </div>
   )

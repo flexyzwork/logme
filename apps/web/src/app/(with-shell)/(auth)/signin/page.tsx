@@ -21,49 +21,49 @@ export default function SignInPage() {
     <div className="flex min-h-[calc(100vh-110px)] items-center justify-center px-4">
       <Card className="w-full max-w-sm p-4 shadow-lg">
         <CardContent className="flex flex-col gap-4">
-          <h1 className="text-xl font-semibold text-center">로그인</h1>
+          <h1 className="text-xl font-semibold text-center">Sign in</h1>
 
           {emailMode ? (
             <>
               <Input
                 type="email"
-                placeholder="이메일을 입력하세요"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <Button variant="outline" onClick={handleEmailLogin}>
-                로그인 링크 보내기
+                Send login link
               </Button>
               <Button
                 variant="ghost"
                 onClick={() => setEmailMode(false)}
                 className="text-sm text-muted-foreground"
               >
-                돌아가기
+                Back
               </Button>
             </>
           ) : (
             <>
               <Button variant="default" onClick={() => signIn('google', { callbackUrl })}>
-                Google로 로그인
+                Continue with Google
               </Button>
               {/* <Button variant="secondary" onClick={() => signIn('github', { callbackUrl })}>
-                GitHub로 로그인
+                Continue with GitHub
               </Button> */}
 
               <Button variant="outline" onClick={() => setEmailMode(true)}>
-                이메일로 로그인하기
+                Sign in with email
               </Button>
               <p className="text-xs text-muted-foreground text-center mt-2">
-                로그인 시{' '}
+                By signing in, you agree to our{' '}
                 <a href="/privacy" className="underline">
-                  개인정보처리방침
+                  Privacy Policy
                 </a>{' '}
-                및{' '}
+                and{' '}
                 <a href="/terms" className="underline">
-                  이용약관
+                  Terms of Service
                 </a>
-                에 동의하게 됩니다.
+                .
               </p>
             </>
           )}

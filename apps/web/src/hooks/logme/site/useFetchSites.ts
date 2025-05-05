@@ -5,7 +5,7 @@ export function useFetchSites() {
     queryKey: ['sites'],
     queryFn: async () => {
       const res = await fetch('/api/logme/sites')
-      if (!res.ok) throw new Error('사이트 목록 불러오기 실패')
+      if (!res.ok) throw new Error('Failed to fetch site list')
       return res.json()
     },
   })

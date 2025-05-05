@@ -22,24 +22,24 @@ export function DisconnectProviderButton({ providerType, onSuccess }: Props) {
         })
 
         if (!res.ok) {
-          throw new Error(`연결 해제 실패: ${providerType}`)
+          throw new Error(`Failed to disconnect: ${providerType}`)
         }
 
-        toast.success(`${providerType} 연결이 해제되었습니다`)
+        toast.success(`${providerType} disconnected successfully`)
         onSuccess?.()
       } catch (error) {
-        logger.log('error', '연결 해제 중 오류가 발생했습니다.', {
+        logger.log('error', 'An error occurred while disconnecting.', {
           providerType,
           error: error instanceof Error ? error.message : String(error),
         })
-        toast.error(`연결 해제 중 오류가 발생했습니다.`)
+        toast.error(`An error occurred while disconnecting.`)
       }
     })
   }
 
   return (
     <Button variant="destructive" onClick={handleClick} disabled={isPending}>
-      ❌ 연결 끊기
+      ❌ Disconnect
     </Button>
   )
 }

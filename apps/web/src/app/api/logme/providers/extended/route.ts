@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const userId = session.user.id
 
     if (!providerType || !extendedKey) {
-      return NextResponse.json({ error: '필수 파라미터 누락' }, { status: 400 })
+      return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
     }
 
     const provider = await db.provider.findFirst({
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     let existing
 
-    // 기존 providerExtended 여부 확인
+    // Check if providerExtended already exists
     if (templateId) {
       existing = await db.providerExtended.findUnique({
         where: { providerId_extendedKey_templateId: { providerId, extendedKey, templateId } },
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     let result
     if (existing) {
-      // 🔄 업데이트
+      // 🔄 Update existing providerExtended
       result = await db.providerExtended.update({
         where: { id: existing.id },
         data: {
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
         },
       })
     } else {
-      // ➕ 새로 생성
+      // ➕ Create new providerExtended
       result = await db.providerExtended.create({
         data: {
           id: createId(),
@@ -68,8 +68,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, id: result.id })
   } catch (error) {
-    logger.log('error', '❌ providerExtended 저장 오류:', { error })
-    return NextResponse.json({ error: 'providerExtended 저장 실패' }, { status: 500 })
+    logger.log('error', '❌ Failed to save provider extended info:', { error })
+    return NextResponse.json({ error: 'Failed to save provider extended info' }, { status: 500 })
   }
 }
 
@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
       searchParams.get('templateId') === 'undefined' ? null : searchParams.get('templateId')
 
     if (!providerType || !extendedKey) {
-      return NextResponse.json({ error: '필수 파라미터 누락' }, { status: 400 })
+      return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
     }
 
     const provider = await db.provider.findFirst({
@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ value: extended?.extendedValue ?? null })
   } catch (error) {
-    logger.log('error', '❌ Vercel 토큰 조회 실패:', { error })
-    return NextResponse.json({ error: '서버 에러' }, { status: 500 })
+    logger.log('error', '❌ Failed to fetch provider extended value:', { error })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -109,7 +109,7 @@ pnpm infra:down
 <br >
 
 
-## ✅ 블루-그린 배포 개요
+## 블루-그린 배포 개요
 GitHub Actions를 활용하여 **코드를 `push` 하면 자동으로 블루-그린 배포가 실행됩니다**.
 
 ### 💡 배포 흐름
@@ -132,7 +132,7 @@ server {
 
 ---
 
-## ✅ CI/CD 자동화
+## CI/CD 자동화
 ### 📜 `.github/workflows/deploy.yml` 주요 내용
 ```yaml
 name: Deploy to EC2

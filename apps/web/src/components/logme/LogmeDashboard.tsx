@@ -32,7 +32,7 @@ export default function LogmeDashboard() {
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 max-w-4xl mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-4">대시보드</h1>
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
       {isLoading ? (
         <div className="text-center">Loading...</div>
@@ -42,7 +42,7 @@ export default function LogmeDashboard() {
         <>
           <div className="flex items-center justify-end mb-6">
             <Button className="text-sm mt-1" onClick={() => router.push('/logme')}>
-              + 새 블로그 만들기
+              + Create new blog
             </Button>
           </div>
 
@@ -66,13 +66,13 @@ export default function LogmeDashboard() {
                         type="text"
                         value={editingTitle}
                         onChange={(e) => setEditingTitle(e.target.value)}
-                        placeholder="사이트 제목"
+                        placeholder="Site title"
                         className="w-full p-1 border rounded mb-2"
                       />
                       <textarea
                         value={editingDescription}
                         onChange={(e) => setEditingDescription(e.target.value)}
-                        placeholder="사이트 설명"
+                        placeholder="Site description"
                         className="w-full p-1 border rounded mb-2"
                       />
                       <div className="flex gap-2">
@@ -87,10 +87,10 @@ export default function LogmeDashboard() {
                             setEditingSite(null)
                           }}
                         >
-                          확인
+                          Confirm
                         </Button>
                         <Button size="sm" variant="outline" onClick={() => setEditingSite(null)}>
-                          취소
+                          Cancel
                         </Button>
                       </div>
                     </>
@@ -106,14 +106,14 @@ export default function LogmeDashboard() {
                   {editingSite !== site.id && (
                     <>
                       <p className="mt-2 text-sm">
-                        상태: {site.status === 'published' ? '배포' : '미완료'}
+                        Status: {site.status === 'published' ? 'Published' : 'Incomplete'}
                       </p>
                       {site.template && (
-                        <p className="mt-1 text-sm">템플릿: {site.template.templateTitle}</p>
+                        <p className="mt-1 text-sm">Template: {site.template.templateTitle}</p>
                       )}
                       {site.domainVerifications?.length > 0 ? (
                         <div className="mt-1 text-sm">
-                          서브도메인:{' '}
+                          Subdomain:{' '}
                           <a
                             href={`https://${site.domainVerifications[0].subdomain}`}
                             className="text-blue-500 underline"
@@ -122,14 +122,16 @@ export default function LogmeDashboard() {
                           >
                             {site.domainVerifications[0].subdomain}
                           </a>{' '}
-                          {site.domainVerifications[0].verified ? ` ✅ 연결 완료` : '⏳ 발급 중'}
+                          {site.domainVerifications[0].verified ? ` Connected` : '⏳ Pending'}
                         </div>
                       ) : (
-                        <div className="mt-1 text-sm text-red-500">❌ 서브도메인 생성 실패</div>
+                        <div className="mt-1 text-sm text-red-500">
+                          ❌ Failed to generate subdomain
+                        </div>
                       )}
                       {site.domainType === 'sub' && site.sub && (
                         <p className="mt-1 text-sm">
-                          배포 URL:{' '}
+                          Deployed URL:{' '}
                           <a
                             href={`https://logme-${site.sub}.vercel.app`}
                             className="text-blue-500 underline"
@@ -142,11 +144,11 @@ export default function LogmeDashboard() {
                       )}
 
                       <details className="mt-2 text-sm">
-                        <summary className="cursor-pointer text-blue-500">상세 정보</summary>
+                        <summary className="cursor-pointer text-blue-500">Details</summary>
                         <div className="mt-2 space-y-1">
                           {site.contentSource && (
                             <p>
-                              노션컨텐츠:{' '}
+                              Notion Content:{' '}
                               <a
                                 href={site.contentSource.sourceUrl}
                                 className="text-blue-500 underline"
@@ -159,7 +161,7 @@ export default function LogmeDashboard() {
                           )}
                           {site.repo && (
                             <p>
-                              깃헙저장소:{' '}
+                              GitHub Repository:{' '}
                               <a
                                 href={site.repo.repoUrl}
                                 className="text-blue-500 underline"
@@ -172,7 +174,7 @@ export default function LogmeDashboard() {
                           )}
                           {site.deployTarget?.deployments[0]?.deployUrl && (
                             <p>
-                              베르셀배포:{' '}
+                              Vercel Deployment:{' '}
                               <a
                                 href={site.deployTarget.deployments[0]?.deployUrl}
                                 className="text-blue-500 underline"
@@ -195,26 +197,28 @@ export default function LogmeDashboard() {
                             setEditingDescription(site.siteDescription || '')
                           }}
                         >
-                          수정
+                          Edit
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button size="sm" variant="destructive">
-                              삭제
+                              Delete
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>정말 삭제할까요?</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Are you sure you want to delete this site?
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
-                                이 작업은 되돌릴 수 없습니다. GitHub 저장소, Vercel 배포 프로젝트 등
-                                사이트와 관련된 모든 정보가 삭제됩니다.
+                                This action cannot be undone. All related GitHub repositories,
+                                Vercel deployments, and data will be permanently removed.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>취소</AlertDialogCancel>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction onClick={() => deleteSite.mutate(site.id)}>
-                                삭제
+                                Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -238,11 +242,11 @@ export default function LogmeDashboard() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-end">
             <Button className="text-sm mt-1" onClick={() => router.push('/logme')}>
-              + 새 블로그 만들기
+              + Create new blog
             </Button>
           </div>
           <div className="border rounded-md p-6 text-center text-sm text-muted-foreground">
-            아직 생성된 사이트가 없습니다.
+            No sites created yet.
           </div>
         </div>
       )}

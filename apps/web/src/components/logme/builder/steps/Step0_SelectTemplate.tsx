@@ -47,7 +47,7 @@ export default function Step0_SelectTemplate() {
   }
   const { data, isLoading } = useFetchTemplates()
 
-  if (isLoading) return <p className="text-center">불러오는 중...</p>
+  if (isLoading) return <p className="text-center">Loading templates...</p>
 
   return (
     <section>
@@ -60,7 +60,7 @@ export default function Step0_SelectTemplate() {
               if (tpl?.templateApp?.appClientId && tpl.templateApp?.appRedirectUri) {
                 handleSelect(tpl.id, tpl.templateApp.appClientId, tpl.templateApp.appRedirectUri)
               } else {
-                console.warn('템플릿의 앱 정보가 부족합니다:', tpl)
+                console.warn('Template app information is missing:', tpl)
               }
             }}
           >
@@ -74,10 +74,10 @@ export default function Step0_SelectTemplate() {
             <div className="p-4">
               <h3 className="text-lg font-semibold">{tpl.templateTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                {tpl.templateDescription || '설명이 없습니다.'}
+                {tpl.templateDescription || 'No description available.'}
               </p>
               <Button variant="outline" size="sm" className="mt-3 w-full">
-                선택하기
+                Select
               </Button>
             </div>
           </Card>

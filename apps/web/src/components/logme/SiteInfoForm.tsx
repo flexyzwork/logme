@@ -39,54 +39,53 @@ export function SiteInfoForm({
     <div className="space-y-6 w-full max-w-2xl mx-auto">
       <div>
         <Label htmlFor="author">
-          이름 <span className="text-red-500">*</span>
+          Name <span className="text-red-500">*</span>
         </Label>
         <Input
           id="author"
           value={author}
           onChange={(e) => onChange('author', e.target.value)}
-          placeholder="예: 하늘이"
+          placeholder="e.g. Skyler"
           required
         />
-        {isAuthorTooLong && <p className="text-sm text-red-500 mt-1">10자 이내로 입력해주세요.</p>}
+        {isAuthorTooLong && <p className="text-sm text-red-500 mt-1">Please enter 10 characters or fewer.</p>}
       </div>
       <div>
         <Label htmlFor="site-title">
-          사이트 이름 <span className="text-red-500">*</span>
+          Site Title <span className="text-red-500">*</span>
         </Label>
         <Input
           id="site-title"
           value={title}
           onChange={(e) => onChange('title', e.target.value)}
-          placeholder="예: 나의 블로그, 개발 일지 등"
+          placeholder="e.g. My blog, Dev notes"
           required
         />
-        {isTitleTooLong && <p className="text-sm text-red-500 mt-1">40자 이내로 입력해주세요.</p>}
+        {isTitleTooLong && <p className="text-sm text-red-500 mt-1">Please enter 40 characters or fewer.</p>}
       </div>
 
       <div>
         <Label htmlFor="site-description">
-          사이트 설명 <span className="text-gray-400">(선택)</span>
+          Site Description <span className="text-gray-400">(optional)</span>
         </Label>
         <Textarea
           id="site-description"
           value={description}
           onChange={(e) => onChange('description', e.target.value)}
-          placeholder="예: 기술 블로그, 여행기록 등"
+          placeholder="e.g. Tech blog, Travel journal"
           rows={3}
         />
       </div>
 
       <div>
         <Label htmlFor="site-sub">
-          도메인 주소 <span className="text-red-500">*</span>
-          영문소문자,숫자,하이픈(-)가능{' '}
+          Subdomain <span className="text-red-500">*</span> (lowercase letters, numbers, hyphens allowed)
         </Label>
         <Input
           id="site-sub"
           value={sub}
           onChange={(e) => onChange('sub', e.target.value)}
-          placeholder="예: my-blog12"
+          placeholder="e.g. my-blog12"
           required
         />
       </div>
@@ -100,7 +99,7 @@ export function SiteInfoForm({
           }}
           disabled={isDisabled || isSaving}
         >
-          {isSaving ? '저장 중...' : '저장 & 배포'}
+          {isSaving ? 'Saving...' : 'Save & Deploy'}
         </Button>
       </div>
     </div>

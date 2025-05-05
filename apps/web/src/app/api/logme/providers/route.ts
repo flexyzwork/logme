@@ -16,13 +16,13 @@ export async function POST(req: Request) {
 
     const providerUserIdStr = String(providerUserId)
 
-    // 1. provider 존재 여부 확인
+    // 1. Check if provider exists
     let provider = await db.provider.findUnique({
       where: { providerType_providerUserId: { providerType, providerUserId: providerUserIdStr } },
       include: { user: true },
     })
 
-    // 2. provider가 없으면 생성
+    // 2. Create provider if not exists
     if (!provider) {
       const user = await db.user.findUnique({ where: { id: userId } })
       if (!user) {
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ providerUserId: providerUserIdStr, userId: provider?.userId })
   } catch (error) {
-    logger.log('error', '❌ Provider 저장 오류:', { error })
+    logger.log('error', '❌ Failed to save provider:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

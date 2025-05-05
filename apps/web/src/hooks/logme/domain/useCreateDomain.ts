@@ -21,7 +21,7 @@ export function useCreateDomain() {
 
       if (!res.ok) {
         const error = await res.json()
-        throw new Error(error.message || '도메인 생성 실패')
+        throw new Error(error.message || 'Failed to create domain')
       }
 
       return res.json()

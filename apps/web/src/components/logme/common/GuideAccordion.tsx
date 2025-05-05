@@ -57,7 +57,9 @@ export default function GuideAccordion({
 
   return (
     <main className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">{title}</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        {title ?? "How to Use Guide"}
+      </h2>
       <Accordion type="single" collapsible defaultValue={activeValue}>
         {guideData.map((guide) => (
           <AccordionItem key={guide.id} value={guide.id}>

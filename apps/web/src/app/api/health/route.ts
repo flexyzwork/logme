@@ -4,7 +4,6 @@ import logger from '@/lib/logger'
 
 export async function GET() {
   try {
-    // DB 체크
     await db.user.findFirst({ select: { id: true }, take: 1 })
 
     return NextResponse.json({

@@ -13,7 +13,7 @@ export function PageViewTracker() {
     if (!pathname.startsWith('/_next') && pathname !== '/favicon.ico') {
       trackEvent({
         userId: session?.user?.id ?? 'anonymous',
-        event: 'page_view',
+        event: 'page_view_tracked',
         meta: { pathname },
       })
     }

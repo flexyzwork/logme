@@ -9,7 +9,7 @@ let guideWindow: Window | null = null
 
 export function GuideDialogTriggerButton({
   path = '/guide/join',
-  label = '가입 안내',
+  label = 'Sign Up Guide',
 }: GuideDialogTriggerButtonProps) {
   const handleClick = () => {
     const screenW = window.innerWidth
@@ -31,7 +31,7 @@ export function GuideDialogTriggerButton({
       const current = new URL(guideWindow.location.href)
       const requested = url
 
-      // 해시 포함 전체 URL이 다르면 강제로 리로드
+      // If the full URL including hash differs, force reload
       if (current.href !== requested.href) {
         guideWindow.location.href = 'about:blank'
         setTimeout(() => {

@@ -57,11 +57,11 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json()
 
-    const isPublic = !!data.public_url // 게시 여부 확인
+    const isPublic = !!data.public_url // Check if the page is published
 
     return NextResponse.json({ isPublic })
   } catch (error) {
-    logger.log('error', 'Notion API 오류:', { error })
+    logger.log('error', 'Notion API error:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

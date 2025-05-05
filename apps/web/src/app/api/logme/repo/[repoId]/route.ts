@@ -3,7 +3,7 @@ import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 import logger from '@/lib/logger'
 
-// GET /api/logme/repos/[repoId] - 레포 조회 (단건)
+// GET /api/logme/repos/[repoId] - Fetch a single repository
 export async function GET(req: NextRequest, context: { params: Promise<{ repoId: string }> }) {
   const session = await getAuthSession()
   if (!session) {
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ repoId:
   return NextResponse.json(repo)
 }
 
-// PATCH /api/logme/repos/[repoId] - 레포 수정
+// PATCH /api/logme/repos/[repoId] - Update repository
 export async function PATCH(req: NextRequest, context: { params: Promise<{ repoId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -39,12 +39,12 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ repoI
 
     return NextResponse.json(updated)
   } catch (error) {
-    logger.log('error', '❌ 레포 수정 실패:', { error })
+    logger.log('error', '❌ Failed to update repository:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
 
-// DELETE /api/logme/repos/[repoId] - 레포 삭제
+// DELETE /api/logme/repos/[repoId] - Delete repository
 export async function DELETE(req: NextRequest, context: { params: Promise<{ repoId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -61,7 +61,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ repo
 
     return NextResponse.json(deleted)
   } catch (error) {
-    logger.log('error', '❌ 레포 삭제 실패:', { error })
+    logger.log('error', '❌ Failed to delete repository:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

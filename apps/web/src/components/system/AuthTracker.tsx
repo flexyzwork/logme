@@ -14,7 +14,7 @@ export function AuthTracker() {
 
       trackEvent({
         userId: session.user.id,
-        event: 'user_logged_in',
+        event: 'user_login_success',
       })
     }
   }, [status, session])

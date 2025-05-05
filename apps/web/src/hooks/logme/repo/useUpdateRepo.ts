@@ -11,7 +11,7 @@ export function useUpdateRepo() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
       })
-      if (!res.ok) throw new Error('Repo 수정 실패')
+      if (!res.ok) throw new Error('Failed to update repo')
       return res.json()
     },
     onSuccess: () => {

@@ -4,7 +4,7 @@
 : "${ACTIVE:=green}"
 
 echo "🚀 Nginx 설정을 시작합니다."
-echo "✅ ACTIVE: $ACTIVE"
+echo "ACTIVE: $ACTIVE"
 
 # 환경 변수 적용하여 nginx.conf 생성
 envsubst '$ACTIVE' < /etc/nginx/nginx.conf.template.ssl > /etc/nginx/nginx.conf

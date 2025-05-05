@@ -11,7 +11,7 @@ export const fetchGithubInstallationToken = async (installationId: number) => {
   const data = await res.json()
 
   if (!res.ok || !data.token) {
-    throw new Error(data?.error || 'GitHub App 연결 토큰을 받아올 수 없습니다.')
+    throw new Error(data?.error || 'Failed to fetch GitHub App installation token.')
   }
 
   return data.token as string

@@ -4,10 +4,11 @@ import GuideAccordion from '@/components/logme/common/GuideAccordion'
 import guideData from '@/data/guide-connect.json'
 
 export default function ConnectGuidePage() {
+  const content = guideData.en
   return (
     <GuideAccordion
-      guideData={guideData}
-      title="서비스 연결"
+      guideData={content}
+      title="Connect Services"
       defaultValue={window.location.hash?.replace('#', '')}
     />
   )

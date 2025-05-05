@@ -30,7 +30,7 @@ export async function GET() {
     })
     return NextResponse.json(templates)
   } catch (error) {
-    logger.log('error', '❌ 템플릿 목록 불러오기 실패:', { error })
+    logger.log('error', '❌ Failed to fetch template list:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

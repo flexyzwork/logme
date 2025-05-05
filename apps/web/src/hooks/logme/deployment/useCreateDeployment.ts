@@ -12,7 +12,7 @@ export function useCreateDeployment() {
         body: JSON.stringify(deploymentData),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error('Deployment 생성 실패')
+      if (!res.ok) throw new Error('Failed to create deployment')
       return res.json()
     },
     onSuccess: () => {

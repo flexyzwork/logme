@@ -29,26 +29,27 @@ export default function SiteBuilder() {
   const [shouldRedirectToAccount, setShouldRedirectToAccount] = useState(false)
   const router = useRouter()
 
-  useEffect(() => {
-    if (
-      encryptedVercelTokenData !== undefined &&
-      logmeInstallationIdData !== undefined &&
-      vercelInstallation !== undefined
-    ) {
-      const isVercelConnected = !!encryptedVercelTokenData
-      const isGithubLogmeInstalled = !!logmeInstallationIdData
-      const isGithubVercelInstalled = !!vercelInstallation
+useEffect(() => {
+  const isAllResolved =
+    encryptedVercelTokenData !== undefined &&
+    logmeInstallationIdData !== undefined &&
+    vercelInstallation !== undefined
 
-      if (!isVercelConnected || !isGithubLogmeInstalled || !isGithubVercelInstalled) {
-        setShouldRedirectToAccount(true)
-      }
-    }
-  }, [encryptedVercelTokenData, logmeInstallationIdData, vercelInstallation])
+  if (!isAllResolved) return
+
+  const isVercelConnected = !!encryptedVercelTokenData
+  const isGithubLogmeInstalled = !!logmeInstallationIdData
+  const isGithubVercelInstalled = !!vercelInstallation
+
+  if (!isVercelConnected || !isGithubLogmeInstalled || !isGithubVercelInstalled) {
+    setShouldRedirectToAccount(true)
+  }
+}, [encryptedVercelTokenData, logmeInstallationIdData, vercelInstallation])
 
   useEffect(() => {
     if (shouldRedirectToAccount) {
-      toast('연결이 필요해요', {
-        description: '계정 연동 후 다시 시작할 수 있어요. 계정 관리로 이동합니다.',
+      toast('Connection required', {
+        description: 'Please link your accounts first. Redirecting to Account Settings...',
       })
 
       const timeout = setTimeout(() => {
@@ -58,16 +59,16 @@ export default function SiteBuilder() {
       return () => clearTimeout(timeout)
     }
   }, [shouldRedirectToAccount, router])
-  logger.log('info', '📌 현재 온보딩 상태:', { step })
+  logger.log('info', '📌 Current onboarding step:', { step })
 
   if (step === undefined || step === null) return null
 
   const stepTitleMap: Record<number, string | ((isDeploying: boolean) => string)> = {
-    0: '템플릿을 선택하세요',
-    1: '템플릿을 공유해주세요',
-    2: '사이트 정보를 입력해 주세요',
-    3: (deploying) => (deploying ? '배포 중...' : '배포를 진행합니다'),
-    4: '배포가 완료되었습니다.',
+    0: 'Select a template',
+    1: 'Share your template',
+    2: 'Enter site information',
+    3: (deploying) => (deploying ? 'Deploying...' : 'Deploy to Vercel'),
+    4: 'Deployment complete',
   }
 
   const stepTitle =
@@ -87,7 +88,7 @@ export default function SiteBuilder() {
       {shouldRedirectToAccount && (
         <div className="fixed inset-0 z-50 bg-background/70 backdrop-blur-sm flex items-center justify-center">
           <div className="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-lg text-center text-sm text-muted-foreground flex flex-col items-center gap-3">
-            <p>계정 연동 정보를 확인 중입니다...</p>
+            <p>Checking account connection status...</p>
           </div>
         </div>
       )}

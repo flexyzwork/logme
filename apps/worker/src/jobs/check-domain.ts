@@ -2,8 +2,8 @@ import { db } from '@repo/db'
 import { JobData, JobType } from '@repo/queue'
 import fetch from 'node-fetch'
 
-const MAX_RETRIES = 100
-const RETRY_DELAY_MS = 1000 * 20
+const MAX_RETRIES = 10
+const RETRY_DELAY_MS = 1000 * 60
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -12,19 +12,15 @@ function sleep(ms: number) {
 export const runCheckDomain = async (data: JobData[JobType.CheckDomain]) => {
   const { domain, vercelProjectId, vercelToken } = data
 
-  await new Promise((resolve) => setTimeout(resolve, 60 * 1000))
   console.log('🔍 Starting domain verification job with data:', { domain, vercelProjectId })
   console.log('🔁 Triggering domain verification...')
-  await fetch(
-    `https://api.vercel.com/v9/projects/${vercelProjectId}/domains/${domain}/verify`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${vercelToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  await fetch(`https://api.vercel.com/v9/projects/${vercelProjectId}/domains/${domain}/verify`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${vercelToken}`,
+      'Content-Type': 'application/json',
+    },
+  })
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
@@ -58,7 +54,7 @@ export const runCheckDomain = async (data: JobData[JobType.CheckDomain]) => {
       })
 
       if (isVerified) {
-        console.log(`✅ Domain verified on attempt ${attempt}`)
+        console.log(`Domain verified on attempt ${attempt}`)
         break
       } else if (attempt < MAX_RETRIES) {
         console.log(`⏳ Not verified yet. Retrying in ${RETRY_DELAY_MS / 1000}s...`)

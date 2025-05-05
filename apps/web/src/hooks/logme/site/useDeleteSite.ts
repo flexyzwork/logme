@@ -8,7 +8,7 @@ export function useDeleteSite() {
       const res = await fetch(`/api/logme/sites/${id}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('사이트 삭제 실패')
+      if (!res.ok) throw new Error('Failed to delete site')
       return res.json()
     },
     onSuccess: () => {

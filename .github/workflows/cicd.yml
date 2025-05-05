@@ -148,7 +148,7 @@ jobs:
             cd ~/app
             docker-compose up -d vector
           else
-            echo "✅ Vector 컨테이너 실행 중"
+            echo "Vector 컨테이너 실행 중"
           fi
           EOF
 
@@ -166,7 +166,7 @@ jobs:
               exit 1
           }
           cleanup() {
-              echo "✅ 배포 성공! 이전 컨테이너 정리 중..."
+              echo "배포 성공! 이전 컨테이너 정리 중..."
               docker-compose kill app-${{ env.ACTIVE }}
               docker-compose rm -f app-${{ env.ACTIVE }}
 
@@ -190,10 +190,10 @@ jobs:
 
           # Health check
           if docker ps --format '{{.Names}}' | grep -q "nginx"; then
-              echo "✅ Nginx 실행 중! 애플리케이션 헬스 체크 수행..."
+              echo "Nginx 실행 중! 애플리케이션 헬스 체크 수행..."
               sleep 10
               if curl -f http://localhost:3000/api/health | grep -q '"status":"ok"'; then
-                  echo "✅ 앱 헬스 체크 성공!"
+                  echo "앱 헬스 체크 성공!"
               else
                   echo "❌ 앱 헬스 체크 실패! 롤백 수행"
                   rollback
@@ -202,10 +202,10 @@ jobs:
               echo "⚠️ Nginx 미실행! 컨테이너 상태로 헬스 체크 진행..."
               sleep 5
               docker ps --format '{{.Names}}' | grep -q "app-${{ env.NEW }}" || rollback
-              echo "✅ app-${{ env.NEW}} 컨테이너 정상 실행 중!"
+              echo "app-${{ env.NEW}} 컨테이너 정상 실행 중!"
           fi
 
-          echo "✅ 배포 성공!"
+          echo "배포 성공!"
           echo "ACTIVE=${{ env.NEW }}" > .env
           export $(grep -v '^#' .env | xargs)
           echo "${{ env.ACTIVE }} -> $ACTIVE"
@@ -223,7 +223,7 @@ jobs:
         if: success()
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ 배포 성공: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}'"}' \
+          --data '{"text":"배포 성공: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}'"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Slack Notification (Failure)

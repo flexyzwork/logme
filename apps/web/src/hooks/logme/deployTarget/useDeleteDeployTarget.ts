@@ -8,7 +8,7 @@ export function useDeleteDeployTarget() {
       const res = await fetch(`/api/logme/deploy-targets/${targetId}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('Deploy Target 삭제 실패')
+      if (!res.ok) throw new Error('Failed to delete deploy target')
       return res.json()
     },
     onSuccess: () => {

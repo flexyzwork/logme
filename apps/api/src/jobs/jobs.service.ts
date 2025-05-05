@@ -16,9 +16,7 @@ export class JobsService {
   }
 
   async enqueueCheckDomain(data: CheckDomainDto) {
-    console.log('enqueueCheckDomain', data)
-    // return data
     const jobData = data as JobData[JobType.CheckDomain]
-    return enqueue(JobType.CheckDomain, jobData)
+    return enqueue(JobType.CheckDomain, jobData, 60000)
   }
 }

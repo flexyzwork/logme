@@ -4,14 +4,14 @@
  import termsData from '@/data/terms.json'
  
  const TermsOfService = () => {
-   const content = termsData.ko
+  const content = termsData.en
  
    return (
      <div className="flex flex-col justify-center items-center bg-customgreys-primarybg text-white-50 px-6 py-12">
        <div className="max-w-3xl text-center mb-12">
          <h1 className="text-4xl font-extrabold text-primary-700">{content.title}</h1>
          <p className="text-gray-300 mt-4 text-sm md:text-base">
-           서비스 이용과 관련된 기본적인 약관을 안내합니다.
+           These are the basic terms of service for using Logme.
          </p>
        </div>
  
@@ -27,7 +27,7 @@
        </div>
  
        <footer className="mt-12 text-gray-400 text-xs">
-         최종 업데이트일: {content.lastUpdated}
+         Last updated: {content.lastUpdated}
        </footer>
      </div>
    )

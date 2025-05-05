@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ isCopied: false, status: response.status }) // 아직 복사 안 됨
+      return NextResponse.json({ isCopied: false, status: response.status }) // Not yet copied
     }
 
     return NextResponse.json({ isCopied: true })

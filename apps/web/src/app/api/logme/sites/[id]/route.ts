@@ -6,7 +6,7 @@ import { fetchGithubInstallationToken } from '@/services/logme/auth'
 import { decrypt } from '@/lib/crypto'
 import logger from '@/lib/logger'
 
-// GET /api/logme/sites/[id] - 사이트 조회 (단건)
+// GET /api/logme/sites/[id] - Fetch a single site
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const session = await getAuthSession()
   if (!session) {
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   return NextResponse.json(site)
 }
 
-// PATCH /api/logme/sites/[id] - 사이트 수정
+// PATCH /api/logme/sites/[id] - Update site
 export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await getAuthSession()
@@ -48,11 +48,12 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 
     return NextResponse.json(updated)
   } catch (error) {
-    logger.log('error', '❌ 사이트 수정 실패:', { error })
+    logger.log('error', '❌ Failed to update site:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
 
+// DELETE /api/logme/sites/[id] - Delete site
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await getAuthSession()
@@ -76,7 +77,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
     if (!site) return new NextResponse('Not Found', { status: 404 })
 
-    // vercel 토큰 가져오기
+    // Fetch Vercel token
     const vercelTokenData = await db.providerExtended.findFirst({
       where: {
         provider: {
@@ -89,17 +90,17 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
     const encryptedToken = vercelTokenData?.extendedValue
     if (!encryptedToken) {
-      throw new Error('Vercel 토큰이 없습니다.')
+      throw new Error('Missing Vercel token')
     }
     const vercelToken = decrypt(encryptedToken)
 
     try {
-      // Vercel 프로젝트 삭제
+      // Delete Vercel project
       if (site.deployTarget?.targetId && vercelToken) {
         await deleteVercelProject(vercelToken, site.deployTarget.targetId)
       }
 
-      // gitbub app installationId 가져와서 토큰 발급받기
+      // Get GitHub app installationId and issue token
       const logmeInstallationIdData = await db.providerExtended.findFirst({
         where: {
           provider: {
@@ -112,7 +113,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
       const githubInstallationId = logmeInstallationIdData?.extendedValue
 
-      // GitHub 저장소 삭제
+      // Delete GitHub repository
       if (site.repo?.repoOwner && site.repo?.repoName && githubInstallationId) {
         const installationToken = await fetchGithubInstallationToken(Number(githubInstallationId))
         await deleteGithubRepo({
@@ -122,7 +123,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
         })
       }
     } catch (externalError) {
-      console.warn('⚠️ 외부 리소스 삭제 실패 (무시하고 진행)', externalError)
+      logger.log('warn', '⚠️ Failed to delete external resources (ignoring)', { externalError })
     }
 
     const deleted = await db.site.update({
@@ -138,7 +139,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
     return NextResponse.json(deleted)
   } catch (error) {
-    logger.log('error', '❌ 사이트 삭제 실패:', { error })
+    logger.log('error', '❌ Failed to delete site:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

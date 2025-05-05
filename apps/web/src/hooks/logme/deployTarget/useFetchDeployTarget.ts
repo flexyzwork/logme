@@ -6,7 +6,7 @@ export function useFetchDeployTarget(targetId: string) {
     queryKey: ['deployTarget', targetId],
     queryFn: async () => {
       const res = await fetch(`/api/logme/deploy-targets/${targetId}`)
-      if (!res.ok) throw new Error('ContentDeployTargetSource 정보를 불러오지 못했습니다')
+      if (!res.ok) throw new Error('Failed to fetch deploy target information')
       return res.json()
     },
     enabled: !!targetId,

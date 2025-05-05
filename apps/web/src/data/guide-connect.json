@@ -1,56 +1,114 @@
-[
-  {
-    "id": "github-1",
-    "title": "Logme APP 연결",
-    "steps": [
-      {
-        "text": "1. 계정관리의 GitHub App 'Logme App 연결' 버튼을 누릅니다.",
-        "image": "/guide-connect/1-gitapp-logme-app-1.png"
-      },
-      {
-        "text": "2. 'Install & Authorize' 버튼을 누른 후 화면을 닫습니다.",
-        "image": "/guide-connect/1-gitapp-logme-app-2.png"
+{
+  "ko": [
+    {
+      "id": "github-1",
+      "title": "Logme APP 연결",
+      "steps": [
+        {
+          "text": "1. 계정관리의 GitHub App 'Logme App 연결' 버튼을 누릅니다.",
+          "image": "/guide-connect/1-gitapp-logme-app-1.png"
+        },
+        {
+          "text": "2. 'Install & Authorize' 버튼을 누른 후 화면을 닫습니다.",
+          "image": "/guide-connect/1-gitapp-logme-app-2.png"
+        }
+      ]
+    },
+    {
+      "id": "github-2",
+      "title": "Vercel APP 연결",
+      "steps": [
+        {
+          "text": "1. 계정관리의 GitHub App 'Vercel App 연결' 버튼을 누릅니다.",
+          "image": "/guide-connect/2-gitapp-vercel-app-1.png"
+        },
+        {
+          "text": "2. 'Install & Authorize' 버튼을 누릅니다.",
+          "image": "/guide-connect/2-gitapp-vercel-app-2.png"
+        },
+        {
+          "text": "3. 인스톨을 확인한 후 창을 닫습니다.",
+          "image": "/guide-connect/2-gitapp-vercel-app-3.png"
+        }
+      ]
+    },
+    {
+      "id": "vercel",
+      "title": "▲ Vercel 토큰 생성",
+      "steps": [
+        {
+          "text": "1. 'Vercel 토큰 생성하기' 버튼을 누고 토큰을 생성합니다.",
+          "image": "/guide-connect/3-vercel-1.png"
+        },
+        {
+          "text": "2.Vercel 토큰이 생성되면 복사합니다.",
+          "image": "/guide-connect/3-vercel-2.png"
+        },
+        {
+          "text": "3. 계정 관리 화면의 vercel token을 붙여넣습니다.",
+          "image": "/guide-connect/3-vercel-3.png"
+        }
+      ],
+      "link": {
+        "text": ">> Vercel 토큰 생성하기",
+        "url": "https://vercel.com/account/settings/tokens"
       }
-    ]
-  },
-  {
-    "id": "github-2",
-    "title": "Vercel APP 연결",
-    "steps": [
-      {
-        "text": "1. 계정관리의 GitHub App 'Vercel App 연결' 버튼을 누릅니다.",
-        "image": "/guide-connect/2-gitapp-vercel-app-1.png"
-      },
-      {
-        "text": "2. 'Install & Authorize' 버튼을 누릅니다.",
-        "image": "/guide-connect/2-gitapp-vercel-app-2.png"
-      },
-      {
-        "text": "3. 인스톨을 확인한 후 창을 닫습니다.",
-        "image": "/guide-connect/2-gitapp-vercel-app-3.png"
-      }
-    ]
-  },
-  {
-    "id": "vercel",
-    "title": "▲ Vercel 토큰 생성",
-    "steps": [
-      {
-        "text": "1. 'Vercel 토큰 생성하기' 버튼을 누고 토큰을 생성합니다.",
-        "image": "/guide-connect/3-vercel-1.png"
-      },
-      {
-        "text": "2.Vercel 토큰이 생성되면 복사합니다.",
-        "image": "/guide-connect/3-vercel-2.png"
-      },
-      {
-        "text": "3. 계정 관리 화면의 vercel token을 붙여넣습니다.",
-        "image": "/guide-connect/3-vercel-3.png"
-      }
-    ],
-    "link": {
-      "text": ">> Vercel 토큰 생성하기",
-      "url": "https://vercel.com/account/settings/tokens"
     }
-  }
-]
+  ],
+  "en": [
+    {
+      "id": "github-1",
+      "title": "Connect Logme APP",
+      "steps": [
+        {
+          "text": "1. Click the 'Connect Logme App' button in account management.",
+          "image": "/guide-connect/1-gitapp-logme-app-1.png"
+        },
+        {
+          "text": "2. Click 'Install & Authorize' and then close the window.",
+          "image": "/guide-connect/1-gitapp-logme-app-2.png"
+        }
+      ]
+    },
+    {
+      "id": "github-2",
+      "title": "Connect Vercel APP",
+      "steps": [
+        {
+          "text": "1. Click the 'Connect Vercel App' button in account management.",
+          "image": "/guide-connect/2-gitapp-vercel-app-1.png"
+        },
+        {
+          "text": "2. Click 'Install & Authorize'.",
+          "image": "/guide-connect/2-gitapp-vercel-app-2.png"
+        },
+        {
+          "text": "3. Verify the installation, then close the window.",
+          "image": "/guide-connect/2-gitapp-vercel-app-3.png"
+        }
+      ]
+    },
+    {
+      "id": "vercel",
+      "title": "▲ Create Vercel Token",
+      "steps": [
+        {
+          "text": "1. Click the 'Create Vercel Token' button to generate a token.",
+          "image": "/guide-connect/3-vercel-1.png"
+        },
+        {
+          "text": "2. Copy the generated Vercel token.",
+          "image": "/guide-connect/3-vercel-2.png"
+        },
+        {
+          "text": "3. Paste the token into the Vercel token field on the account management page.",
+          "image": "/guide-connect/3-vercel-3.png"
+        }
+      ],
+      "link": {
+        "text": ">> Create Vercel Token",
+        "url": "https://vercel.com/account/settings/tokens"
+      }
+    }
+  ]
+}

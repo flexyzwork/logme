@@ -3,7 +3,7 @@ import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 import logger from '@/lib/logger'
 
-// GET /api/logme/deployTarget/[id] - 배포 프로젝트 조회 (단건)
+// GET /api/logme/deployTarget/[id] - Fetch a single deploy target
 export async function GET(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {
   const session = await getAuthSession()
   if (!session) {
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ targetI
   return NextResponse.json(deployTarget)
 }
 
-// PATCH /api/logme/deployTarget/[id] - 배포 프로젝트 수정
+// PATCH /api/logme/deployTarget/[id] - Update deploy target
 export async function PATCH(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -40,12 +40,12 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ targe
 
     return NextResponse.json(updated)
   } catch (error) {
-    logger.log('error', '❌ 배포 프로젝트 수정 실패:', { error })
+    logger.log('error', '❌ Failed to update deploy target:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
 
-// DELETE /api/logme/deployTarget/[id] - 배포 프로젝트 삭제
+// DELETE /api/logme/deployTarget/[id] - Delete deploy target
 export async function DELETE(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -63,7 +63,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ targ
 
     return NextResponse.json(deleted)
   } catch (error) {
-    logger.log('error', '❌ 배포 프로젝트 삭제 실패:', { error })
+    logger.log('error', '❌ Failed to delete deploy target:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

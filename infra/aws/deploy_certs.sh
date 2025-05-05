@@ -29,4 +29,4 @@ ssh -i "$SSH_KEY" "$REMOTE_USER@$SERVER_IP" "sudo mkdir -p $REMOTE_CERT_PATH && 
 echo "🚀 rsync로 carts 동기화 중..."
 rsync -avz -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" "$LOCAL_CERT_PATH" "$REMOTE_USER@$SERVER_IP:$REMOTE_CERT_PATH" --rsync-path="sudo rsync"
 
-echo "✅ carts 동기화 완료!"
+echo "carts 동기화 완료!"

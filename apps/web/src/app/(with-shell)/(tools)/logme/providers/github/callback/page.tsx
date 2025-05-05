@@ -19,5 +19,5 @@ export default function GithubCallbackPage() {
     }
   }, [])
 
-  return <p>연결 완료 중... 창이 곧 닫힙니다.</p>
+  return <p>Connecting... This window will close shortly.</p>
 }

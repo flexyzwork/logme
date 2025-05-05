@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     default: 'Logme',
     template: '%s | Logme',
   },
-  description: '노션으로 만드는 멋진 블로그, 포트폴리오, 팀 사이트',
+  description: 'Create a stunning blog, portfolio, or team site with Notion',
   metadataBase: new URL('https://logme.dev'),
   openGraph: {
     title: 'Logme',
-    description: '노션으로 만드는 멋진 블로그, 포트폴리오, 팀 사이트',
+    description: 'Create a stunning blog, portfolio, or team site with Notion',
     url: 'https://logme.dev',
     siteName: 'Logme',
     type: 'website',

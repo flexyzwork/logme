@@ -6,7 +6,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1', // 경로 alias (@/로 시작하는 거) 사용하는 경우
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFiles: ['<rootDir>/jest.setup.ts'],
 }

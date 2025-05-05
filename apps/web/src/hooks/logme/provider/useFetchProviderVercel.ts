@@ -8,7 +8,7 @@ export function useFetchProviderVercel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       })
-      if (!res.ok) throw new Error('사용자 정보 조회 실패')
+      if (!res.ok) throw new Error('Failed to fetch user information')
       return res.json()
     },
   })

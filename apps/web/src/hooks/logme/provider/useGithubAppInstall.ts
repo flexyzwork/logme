@@ -64,7 +64,9 @@ export const useGithubAppInstall = () => {
       if (event.data?.type === 'github_app_installed') {
         const installationId = event.data.installationId
 
-        logger.log('info', '✅ 연결 완료! installation_id:', installationId)
+        logger.log('info', 'github_app.installation_success', {
+          installationId,
+        })
 
         if (isFetching.current) return
         isFetching.current = true
@@ -81,7 +83,10 @@ export const useGithubAppInstall = () => {
 
           setIsLogmeAppInstalled(true)
         } catch (error) {
-          logger.log('error', '❌ 연결 토큰 저장 실패:', { error })
+          logger.log('error', 'github_app.token_save_failed', {
+            error,
+            context: 'useGithubAppInstall',
+          })
         } finally {
           isFetching.current = false
         }

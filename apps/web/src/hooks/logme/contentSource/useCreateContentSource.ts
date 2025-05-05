@@ -12,7 +12,7 @@ export function useCreateContentSource() {
         body: JSON.stringify(contentSourceData),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error('Content Source 생성 실패')
+      if (!res.ok) throw new Error('Failed to create content source')
       return res.json()
     },
     onSuccess: () => {

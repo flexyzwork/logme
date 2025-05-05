@@ -8,7 +8,7 @@ export function useDeleteContentSource() {
       const res = await fetch(`/api/logme/content-sources/${sourceId}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('Content Source 삭제 실패')
+      if (!res.ok) throw new Error('Failed to delete content source')
       return res.json()
     },
     onSuccess: () => {

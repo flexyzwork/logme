@@ -12,7 +12,7 @@ export function useCreateRepo() {
         body: JSON.stringify(repoData),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error('Repo 생성 실패')
+      if (!res.ok) throw new Error('Failed to create repo')
       return res.json()
     },
     onSuccess: () => {

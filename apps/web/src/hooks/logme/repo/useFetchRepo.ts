@@ -6,7 +6,7 @@ export function useFetchRepo(repoId: string) {
     queryKey: ['repo', repoId],
     queryFn: async () => {
       const res = await fetch(`/api/logme/repo/${repoId}`)
-      if (!res.ok) throw new Error('Repo 정보를 불러오지 못했습니다')
+      if (!res.ok) throw new Error('Failed to fetch repo information')
       return res.json()
     },
     enabled: !!repoId,

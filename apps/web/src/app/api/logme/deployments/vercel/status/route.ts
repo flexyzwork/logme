@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data)
   } catch (error) {
-    logger.log('error', '❌ 배포 상태 조회 실패:', { error })
+    logger.log('error', '❌ Failed to fetch deployment status:', { error })
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

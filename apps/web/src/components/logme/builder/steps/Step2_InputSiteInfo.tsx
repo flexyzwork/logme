@@ -37,13 +37,13 @@ export default function Step2_InputSiteInfo() {
   const checkSubAvailable = async (sub: string): Promise<boolean> => {
     const isReserved = RESERVED_SUBDOMAINS.some((word) => sub.toLowerCase().startsWith(word))
     if (isReserved) {
-      alert('❌ 사용할 수 없는 서브 도메인입니다.')
+      alert('❌ This subdomain is reserved and cannot be used.')
       return false
     }
     const res = await fetch(`/api/domains/check-sub?sub=${sub}`)
     const json = await res.json()
     if (!res.ok || json.exists) {
-      alert('❌ 이미 사용 중인 서브 도메인입니다.')
+      alert('❌ This subdomain is already in use.')
       return false
     }
     return true
@@ -60,7 +60,7 @@ export default function Step2_InputSiteInfo() {
     const userId = session?.user?.id
     const userName = session?.user?.name
     if (!userId) {
-      alert('❌ 로그인이 필요합니다.')
+      alert('❌ Sign-in required.')
       return
     }
     if (!(await checkSubAvailable(siteInfo.sub))) return
@@ -74,7 +74,7 @@ export default function Step2_InputSiteInfo() {
         siteTitle: siteInfo.title,
         siteDescription: siteInfo.description,
       })
-      logger.log('info', '✅ Site 업데이트:', {
+      logger.log('info', 'Site updated:', {
         sub: siteInfo.sub,
         title: siteInfo.title,
         description: siteInfo.description,
@@ -93,22 +93,22 @@ export default function Step2_InputSiteInfo() {
           setSiteTitle(siteInfo.title)
           setSiteDescription(siteInfo.description)
           setGitRepoUrl(gitRepoUrl)
-          logger.log('info', '배포 중...', siteInfo)
+          logger.log('info', 'Deploying site...', siteInfo)
           setIsSaving(false)
           setBuilderStep(4)
         }
       )
     } else {
-      logger.log('error', '❌ Site ID가 없습니다.')
+      logger.log('error', '❌ Site ID is missing.')
     }
   }
 
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="text-center text-gray-700 text-sm">
-        🎉 Notion 템플릿 게시가 완료되었습니다. <br />
-        사이트 정보를 입력해 주세요. <br />
-        저장을 누르면 Vercel 배포를 진행합니다.
+        🎉 Your Notion template has been published. <br />
+        Please enter your site information. <br />
+        Click Save to deploy to Vercel.
       </p>
       <SiteInfoForm
         author={siteInfo.author}

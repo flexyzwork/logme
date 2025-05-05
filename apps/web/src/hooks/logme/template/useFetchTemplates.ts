@@ -7,7 +7,7 @@ type TemplateWithApp = Template & {
 
 async function fetchTemplates(): Promise<TemplateWithApp[]> {
   const res = await fetch('/api/logme/templates', { credentials: 'include' })
-  if (!res.ok) throw new Error('Failed to fetch templates')
+  if (!res.ok) throw new Error('Failed to fetch template list')
   return res.json()
 }
 

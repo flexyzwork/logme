@@ -110,8 +110,3 @@ export const RESERVED_SUBDOMAINS = [
   'honor',
   'regard',
 ]
-
-//   // 유저 sub 검증 시
-//   if (RESERVED_DOMAINS.includes(subdomain)) {
-//     throw new Error("예약어로 사용할 수 없는 서브도메인입니다.")
-//   }

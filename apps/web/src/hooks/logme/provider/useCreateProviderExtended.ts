@@ -15,7 +15,7 @@ export function useCreateProviderExtended() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(providerExtended),
       })
-      if (!res.ok) throw new Error('제공자 인증 정보 저장 실패')
+      if (!res.ok) throw new Error('Failed to save provider credential')
       return res.json()
     },
   })

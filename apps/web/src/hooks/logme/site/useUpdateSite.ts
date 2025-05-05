@@ -11,7 +11,7 @@ export function useUpdateSite() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
       })
-      if (!res.ok) throw new Error('사이트 수정 실패')
+      if (!res.ok) throw new Error('Failed to update site')
       return res.json()
     },
     onSuccess: (updatedSite) => {

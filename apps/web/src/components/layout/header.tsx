@@ -27,13 +27,13 @@ export async function Header() {
       </Link>
 
       <nav className="flex flex-wrap justify-center sm:justify-end items-center gap-4 text-sm text-muted-foreground text-center">
-        <Link href="/about">서비스 소개</Link>
-        <Link href="/faq">자주 묻는 질문</Link>
-        <Link href="/contact">연락하기</Link>
+        <Link href="/about">About</Link>
+        <Link href="/faq">FAQ</Link>
+        <Link href="/contact">Contact</Link>
         
         {user ? (
           <>
-            <Link href="/dashboard">내 블로그 관리</Link>
+            <Link href="/dashboard">My Blog</Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -42,7 +42,7 @@ export async function Header() {
                     src={user.image}
                     width={32}
                     height={32}
-                    alt="프로필"
+                    alt="Profile"
                     className="w-8 h-8 rounded-full"
                   />
                 ) : (
@@ -55,7 +55,7 @@ export async function Header() {
               <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem asChild>
                   <Link href="/account" className="w-full text-left">
-                    계정 관리
+                    Account
                   </Link>
                 </DropdownMenuItem>
                 <LogoutButton />
@@ -63,7 +63,7 @@ export async function Header() {
             </DropdownMenu>
           </>
         ) : (
-          <Link href="/signin">로그인</Link>
+          <Link href="/signin">Sign In</Link>
         )}
         <ThemeToggle />
       </nav>

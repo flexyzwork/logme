@@ -1,26 +1,54 @@
-[
-  {
-    "q": "이 서비스는 무료인가요?",
-    "a": "현재는 베타 운영 중으로, 누구나 블로그 1개까지 무료로 생성할 수 있어요. 정식 요금제는 이후에 적용될 예정입니다."
-  },
-  {
-    "q": "어떤 계정이 필요한가요?",
-    "a": "Notion / GitHub / Vercel 세 가지 계정이 필요합니다. 각각 연결 안내를 드려요."
-  },
-  {
-    "q": "내 데이터는 안전한가요?",
-    "a": "블로그 코드는 본인의 GitHub에 저장되고, Notion 데이터도 직접 접근만 사용됩니다."
-  },
-  {
-    "q": "운영 비용은 어떻게 되나요?",
-    "a": "사용자의 GitHub/Vercel 계정으로 배포되기 때문에 저희는 직접적인 트래픽 비용을 받지 않아요."
-  },
-  {
-    "q": "정지되거나 제한될 수 있나요?",
-    "a": "무료 요금제에서 과도한 사용(예: 무제한 생성 시도)이 감지되면 제한될 수 있습니다."
-  },
-  {
-    "q": "커스터마이징은 가능한가요?",
-    "a": "GitHub 저장소를 통해 원하는 대로 스타일이나 기능을 수정할 수 있어요."
-  }
-]
+{
+  "ko": [
+    {
+      "q": "이 서비스는 무료인가요?",
+      "a": "현재는 베타 운영 중으로, 누구나 블로그 1개까지 무료로 생성할 수 있어요. 정식 요금제는 이후에 적용될 예정입니다."
+    },
+    {
+      "q": "어떤 계정이 필요한가요?",
+      "a": "Notion / GitHub / Vercel 세 가지 계정이 필요합니다. 각각 연결 안내를 드려요."
+    },
+    {
+      "q": "내 데이터는 안전한가요?",
+      "a": "블로그 코드는 본인의 GitHub에 저장되고, Notion 데이터도 직접 접근만 사용됩니다."
+    },
+    {
+      "q": "운영 비용은 어떻게 되나요?",
+      "a": "사용자의 GitHub/Vercel 계정으로 배포되기 때문에 저희는 직접적인 트래픽 비용을 받지 않아요."
+    },
+    {
+      "q": "정지되거나 제한될 수 있나요?",
+      "a": "무료 요금제에서 과도한 사용(예: 무제한 생성 시도)이 감지되면 제한될 수 있습니다."
+    },
+    {
+      "q": "커스터마이징은 가능한가요?",
+      "a": "GitHub 저장소를 통해 원하는 대로 스타일이나 기능을 수정할 수 있어요."
+    }
+  ],
+  "en": [
+    {
+      "q": "Is this service free?",
+      "a": "Currently, we're in beta, and you can create one blog for free. Pricing details will be announced later."
+    },
+    {
+      "q": "Which accounts do I need?",
+      "a": "You'll need Notion, GitHub, and Vercel accounts. Instructions for connecting each will be provided."
+    },
+    {
+      "q": "Is my data secure?",
+      "a": "Your blog's code is stored on your own GitHub, and your Notion data is accessed directly only by you."
+    },
+    {
+      "q": "What are the operational costs?",
+      "a": "We do not charge for direct traffic since deployments are made using your own GitHub and Vercel accounts."
+    },
+    {
+      "q": "Can I be suspended or limited?",
+      "a": "Excessive usage (e.g., attempting unlimited creations) may result in restrictions under the free plan."
+    },
+    {
+      "q": "Can I customize the service?",
+      "a": "You can freely modify styles and features through your GitHub repository."
+    }
+  ]
+}

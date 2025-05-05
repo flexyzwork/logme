@@ -4,10 +4,10 @@ export function Footer() {
       <footer className="border-t py-4 text-xs text-muted-foreground flex justify-center gap-4">
         <span>© {currentYear} FLEXYZ</span>
         <a href="/privacy" className="hover:underline">
-          개인정보처리방침
+          Privacy Policy
         </a>
         <a href="/terms" className="hover:underline">
-          이용약관
+          Terms of Service
         </a>
       </footer>
     )

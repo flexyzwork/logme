@@ -6,7 +6,7 @@ export function useFetchSite(siteId: string) {
     queryKey: ['site', siteId],
     queryFn: async () => {
       const res = await fetch(`/api/logme/sites/${siteId}`)
-      if (!res.ok) throw new Error('사이트 정보를 불러오지 못했습니다')
+      if (!res.ok) throw new Error('Failed to fetch site information')
       return res.json()
     },
     enabled: !!siteId,

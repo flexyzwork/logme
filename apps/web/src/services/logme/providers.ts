@@ -22,7 +22,7 @@ export async function handleGithub(req: Request, userId: string) {
     const { installationId } = await req.json()
 
     if (!installationId) {
-      return NextResponse.json({ error: 'installationId 누락' }, { status: 400 })
+      return NextResponse.json({ error: 'Missing installationId' }, { status: 400 })
     }
 
     const octokit = new Octokit({
@@ -102,7 +102,7 @@ export async function handleGithub(req: Request, userId: string) {
 
     if (!res.ok) {
       return NextResponse.json(
-        { error: 'Installation token 요청 실패', detail: data },
+        { error: 'Failed to request installation token', detail: data },
         { status: res.status }
       )
     }
@@ -112,8 +112,8 @@ export async function handleGithub(req: Request, userId: string) {
       expires_at: data.expires_at,
     })
   } catch (error) {
-    logger.log('error', 'GitHub App 토큰 발급 실패:', { error })
-    return NextResponse.json({ error: '서버 오류', detail: String(error) }, { status: 500 })
+    logger.log('error', '❌ Failed to issue GitHub App token:', { error })
+    return NextResponse.json({ error: 'Internal Server Error', detail: String(error) }, { status: 500 })
   }
 }
 
@@ -166,7 +166,7 @@ export async function handleVercel(req: Request) {
   const { token } = await req.json()
 
   if (!token) {
-    return NextResponse.json({ error: '토큰 누락' }, { status: 400 })
+    return NextResponse.json({ error: 'Missing Vercel token' }, { status: 400 })
   }
 
   const res = await fetch('https://api.vercel.com/www/user', {
@@ -176,7 +176,7 @@ export async function handleVercel(req: Request) {
   })
 
   if (!res.ok) {
-    return NextResponse.json({ error: 'Vercel 사용자 정보 조회 실패' }, { status: 401 })
+    return NextResponse.json({ error: 'Failed to fetch Vercel user information' }, { status: 401 })
   }
 
   const data = await res.json()

@@ -3,7 +3,7 @@ import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 import logger from '@/lib/logger'
 
-// GET /api/logme/contentSources/[id] - 컨텐츠 소스 조회 (단건)
+// GET /api/logme/contentSources/[id] - Fetch a single content source
 export async function GET(req: NextRequest, context: { params: Promise<{ sourceId: string }> }) {
   const session = await getAuthSession()
   if (!session) {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ sourceI
   return NextResponse.json(contentSource)
 }
 
-// PATCH /api/logme/contentSources/[id] - 컨텐츠 소스 수정
+// PATCH /api/logme/contentSources/[id] - Update content source
 export async function PATCH(req: NextRequest, context: { params: Promise<{ sourceId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -38,12 +38,12 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ sourc
 
     return NextResponse.json(updated)
   } catch (error) {
-    logger.log('error', '❌ 컨텐츠 소스 수정 실패:', { error })
+    logger.log('error', '❌ Failed to update content source:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
 
-// DELETE /api/logme/contentSources/[id] - 컨텐츠 소스 삭제
+// DELETE /api/logme/contentSources/[id] - Delete content source
 export async function DELETE(req: NextRequest, context: { params: Promise<{ sourceId: string }> }) {
   try {
     const session = await getAuthSession()
@@ -60,7 +60,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ sour
 
     return NextResponse.json(deleted)
   } catch (error) {
-    logger.log('error', '❌ 컨텐츠 소스 삭제 실패:', { error })
+    logger.log('error', '❌ Failed to delete content source:', { error })
     return new NextResponse('Bad Request', { status: 400 })
   }
 }

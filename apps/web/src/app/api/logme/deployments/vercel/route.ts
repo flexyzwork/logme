@@ -23,16 +23,16 @@ export async function POST(req: NextRequest) {
     } = await req.json()
 
     if (!githubInstallationId) {
-      logger.log('error', '❌ GitHub Installation Id 없음: Vercel 배포 중단')
+      logger.log('error', '❌ Missing GitHub installation ID: aborting Vercel deployment')
       return NextResponse.json(
-        { error: 'GitHub Installation Id가 필요합니다. 온보딩을 완료해주세요.' },
+        { error: 'GitHub installation ID is required. Please complete onboarding.' },
         { status: 400 }
       )
     }
 
     const githubInstallationToken = await fetchGithubInstallationToken(githubInstallationId)
 
-    // Step 1: 템플릿 레포 복제
+    // Step 1: Clone the template repository
     const githubCreateRes = await fetch(
       `https://api.github.com/repos/${templateOwner}/${templateRepo}/generate`,
       {
@@ -56,19 +56,18 @@ export async function POST(req: NextRequest) {
     const githubCreateData = await githubCreateRes.json()
 
     if (!githubCreateRes.ok || !githubCreateData.full_name || !githubCreateData.id) {
-      logger.log('error', '❌ GitHub 레포 생성 실패:', githubCreateData)
+      logger.log('error', '❌ Failed to generate GitHub repository:', githubCreateData)
       return NextResponse.json(
-        { error: 'GitHub 레포 복제 실패', details: githubCreateData },
+        { error: 'Failed to clone GitHub repository', details: githubCreateData },
         { status: 500 }
       )
     }
 
     const fullName = githubCreateData.full_name
     const repoId = githubCreateData.id
-    logger.log('info', '✅ GitHub 레포 복제 완료:', githubCreateData)
+    logger.log('info', 'GitHub repository cloned successfully:', githubCreateData)
 
-    // Step 2: Vercel API 토큰 가져오기
-
+    // Step 2: Fetch Vercel API token
     const session = await getAuthSession()
     if (!session) {
       return new NextResponse('Unauthorized', { status: 401 })
@@ -101,14 +100,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Vercel API Token is required' }, { status: 400 })
 
     if (!notionPageId) {
-      logger.log('error', '❌ Notion Page ID 없음: Vercel 배포 중단')
+      logger.log('error', '❌ Missing Notion Page ID: aborting Vercel deployment')
       return NextResponse.json(
-        { error: 'Notion Page ID가 필요합니다. 온보딩을 완료해주세요.' },
+        { error: 'Notion Page ID is required. Please complete onboarding.' },
         { status: 400 }
       )
     }
 
-    // ✅ 1. Vercel 프로젝트 생성
+    // 1. Create Vercel project
     const projectResponse = await fetch(`${VERCEL_API_BASE_URL}/v9/projects`, {
       method: 'POST',
       headers: {
@@ -124,27 +123,27 @@ export async function POST(req: NextRequest) {
 
     const projectData = await projectResponse.json()
 
-    // ✅ HTTP 응답 상태 체크
+    // Check HTTP response status
     if (!projectResponse.ok) {
-      logger.log('error', '❌ Vercel 프로젝트 생성 실패:', projectData)
+      logger.log('error', '❌ Failed to create Vercel project:', projectData)
       return NextResponse.json(
-        { error: 'Vercel 프로젝트 생성 실패', details: projectData },
+        { error: 'Failed to create Vercel project', details: projectData },
         { status: 500 }
       )
     }
 
-    // ✅ 프로젝트 생성 성공 확인
+    // Confirm project creation success
     if (!projectData.id) {
-      logger.log('error', '❌ Vercel API 응답 오류: 프로젝트 ID 없음', projectData)
+      logger.log('error', '❌ Vercel API response error: missing project ID', projectData)
       return NextResponse.json(
-        { error: 'Vercel API 응답 오류', details: projectData },
+        { error: 'Vercel API response error', details: projectData },
         { status: 500 }
       )
     }
 
-    logger.log('info', '✅ Vercel 프로젝트 생성 완료:', projectData)
+    logger.log('info', 'Vercel project created successfully:', projectData)
 
-    // ✅ 2. 환경 변수 추가 (notionPageId를 사용)
+    // 2. Add environment variables (using notionPageId)
     const envResponse = await fetch(
       `${VERCEL_API_BASE_URL}/v10/projects/${projectData.id}/env?upsert=true`,
       {
@@ -203,13 +202,16 @@ export async function POST(req: NextRequest) {
     const envData = await envResponse.json()
 
     if (!envResponse.ok) {
-      logger.log('error', '❌ 환경 변수 추가 실패:', envData)
-      return NextResponse.json({ error: '환경 변수 추가 실패', details: envData }, { status: 500 })
+      logger.log('error', '❌ Failed to add environment variables:', envData)
+      return NextResponse.json(
+        { error: 'Failed to add environment variables', details: envData },
+        { status: 500 }
+      )
     }
 
-    logger.log('info', '✅ 환경 변수 추가 완료:', envData)
+    logger.log('info', 'Environment variables added successfully:', envData)
 
-    // ✅ 3. Vercel 배포 시작
+    // 3. Start Vercel deployment
 
     const deployResponse = await fetch(`${VERCEL_API_BASE_URL}/v13/deployments`, {
       method: 'POST',
@@ -218,9 +220,9 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: projectData.name, // ✅ 프로젝트 이름 추가
-        project: projectData.id, // ✅ 프로젝트 ID 추가
-        target: 'production', // ✅ 배포 환경 (production)
+        name: projectData.name, // Add project name
+        project: projectData.id, // Add project ID
+        target: 'production', // Deployment environment (production)
         gitSource: {
           repo: fullName,
           repoId,
@@ -228,41 +230,41 @@ export async function POST(req: NextRequest) {
           ref: 'main',
         },
         meta: {
-          NEXT_PUBLIC_ROOT_NOTION_PAGE_ID: notionPageId, // ✅ 환경 변수 설정 (Notion Page ID)
-          NODE_ENV: 'production', // ✅ 환경 변수 설정 (NODE_ENV)
-          NEXT_PUBLIC_NODE_ENV: 'production', // ✅ 환경 변수 설정 (NEXT_PUBLIC_NODE_ENV)
-          NEXT_PUBLIC_AUTHOR: notionPageId, // ✅ 환경 변수 설정 (Notion Page ID)
+          NEXT_PUBLIC_ROOT_NOTION_PAGE_ID: notionPageId, // Set environment variable (Notion Page ID)
+          NODE_ENV: 'production', // Set environment variable (NODE_ENV)
+          NEXT_PUBLIC_NODE_ENV: 'production', // Set environment variable (NEXT_PUBLIC_NODE_ENV)
+          NEXT_PUBLIC_AUTHOR: notionPageId, // Set environment variable (Author)
         },
-        alias: [`${projectData.name}.vercel.app`], // ✅ Vercel 프로젝트 URL 자동 설정
+        alias: [`${projectData.name}.vercel.app`], // Automatically set Vercel project URL
       }),
     })
 
     const deployData = await deployResponse.json()
 
-    // ✅ HTTP 응답 상태 확인
+    // Check HTTP response status
     if (!deployResponse.ok) {
-      logger.log('error', '❌ Vercel 배포 API 응답 오류:', deployData)
+      logger.log('error', '❌ Vercel deployment API response error:', deployData)
       return NextResponse.json(
-        { error: 'Vercel 배포 API 요청 실패', details: deployData },
+        { error: 'Failed to request deployment from Vercel', details: deployData },
         { status: 500 }
       )
     }
 
-    // ✅ Vercel API에서 반환된 데이터 확인
-    logger.log('info', '🔍 Vercel 배포 응답 데이터:', deployData)
+    // Check Vercel API returned data
+    logger.log('info', '🔍 Vercel deployment response data:', deployData)
 
     if (!deployData.url) {
-      logger.log('error', '❌ Vercel 배포 실패: 배포 URL 없음', deployData)
+      logger.log('error', '❌ Vercel deployment failed: missing deployment URL', deployData)
       return NextResponse.json(
-        { error: 'Vercel 배포 실패: 배포 URL이 없습니다.', details: deployData },
+        { error: 'Vercel deployment failed: no deployment URL returned', details: deployData },
         { status: 500 }
       )
     }
 
-    logger.log('info', '✅ Vercel 배포 완료:', deployData)
+    logger.log('info', 'Vercel deployment successful:', deployData)
     return NextResponse.json(
       {
-        message: '배포 완료',
+        message: 'Deployment complete',
         url: `https://${deployData.url}`,
         deployUrl: `${deployData.inspectorUrl}`,
         id: deployData.id,
@@ -274,7 +276,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
-    logger.log('error', '❌ Vercel 배포 실패:', { error })
-    return NextResponse.json({ error: 'Vercel 배포 실패' }, { status: 500 })
+    logger.log('error', '❌ Vercel deployment failed:', { error })
+    return NextResponse.json({ error: 'Failed to deploy to Vercel' }, { status: 500 })
   }
 }

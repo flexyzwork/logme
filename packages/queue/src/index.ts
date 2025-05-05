@@ -26,8 +26,8 @@ export type JobData = {
   }
 }
 
-export async function enqueue<T extends JobType>(type: T, data: JobData[T]) {
-  return queue.add(type, data)
+export async function enqueue<T extends JobType>(type: T, data: JobData[T], delayMs?: number) {
+  return queue.add(type, data, delayMs ? { delay: delayMs } : undefined)
 }
 
 const queueEvents = new QueueEvents(QUEUE_NAME, { connection }) // 이게 범인!!

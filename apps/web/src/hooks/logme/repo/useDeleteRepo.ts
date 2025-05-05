@@ -8,7 +8,7 @@ export function useDeleteRepo() {
       const res = await fetch(`/api/logme/repo/${repoId}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('Repo 삭제 실패')
+      if (!res.ok) throw new Error('Failed to delete repo')
       return res.json()
     },
     onSuccess: () => {

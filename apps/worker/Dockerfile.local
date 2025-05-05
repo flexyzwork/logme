@@ -5,7 +5,7 @@ FROM base AS pruner
 RUN npm install -g turbo pnpm
 WORKDIR /app
 COPY . .
-# 필터링하지 말고 전체 터보 푸룬 도커
+# Prune entire Turborepo for Docker (no filtering)
 RUN turbo prune worker --docker
 
 
@@ -19,7 +19,7 @@ RUN pnpm install --frozen-lockfile
 
 # Build the project
 COPY --from=pruner /app/out/full/ .
-# Turborepo 전체에서 build 실행
+# Run build across the entire Turborepo
 RUN pnpm turbo run build
 
 
@@ -36,7 +36,7 @@ RUN groupadd --system --gid 1001 nodejs \
 
 COPY --from=builder --chown=nodejs:nodejs /app ./
 
-# 불필요한 캐시 제거 (의미 없음... 크기 변화 없음)
+# Remove unnecessary cache (no size change)
 RUN rm -rf .next/cache
 RUN pnpm db:g
 

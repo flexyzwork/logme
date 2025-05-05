@@ -12,7 +12,7 @@ export function useCreateDeployTarget() {
         body: JSON.stringify(deployTargetData),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error('Deploy Target 생성 실패')
+      if (!res.ok) throw new Error('Failed to create deploy target')
       return res.json()
     },
     onSuccess: () => {

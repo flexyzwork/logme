@@ -41,7 +41,7 @@ export const useTemplatePublicWatcher = ({
           onComplete?.()
         }
       } catch (error) {
-        logger.log('error', '게시 상태 확인 중 오류 발생:', { error })
+        logger.log('error', 'Error while checking public status:', { error })
       }
     }, 2000)
 

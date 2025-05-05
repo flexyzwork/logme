@@ -32,10 +32,10 @@ export const useTemplatePageOpener = () => {
         const newWindow = window.open(data.url, '_blank')
         onWindow?.(newWindow as Window)
       } else {
-        alert('❌ Notion 페이지를 불러오는데 실패했습니다.')
+        alert('❌ Failed to load the Notion page.')
       }
     } catch (error) {
-      logger.log('error', '❌ Notion URL fetch error:', { error })
+      logger.log('error', '❌ Failed to fetch Notion page URL:', { error })
       onError?.(error)
     }
   }

@@ -16,7 +16,7 @@ export function useCreateProvider() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(providerUser),
       })
-      if (!res.ok) throw new Error('제공자 사용자 정보 저장 실패')
+      if (!res.ok) throw new Error('Failed to save provider user information')
       return res.json()
     },
   })

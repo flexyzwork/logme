@@ -54,10 +54,10 @@ export default function NotionCallbackPage() {
     }
 
     if (!state || state !== notion?.authState) {
-      console.warn('❌ 유효하지 않은 인증 요청입니다. (state 없거나 불일치)')
-      setError('❌ 유효하지 않은 인증 요청입니다. (state 불일치)')
+      console.warn('❌ Invalid authentication request (state missing or mismatch)')
+      setError('Invalid authentication request (state mismatch)')
       setLoading(false)
-      logger.log('warn', '❌ 유효하지 않은 인증 요청입니다. (state 불일치)', {
+      logger.log('warn', '❌ Invalid authentication request (state mismatch)', {
         state,
         notionAuthState: notion?.authState,
         sessionUserId: session?.user.id,
@@ -86,7 +86,7 @@ export default function NotionCallbackPage() {
 
         const data = await response.json()
 
-        logger.log('info', 'Notion 인증 응답:', { data })
+        logger.log('info', 'Notion auth response:', { data })
 
         if (data.access_token && data.duplicated_template_id) {
           const accessToken = data.access_token
@@ -116,7 +116,7 @@ export default function NotionCallbackPage() {
             extendedValue: encryptedToken,
           })
 
-          logger.log('info', '✅ Notion 인증 완료:', {
+          logger.log('info', 'Notion authentication complete:', {
             userId: currentUserId,
             providerUserId: data.owner?.user?.id,
             accessToken: encryptedToken,
@@ -135,26 +135,26 @@ export default function NotionCallbackPage() {
             sourceId: data.duplicated_template_id,
           }
           const contentSource = await createContentSourceDB(contentSourceData)
-          logger.log('info', '✅ Content Source 생성:', contentSource)
+          logger.log('info', 'Content Source created:', contentSource)
 
           if (siteId) {
             await updateSiteDB({
               id: siteId,
               contentSourceId: contentSource.id,
             })
-            logger.log('info', '✅ Site 업데이트 완료:', {
+            logger.log('info', 'Site update complete:', {
               siteId,
               contentSourceId: contentSource.id,
             })
           } else {
             setError('Failed to get site ID')
-            logger.log('error', '❌ Site ID가 없습니다.')
+            logger.log('error', '❌ Site ID is missing.')
           }
         } else {
           setError('Failed to get access token or template ID')
         }
       } catch (error) {
-        logger.log('error', '❌ Notion 인증 중 오류:', { error })
+        logger.log('error', '❌ Error during Notion authentication:', { error })
         setError('Internal server error')
       } finally {
         setIsNotionFetching(false)
@@ -186,7 +186,7 @@ export default function NotionCallbackPage() {
   ])
 
   if (status === 'loading' || loading) return <p>Loading...</p>
-  if (!session) return <p>로그인이 필요합니다</p>
+  if (!session) return <p>Sign-in required</p>
   if (error) return <p>Error: {error}</p>
 
   return null

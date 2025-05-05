@@ -6,7 +6,7 @@ export function useFetchProvider(providerType: 'notion' | 'github' | 'vercel') {
     queryKey: ['provider', providerType],
     queryFn: async () => {
       const res = await fetch(`/api/logme/providers/${providerType}`)
-      if (!res.ok) throw new Error('provider 정보를 불러오지 못했습니다')
+      if (!res.ok) throw new Error('Failed to fetch provider information')
       return res.json()
     },
     enabled: !!providerType,

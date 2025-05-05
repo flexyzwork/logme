@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json(deployment)
   } catch (error) {
-    logger.log('error', '❌ 배포 생성 실패:', { error })
+    logger.log('error', '❌ Failed to create deployment:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

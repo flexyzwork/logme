@@ -4,14 +4,14 @@ import React from 'react'
 import privacyData from '@/data/privacy.json'
 
 const PrivacyGuidelines = () => {
-  const content = privacyData.ko
+  const content = privacyData.en
 
   return (
     <div className="flex flex-col justify-center items-center bg-customgreys-primarybg text-white-50 px-6 py-12">
       <div className="max-w-3xl text-center mb-12">
         <h1 className="text-4xl font-extrabold text-primary-700">{content.title}</h1>
         <p className="text-gray-300 mt-4 text-sm md:text-base">
-          개인정보 보호와 관련한 Logme의 운영 지침입니다.
+          This page outlines Logme’s privacy practices.
         </p>
       </div>
 
@@ -27,7 +27,7 @@ const PrivacyGuidelines = () => {
       </div>
 
       <footer className="mt-12 text-gray-400 text-xs">
-        최종 업데이트일: {content.lastUpdated}
+        Last updated: {content.lastUpdated}
       </footer>
     </div>
   )

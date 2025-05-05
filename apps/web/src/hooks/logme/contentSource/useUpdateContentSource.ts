@@ -11,7 +11,7 @@ export function useUpdateContentSource() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
       })
-      if (!res.ok) throw new Error('Content Source 수정 실패')
+      if (!res.ok) throw new Error('Failed to update content source')
       return res.json()
     },
     onSuccess: () => {

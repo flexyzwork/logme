@@ -11,7 +11,7 @@ export function useUpdateDeployment() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
       })
-      if (!res.ok) throw new Error('Deployment 수정 실패')
+      if (!res.ok) throw new Error('Failed to update deployment')
       return res.json()
     },
     onSuccess: () => {

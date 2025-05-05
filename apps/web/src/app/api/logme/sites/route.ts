@@ -3,7 +3,7 @@ import { db } from '@repo/db'
 import { getAuthSession } from '@/lib/auth'
 import logger from '@/lib/logger'
 
-// POST /api/logme/sites - 사이트 생성
+// POST /api/logme/sites - Create a new site
 export async function POST(req: Request) {
   try {
     const data = await req.json()
@@ -18,15 +18,15 @@ export async function POST(req: Request) {
         userId,
       },
     })
-    console.log('사이트 생성 성공:', site)
+    console.log('Site created successfully:', site)
     return NextResponse.json(site)
   } catch (error) {
-    logger.log('error', '❌ 사이트 생성 실패:', { error })
+    logger.log('error', '❌ Failed to create site:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
 
-// GET /api/logme/sites - 내 사이트 목록 조회
+// GET /api/logme/sites - Fetch my site list
 export async function GET() {
   try {
     const session = await getAuthSession()
@@ -90,7 +90,7 @@ export async function GET() {
 
     return NextResponse.json(sites)
   } catch (error) {
-    logger.log('error', '❌ 사이트 목록 불러오기 실패:', { error })
+    logger.log('error', '❌ Failed to fetch site list:', { error })
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

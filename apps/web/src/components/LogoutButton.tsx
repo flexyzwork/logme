@@ -22,5 +22,5 @@ const handleLogout = async () => {
 }
 
 export function LogoutButton() {
-  return <DropdownMenuItem onClick={handleLogout}>로그아웃</DropdownMenuItem>
+  return <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
 }

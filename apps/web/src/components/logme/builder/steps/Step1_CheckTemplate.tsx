@@ -61,11 +61,10 @@ export default function Step1_CheckTemplate({ notionPageId }: { notionPageId: st
   return (
     <>
       <p className="text-center text-gray-700 text-sm">
-        템플릿 오른쪽 위 [공유-게시] 메뉴의 <br />
-        [게시] 버튼을 클릭하세요.
+        In the template page, click the [Share → Publish] button at the top right.
       </p>
       <Button className="w-full mt-4" onClick={handleOpenNotion} disabled={!hasCopiedTemplate}>
-        {hasCopiedTemplate ? '🔗 Notion 템플릿 공유하기' : '⏳ 템플릿 복사 중...'}
+        {hasCopiedTemplate ? '🔗 Share Notion Template' : '⏳ Copying template...'}
       </Button>
     </>
   )

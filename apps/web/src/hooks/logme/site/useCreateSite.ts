@@ -12,7 +12,7 @@ export function useCreateSite() {
         body: JSON.stringify(siteData),
         credentials: 'include',
       })
-      if (!res.ok) throw new Error('사이트 생성 실패')
+      if (!res.ok) throw new Error('Failed to create site')
       return res.json()
     },
     onSuccess: () => {

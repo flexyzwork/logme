@@ -13,10 +13,10 @@ export function useDeleteProvider(
       const res = await fetch(`/api/logme/providers/${providerType}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('연결 해제 실패')
+      if (!res.ok) throw new Error('Failed to disconnect')
     },
     onSuccess: async () => {
-      toast.success(`${providerType} 연결이 해제되었습니다`)
+      toast.success(`${providerType} disconnected successfully`)
       await queryClient.invalidateQueries({ queryKey: ['provider', providerType] })
       await queryClient.refetchQueries({ queryKey: ['provider', providerType] })
       await queryClient.invalidateQueries({ queryKey: ['providerExtended', providerType, 'token'] })
@@ -24,8 +24,8 @@ export function useDeleteProvider(
       config?.onSuccess?.()
     },
     onError: async (error) => {
-      toast.error('연결 해제 중 오류 발생')
-      logger.log('error', '연결 해제 중 오류 발생', {
+      toast.error('An error occurred while disconnecting')
+      logger.log('error', 'Error occurred while disconnecting', {
         providerType,
         error: error instanceof Error ? error.message : String(error),
       })
