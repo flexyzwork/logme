@@ -12,7 +12,7 @@ export class JobsController {
 
   @Post('check-domain')
   async checkDomain(@Body() body: any) {
-    console.log('body', body)
+    console.log('domain:', body.domain)
     return this.jobsService.enqueueCheckDomain(body)
   }
 }

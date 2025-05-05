@@ -15,7 +15,7 @@ new Worker(
       throw new Error(`Unknown job type ${job.name}`)
     }
 
-    console.log(`[${job.id}] ${job.name} - Running...`, job.data)
+    console.log(`[${job.id}] ${job.name} - Running...`)
     await runner(job.data)
     console.log(`[${job.id}] ${job.name} - Completed`)
   },

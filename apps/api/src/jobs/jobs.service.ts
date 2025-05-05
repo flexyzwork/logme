@@ -11,7 +11,7 @@ export class JobsService {
   }
 
   async createPost(data: any) {
-    console.log('createPost', data)
+    // console.log('createPost', data)
     return data
   }
 
