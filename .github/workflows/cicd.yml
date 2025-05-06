@@ -126,6 +126,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
+            kix.ocir.io/axunckhvyv1v/logme-api:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-api:latest
 
       - name: Build and Push Image (WORKER)
@@ -138,17 +139,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
+            kix.ocir.io/axunckhvyv1v/logme-worker:${{ env.NEW }}
             kix.ocir.io/axunckhvyv1v/logme-worker:latest
 
       - name: Ensure Vector container is running
         run: |
           ssh ec2 << 'EOF'
           if ! docker ps --format '{{.Names}}' | grep -q "vector"; then
-            echo "🔧 Vector 컨테이너가 실행 중이 아닙니다. 재시작합니다..."
+            echo "🔧 Vector container is not running. Restarting..."
             cd ~/app
             docker-compose up -d vector
           else
-            echo "Vector 컨테이너 실행 중"
+            echo "Vector container is running"
           fi
           EOF
 
@@ -158,7 +160,7 @@ jobs:
           set -e
 
           rollback() {
-              echo "❌ 배포 실패! 이전 컨테이너로 원복 중..."
+              echo "❌ Deployment failed! Rolling back to previous container..."
               docker-compose kill app-${{ env.NEW }}
               docker-compose rm -f app-${{ env.NEW }}
 
@@ -166,7 +168,7 @@ jobs:
               exit 1
           }
           cleanup() {
-              echo "배포 성공! 이전 컨테이너 정리 중..."
+              echo "Deployment successful! Cleaning up previous container..."
               docker-compose kill app-${{ env.ACTIVE }}
               docker-compose rm -f app-${{ env.ACTIVE }}
 
@@ -177,10 +179,8 @@ jobs:
 
           cd ~/app
 
-          echo "현재 컨테이너: $(docker ps --format '{{.Names}}')"
+          echo "Current containers: $(docker ps --format '{{.Names}}')"
 
-          # 이 부분이 중요했음! git pull 부분 삭제하고, .env가 없어서 docker-compose.yaml의 ACTIVE 변수가 ""로 바뀌는 바람에 
-          # docker-compose 스크립트가 nginx depends_on: app- 으로 해석되어 구문 오류 발생
           echo "ACTIVE=${{ env.ACTIVE }}" > .env
 
           docker-compose pull app-${{ env.NEW }}
@@ -190,22 +190,22 @@ jobs:
 
           # Health check
           if docker ps --format '{{.Names}}' | grep -q "nginx"; then
-              echo "Nginx 실행 중! 애플리케이션 헬스 체크 수행..."
+              echo "Nginx is running! Performing application health check..."
               sleep 10
               if curl -f http://localhost:3000/api/health | grep -q '"status":"ok"'; then
-                  echo "앱 헬스 체크 성공!"
+                  echo "App health check passed!"
               else
-                  echo "❌ 앱 헬스 체크 실패! 롤백 수행"
+                  echo "❌ App health check failed! Performing rollback"
                   rollback
               fi
           else
-              echo "⚠️ Nginx 미실행! 컨테이너 상태로 헬스 체크 진행..."
+              echo "⚠️ Nginx not running! Proceeding with container status health check..."
               sleep 5
               docker ps --format '{{.Names}}' | grep -q "app-${{ env.NEW }}" || rollback
-              echo "app-${{ env.NEW}} 컨테이너 정상 실행 중!"
+              echo "app-${{ env.NEW}} container is running normally!"
           fi
 
-          echo "배포 성공!"
+          echo "Deployment succeeded!"
           echo "ACTIVE=${{ env.NEW }}" > .env
           export $(grep -v '^#' .env | xargs)
           echo "${{ env.ACTIVE }} -> $ACTIVE"
@@ -223,12 +223,12 @@ jobs:
         if: success()
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"배포 성공: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}'"}' \
+          --data '{"text":"Deployment successful: '${{ github.repository }}' branch '${{ github.ref_name }}'"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Slack Notification (Failure)
         if: failure()
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ 배포 실패: '${{ github.repository }}' 브랜치 '${{ github.ref_name }}' 확인 필요!"}' \
+          --data '{"text":"❌ Deployment failed: '${{ github.repository }}' branch '${{ github.ref_name }}' requires attention!"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}

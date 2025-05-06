@@ -34,20 +34,22 @@ services:
       - app-network
 
   worker:
-    container_name: worker
-    image: kix.ocir.io/axunckhvyv1v/logme-worker:latest
+    container_name: worker-${ACTIVE:-green}
+    image: kix.ocir.io/axunckhvyv1v/logme-worker:${ACTIVE:-green}
     restart: always
     env_file:
       - apps/worker/.env
+      - .env
     networks:
       - app-network
 
   api:
-    container_name: api
-    image: kix.ocir.io/axunckhvyv1v/logme-api:latest
+    container_name: api-${ACTIVE:-green}
+    image: kix.ocir.io/axunckhvyv1v/logme-api:${ACTIVE:-green}
     restart: always
     env_file:
       - apps/api/.env
+      - .env
     ports:
       - '4000:4000'
     networks:
@@ -58,7 +60,7 @@ services:
     image: kix.ocir.io/axunckhvyv1v/logme-app:green
     restart: always
     ports:
-      - '3000:3000'
+      - '3001:3000'
     env_file:
       - apps/web/.env
     networks:
