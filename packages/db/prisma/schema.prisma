@@ -186,7 +186,7 @@ model Deployment {
   triggeredAt     DateTime      @default(now())
   completedAt     DateTime?
 
-  deployTarget    DeployTarget  @relation(fields: [deployTargetId], references: [id])
+  deployTarget    DeployTarget?  @relation(fields: [deployTargetId], references: [id])
   @@index([deployTargetId])
   @@index([deployId])
 }

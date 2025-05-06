@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
 import { getAuthSession } from '@/shared/lib/auth'
-import { deleteGithubRepo } from '@/modules/logme/features/repo/services/deleteGithubRepo'
-import { fetchGithubInstallationToken } from '@/modules/logme/features/repo/services/auth'
 import { decrypt } from '@/shared/lib/crypto'
 import logger from '@/shared/lib/logger'
-import { deleteVercelProject } from '@/modules/logme/features/deployTarget/services/deleteDeployTarget'
+import { deleteGithubRepo, fetchGithubInstallationToken } from '@/modules/logme/features/repo/services/githubService'
+import { deleteVercelProject } from '@/modules/logme/features/deployTarget/services/vercelService'
 
 // GET /api/logme/sites/[id] - Fetch a single site
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {

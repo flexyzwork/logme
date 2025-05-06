@@ -4,7 +4,8 @@ import ShareButton from '@/modules/logme/components/common/ShareButton'
 import { useTemplatePageOpener } from '@/modules/logme/features/template/hooks/useTemplatePageOpener'
 import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 import { Button } from '@/shared/components/ui/button'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
+
 
 export default function Step6_Done() {
   const { siteId, notionPageId, sub } = useBuilderStore()

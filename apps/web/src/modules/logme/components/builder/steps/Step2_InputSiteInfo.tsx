@@ -8,11 +8,11 @@ import { useUpdateSite } from '@/modules/logme/features/site/hooks/useUpdateSite
 import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import { useDeploymentActions } from '@/modules/logme/features/deployment/hooks/useDeploymentActions'
+import { useDeployExecutor } from '@/modules/logme/features/deployment/hooks/useDeployExecutor'
 
 export default function Step2_InputSiteInfo() {
   const { mutateAsync: updateSiteDB } = useUpdateSite()
-  const { startDeploy } = useDeploymentActions()
+  const { startDeploy } = useDeployExecutor()
   const {
     siteId,
     setBuilderStep,
@@ -40,7 +40,7 @@ export default function Step2_InputSiteInfo() {
       alert('❌ This subdomain is reserved and cannot be used.')
       return false
     }
-    const res = await fetch(`/api/domains/check-sub?sub=${sub}`)
+    const res = await fetch(`/api/logme/domains/check-sub?sub=${sub}`)
     const json = await res.json()
     if (!res.ok || json.exists) {
       alert('❌ This subdomain is already in use.')

@@ -11,7 +11,7 @@ export async function trackEvent({
   meta?: Record<string, any>
 }) {
   try {
-    await fetch('/api/logme/track-event', {
+    await fetch('/api/track-event', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ interface CreateDomainParams {
 export function useCreateDomain() {
   return useMutation({
     mutationFn: async ({ sub, vercelProjectId, siteId }: CreateDomainParams) => {
-      const res = await fetch('/api/domains', {
+      const res = await fetch('/api/logme/domains', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
