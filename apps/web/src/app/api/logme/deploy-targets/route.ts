@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-import logger from '@/lib/logger'
+import logger from '@/shared/lib/logger'
 
 // POST /api/logme/deployTarget - Create a new deploy target
 export async function POST(req: Request) {

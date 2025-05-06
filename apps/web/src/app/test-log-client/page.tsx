@@ -1,6 +1,6 @@
 'use client'
 
-import logger from '@/lib/logger'
+import logger from '@/shared/lib/logger'
 
 export default function ClientComponent() {
   console.log('🟢 Client Component Logging')

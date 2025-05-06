@@ -1,6 +1,6 @@
-import AccountPage from '@/components/logme/AccountPage'
 import { redirect } from 'next/navigation'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/shared/lib/auth'
+import AccountPage from '@/modules/logme/components/AccountPage'
 
 export default function Account() {
   const defaultApp = 'logme'

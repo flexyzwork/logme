@@ -1,6 +1,6 @@
-import SiteBuilder from '@/components/logme/builder/SiteBuilder'
 import { redirect } from 'next/navigation'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/shared/lib/auth'
+import SiteBuilder from '@/modules/logme/components/builder/SiteBuilder'
 
 export default function NewSitePage() {
   const defaultApp = 'logme'

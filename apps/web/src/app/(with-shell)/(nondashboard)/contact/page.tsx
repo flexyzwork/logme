@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import logger from '@/lib/logger'
+import logger from '@/shared/lib/logger'
+import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/components/ui/input'
+import { Textarea } from '@/shared/components/ui/textarea'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
@@ -48,7 +48,8 @@ export default function ContactPage() {
       <h1 className="text-2xl font-bold mb-6 text-center">Contact Us</h1>
       <p className="text-muted-foreground mb-8">
         Logme is a tool built by Flexyz. <br />
-        If you have questions, ideas, or just want to say hi, feel free to reach out using the form below.
+        If you have questions, ideas, or just want to say hi, feel free to reach out using the form
+        below.
       </p>
       <div className="space-y-4 text-sm">
         <p>

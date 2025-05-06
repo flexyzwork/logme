@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { RESERVED_SUBDOMAINS } from '@/constants/reserved'
+import { RESERVED_SUBDOMAINS } from '@/modules/logme/constants/reserved'
 import { db } from '@repo/db'
 
 export async function GET(req: Request) {

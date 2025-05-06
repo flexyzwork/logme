@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/shared/lib/auth'
 
 export async function GET() {
   const session = await getAuthSession()
@@ -9,7 +9,7 @@ export async function GET() {
   }
   const userId = session.user.id
   const provider = await db.provider.findFirst({
-    where: { userId},
+    where: { userId },
     include: {
       providerExtended: {
         select: {

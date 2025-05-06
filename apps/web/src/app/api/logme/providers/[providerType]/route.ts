@@ -1,8 +1,8 @@
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { getAuthSession } from '@/lib/auth'
-import { handleGithub, handleNotion, handleVercel } from '@/services/logme/providers'
-import logger from '@/lib/logger'
+import { getAuthSession } from '@/shared/lib/auth'
+import { handleGithub, handleNotion, handleVercel } from '@/modules/logme/services/providers'
+import logger from '@/shared/lib/logger'
 
 const providerLocks = new Map<string, boolean>()
 
@@ -69,7 +69,7 @@ export async function GET(
       where: {
         providerType,
         userId,
-       },
+      },
       include: {
         providerExtended: true,
       },

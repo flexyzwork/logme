@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@repo/db'
-import { getAuthSession } from '@/lib/auth'
-import logger from '@/lib/logger'
+import { getAuthSession } from '@/shared/lib/auth'
+import logger from '@/shared/lib/logger'
 
 // GET /api/logme/deployTarget/[id] - Fetch a single deploy target
 export async function GET(req: NextRequest, context: { params: Promise<{ targetId: string }> }) {

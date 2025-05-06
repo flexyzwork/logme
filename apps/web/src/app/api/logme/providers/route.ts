@@ -1,8 +1,8 @@
 import { db, Prisma } from '@repo/db'
 import { NextResponse } from 'next/server'
 import { createId } from '@paralleldrive/cuid2'
-import { generateFallbackEmail } from '@/lib/utils'
-import logger from '@/lib/logger'
+import { generateFallbackEmail } from '@/shared/lib/utils'
+import logger from '@/shared/lib/logger'
 
 export async function POST(req: Request) {
   try {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ServerSlackStrategy } from '@/lib/logger/strategies/slack/ServerSlackStrategy'
-import { ServerSentryStrategy } from '@/lib/logger/strategies/sentry/ServerSentryStrategy'
-import { ServerBetterStackStrategy } from '@/lib/logger/strategies/better-stack/ServerBetterStackStrategy'
-import { LogLevel } from '@/lib/logger/strategies/LoggerStrategy'
+import { ServerSlackStrategy } from '@/shared/lib/logger/strategies/slack/ServerSlackStrategy'
+import { ServerSentryStrategy } from '@/shared/lib/logger/strategies/sentry/ServerSentryStrategy'
+import { ServerBetterStackStrategy } from '@/shared/lib/logger/strategies/better-stack/ServerBetterStackStrategy'
+import { LogLevel } from '@/shared/lib/logger/strategies/LoggerStrategy'
 
 const strategyMap = {
   slack: new ServerSlackStrategy(),

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createId } from '@paralleldrive/cuid2'
 import { ProviderType } from '@repo/types'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/shared/lib/auth'
 import { db } from '@repo/db'
-import logger from '@/lib/logger'
+import logger from '@/shared/lib/logger'
 
 export async function POST(req: Request) {
   try {

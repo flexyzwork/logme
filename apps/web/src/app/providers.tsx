@@ -4,8 +4,8 @@ import { Suspense } from 'react'
 import QueryProvider from '@/context/QueryProvider'
 import SessionProvider from '@/context/SessionProvider'
 import { Toaster } from 'sonner'
-import { AuthTracker } from '@/components/system/AuthTracker'
-import { PageViewTracker } from '@/components/system/PageViewTracker'
+import { AuthTracker } from '@/shared/components/system/AuthTracker'
+import { PageViewTracker } from '@/shared/components/system/PageViewTracker'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (

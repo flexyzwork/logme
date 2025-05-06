@@ -1,0 +1,301 @@
+.
+├── app
+│   ├── (with-shell)
+│   │   ├── (auth)
+│   │   │   ├── account
+│   │   │   │   └── page.tsx
+│   │   │   └── signin
+│   │   │       └── page.tsx
+│   │   ├── (nondashboard)
+│   │   │   ├── about
+│   │   │   │   └── page.tsx
+│   │   │   ├── contact
+│   │   │   │   └── page.tsx
+│   │   │   ├── faq
+│   │   │   │   └── page.tsx
+│   │   │   ├── privacy
+│   │   │   │   └── page.tsx
+│   │   │   └── terms
+│   │   │       └── page.tsx
+│   │   ├── (tools)
+│   │   │   └── logme
+│   │   │       ├── builder
+│   │   │       │   └── page.tsx
+│   │   │       ├── page.tsx
+│   │   │       └── providers
+│   │   │           ├── github
+│   │   │           │   └── callback
+│   │   │           │       └── page.tsx
+│   │   │           └── notion
+│   │   │               └── callback
+│   │   │                   └── page.tsx
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   ├── api
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   │       └── route.ts
+│   │   ├── domains
+│   │   │   ├── check-sub
+│   │   │   │   └── route.ts
+│   │   │   └── route.ts
+│   │   ├── health
+│   │   │   └── route.ts
+│   │   ├── logme
+│   │   │   ├── content-sources
+│   │   │   │   ├── [sourceId]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── dashboard
+│   │   │   │   └── route.ts
+│   │   │   ├── deploy-targets
+│   │   │   │   ├── [targetId]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── deployments
+│   │   │   │   ├── route.ts
+│   │   │   │   └── vercel
+│   │   │   │       ├── route.ts
+│   │   │   │       └── status
+│   │   │   │           └── route.ts
+│   │   │   ├── providers
+│   │   │   │   ├── [providerType]
+│   │   │   │   │   └── route.ts
+│   │   │   │   ├── extended
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── repo
+│   │   │   │   ├── [repoId]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── sites
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── status
+│   │   │   │   └── route.ts
+│   │   │   ├── templates
+│   │   │   │   ├── check-copy
+│   │   │   │   │   └── route.ts
+│   │   │   │   ├── check-public
+│   │   │   │   │   └── route.ts
+│   │   │   │   ├── get-url
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   └── track-event
+│   │   │       └── route.ts
+│   │   ├── logs
+│   │   │   └── route.ts
+│   │   ├── test-log
+│   │   │   └── route.ts
+│   │   └── user
+│   │       └── route.ts
+│   ├── favicon.ico
+│   ├── global-error.tsx
+│   ├── globals.css
+│   ├── guide
+│   │   ├── connect
+│   │   │   └── page.tsx
+│   │   ├── join
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   ├── layout.tsx
+│   ├── open-in-browser
+│   │   └── page.tsx
+│   ├── page.tsx
+│   ├── providers.tsx
+│   ├── test-log-client
+│   │   └── page.tsx
+│   └── test-log-server
+│       └── page.tsx
+├── data
+│   ├── faqs.json
+│   ├── guide-connect.json
+│   ├── guide-join.json
+│   ├── privacy.json
+│   └── terms.json
+├── instrumentation-client.ts
+├── instrumentation.ts
+├── modules
+│   └── logme
+│       ├── hooks
+│       │   ├── contentSource
+│       │   │   ├── useCreateContentSource.ts
+│       │   │   ├── useDeleteContentSource.ts
+│       │   │   ├── useFetchContentSource.ts
+│       │   │   └── useUpdateContentSource.ts
+│       │   ├── deployment
+│       │   │   ├── useCreateDeployment.ts
+│       │   │   ├── useDeleteRepo.ts
+│       │   │   ├── useFetchRepo.ts
+│       │   │   └── useUpdateRepo.ts
+│       │   ├── deployTarget
+│       │   │   ├── useCreateDeployTarget.ts
+│       │   │   ├── useDeleteDeployTarget.ts
+│       │   │   ├── useFetchDeployTarget.ts
+│       │   │   └── useUpdateDeployTarget.ts
+│       │   ├── domain
+│       │   │   └── useCreateDomain.ts
+│       │   ├── provider
+│       │   │   ├── useCreateProvider.ts
+│       │   │   ├── useCreateProviderExtended.ts
+│       │   │   ├── useDeleteProvider.ts
+│       │   │   ├── useFetchProvider.ts
+│       │   │   ├── useFetchProviderExtended.ts
+│       │   │   ├── useFetchProviderVercel.ts
+│       │   │   └── useGithubAppInstall.ts
+│       │   ├── repo
+│       │   │   ├── useCreateRepo.ts
+│       │   │   ├── useDeleteRepo.ts
+│       │   │   ├── useFetchRepo.ts
+│       │   │   └── useUpdateRepo.ts
+│       │   ├── site
+│       │   │   ├── useCreateSite.ts
+│       │   │   ├── useDeleteSite.ts
+│       │   │   ├── useFetchSite.ts
+│       │   │   ├── useFetchSites.ts
+│       │   │   ├── useSiteBuilderUI.ts
+│       │   │   └── useUpdateSite.ts
+│       │   └── template
+│       │       ├── useFetchTemplates.ts
+│       │       ├── useTemplateCopyWatcher.ts
+│       │       ├── useTemplatePageOpener.ts
+│       │       └── useTemplatePublicWatcher.ts
+│       └── services
+│           ├── auth.ts
+│           ├── deleteExternals.ts
+│           ├── deployment.ts
+│           ├── providers.ts
+│           ├── sites.ts
+│           └── templates.ts
+├── shared
+│   ├── components
+│   │   ├── BrowserCheckRedirect.tsx
+│   │   ├── GATracker.tsx
+│   │   ├── layout
+│   │   │   ├── footer.tsx
+│   │   │   ├── header.tsx
+│   │   │   └── shell.tsx
+│   │   ├── logme
+│   │   │   ├── AccountPage.tsx
+│   │   │   ├── builder
+│   │   │   │   ├── SiteBuilder.tsx
+│   │   │   │   └── steps
+│   │   │   │       ├── Step0_SelectTemplate.tsx
+│   │   │   │       ├── Step1_CheckTemplate.tsx
+│   │   │   │       ├── Step2_InputSiteInfo.tsx
+│   │   │   │       ├── Step3_Deploy.tsx
+│   │   │   │       └── Step4_Done.tsx
+│   │   │   ├── common
+│   │   │   │   ├── ConnectionStatus.tsx
+│   │   │   │   ├── DisconnectProviderButton.tsx
+│   │   │   │   ├── GuideAccordion.tsx
+│   │   │   │   ├── GuideDialogTriggerButton.tsx
+│   │   │   │   └── ShareButton.tsx
+│   │   │   ├── FaqSection.tsx
+│   │   │   ├── Landing.tsx
+│   │   │   ├── LogmeDashboard.tsx
+│   │   │   └── SiteInfoForm.tsx
+│   │   ├── LogoutButton.tsx
+│   │   ├── system
+│   │   │   ├── AuthTracker.tsx
+│   │   │   └── PageViewTracker.tsx
+│   │   ├── ThemeToggle.tsx
+│   │   └── ui
+│   │       ├── accordion.tsx
+│   │       ├── alert-dialog.tsx
+│   │       ├── avatar.tsx
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── dialog.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── skeleton.tsx
+│   │       ├── sonner.tsx
+│   │       ├── textarea.tsx
+│   │       └── tooltip.tsx
+│   ├── constants
+│   │   └── reserved.ts
+│   ├── providers
+│   │   ├── QueryProvider.tsx
+│   │   ├── SessionProvider.tsx
+│   │   └── ZustandProvider.tsx
+│   ├── types
+│   │   └── next-auth.d.ts
+│   ├── hooks
+│   │   └── logme
+│   │       ├── contentSource
+│   │       │   ├── useCreateContentSource.ts
+│   │       │   ├── useDeleteContentSource.ts
+│   │       │   ├── useFetchContentSource.ts
+│   │       │   └── useUpdateContentSource.ts
+│   │       ├── deployment
+│   │       │   ├── useCreateDeployment.ts
+│   │       │   ├── useDeleteRepo.ts
+│   │       │   ├── useFetchRepo.ts
+│   │       │   └── useUpdateRepo.ts
+│   │       ├── deployTarget
+│   │       │   ├── useCreateDeployTarget.ts
+│   │       │   ├── useDeleteDeployTarget.ts
+│   │       │   ├── useFetchDeployTarget.ts
+│   │       │   └── useUpdateDeployTarget.ts
+│   │       ├── domain
+│   │       │   └── useCreateDomain.ts
+│   │       ├── provider
+│   │       │   ├── useCreateProvider.ts
+│   │       │   ├── useCreateProviderExtended.ts
+│   │       │   ├── useDeleteProvider.ts
+│   │       │   ├── useFetchProvider.ts
+│   │       │   ├── useFetchProviderExtended.ts
+│   │       │   ├── useFetchProviderVercel.ts
+│   │       │   └── useGithubAppInstall.ts
+│   │       ├── repo
+│   │       │   ├── useCreateRepo.ts
+│   │       │   ├── useDeleteRepo.ts
+│   │       │   ├── useFetchRepo.ts
+│   │       │   └── useUpdateRepo.ts
+│   │       ├── site
+│   │       │   ├── useCreateSite.ts
+│   │       │   ├── useDeleteSite.ts
+│   │       │   ├── useFetchSite.ts
+│   │       │   ├── useFetchSites.ts
+│   │       │   ├── useSiteBuilderUI.ts
+│   │       │   └── useUpdateSite.ts
+│   │       └── template
+│   │           ├── useFetchTemplates.ts
+│   │           ├── useTemplateCopyWatcher.ts
+│   │           ├── useTemplatePageOpener.ts
+│   │           └── useTemplatePublicWatcher.ts
+│   ├── stores
+│   │   ├── logme
+│   │   │   ├── authStore.ts
+│   │   │   └── builderStore.ts
+│   │   └── themeStore.ts
+│   └── lib
+│       ├── auth.ts
+│       ├── config
+│       │   ├── client.ts
+│       │   └── server.ts
+│       ├── crypto.ts
+│       ├── logger
+│       │   ├── clientLogger.ts
+│       │   ├── index.ts
+│       │   ├── Logger.ts
+│       │   ├── serverLogger.ts
+│       │   └── strategies
+│       │       ├── better-stack
+│       │       │   ├── ClientBetterStackStrategy.ts
+│       │       │   └── ServerBetterStackStrategy.ts
+│       │       ├── ClientBaseAPIStrategy.ts
+│       │       ├── LoggerStrategy.ts
+│       │       ├── sentry
+│       │       │   ├── ClientSentryStrategy.ts
+│       │       │   └── ServerSentryStrategy.ts
+│       │       └── slack
+│       │           ├── ClientSlackStrategy.ts
+│       │           └── ServerSlackStrategy.ts
+│       ├── tracking.ts
+│       └── utils.ts

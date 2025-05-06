@@ -1,5 +1,5 @@
-import { getAuthSession } from '@/lib/auth'
-import logger from '@/lib/logger'
+import { getAuthSession } from '@/shared/lib/auth'
+import logger from '@/shared/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 

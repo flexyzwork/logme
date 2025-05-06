@@ -1,6 +1,6 @@
-import { getAuthSession } from '@/lib/auth'
-import { decrypt } from '@/lib/crypto'
-import logger from '@/lib/logger'
+import { getAuthSession } from '@/shared/lib/auth'
+import { decrypt } from '@/shared/lib/crypto'
+import logger from '@/shared/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 

@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { useBuilderStore } from '@/stores/logme/builderStore'
+import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { Button } from '@/shared/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -34,7 +34,9 @@ export default function Home() {
             2
           </div>
           <h3 className="mt-4 text-xl font-bold">Design & Settings</h3>
-          <p className="text-sm text-muted-foreground mt-1">Choose a template and configure your blog</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Choose a template and configure your blog
+          </p>
           {/* <GithubButton text="빌더 시작" stateType="github:builder:" /> */}
           <Button
             className="mt-2"

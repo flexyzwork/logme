@@ -2,17 +2,16 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useBuilderStore } from '@/stores/logme/builderStore'
-import { useCreateProvider } from '@/hooks/logme/provider/useCreateProvider'
-import { useUpdateSite } from '@/hooks/logme/site/useUpdateSite'
-import { useCreateContentSource } from '@/hooks/logme/contentSource/useCreateContentSource'
-import { useAuthStore } from '@/stores/logme/authStore'
+import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { useAuthStore } from '@/modules/logme/stores/authStore'
 import { useSession } from 'next-auth/react'
-import { encrypt } from '@/lib/crypto'
-import { trackEvent } from '@/lib/tracking'
-import logger from '@/lib/logger'
-
-import { useCreateProviderExtended } from '@/hooks/logme/provider/useCreateProviderExtended'
+import { encrypt } from '@/shared/lib/crypto'
+import { trackEvent } from '@/shared/lib/tracking'
+import logger from '@/shared/lib/logger'
+import { useCreateProvider } from '@/modules/logme/hooks/provider/useCreateProvider'
+import { useCreateContentSource } from '@/modules/logme/hooks/contentSource/useCreateContentSource'
+import { useCreateProviderExtended } from '@/modules/logme/hooks/provider/useCreateProviderExtended'
+import { useUpdateSite } from '@/modules/logme/hooks/site/useUpdateSite'
 
 export default function NotionCallbackPage() {
   const { data: session, status } = useSession()

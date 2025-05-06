@@ -1,4 +1,4 @@
-import Landing from '@/components/logme/Landing'
+import Landing from "@/modules/logme/components/Landing";
 
 export default function AboutPage() {
   return (

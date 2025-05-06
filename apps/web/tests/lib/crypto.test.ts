@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '@/lib/crypto'
+import { encrypt, decrypt } from '@/shared/lib/crypto'
 
 describe('Encryption/Decryption Utils', () => {
   it('should return the original value after encrypt and decrypt', () => {

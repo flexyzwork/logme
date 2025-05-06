@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-import logger from '@/lib/logger'
+import logger from '@/shared/lib/logger'
 
 // POST /api/logme/repos - Create a new repository
 export async function POST(req: Request) {

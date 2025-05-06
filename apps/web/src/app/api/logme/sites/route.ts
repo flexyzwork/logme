@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@repo/db'
-import { getAuthSession } from '@/lib/auth'
-import logger from '@/lib/logger'
+import { getAuthSession } from '@/shared/lib/auth'
+import logger from '@/shared/lib/logger'
 
 // POST /api/logme/sites - Create a new site
 export async function POST(req: Request) {
