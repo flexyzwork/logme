@@ -1,12 +1,11 @@
 'use client'
 
-import { useSiteBuilderUI } from "@/modules/logme/hooks/site/useSiteBuilderUI"
-import { useTemplateCopyWatcher } from "@/modules/logme/hooks/template/useTemplateCopyWatcher"
-import { useTemplatePageOpener } from "@/modules/logme/hooks/template/useTemplatePageOpener"
-import { useTemplatePublicWatcher } from "@/modules/logme/hooks/template/useTemplatePublicWatcher"
-import { useBuilderStore } from "@/modules/logme/stores/builderStore"
-import { Button } from "@/shared/components/ui/button"
-
+import { useSiteBuilderUI } from '@/modules/logme/features/site/hooks/useSiteBuilderUI'
+import { useTemplateCopyWatcher } from '@/modules/logme/features/template/hooks/useTemplateCopyWatcher'
+import { useTemplatePageOpener } from '@/modules/logme/features/template/hooks/useTemplatePageOpener'
+import { useTemplatePublicWatcher } from '@/modules/logme/features/template/hooks/useTemplatePublicWatcher'
+import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
+import { Button } from '@/shared/components/ui/button'
 
 export default function Step1_CheckTemplate({ notionPageId }: { notionPageId: string }) {
   const {

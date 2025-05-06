@@ -1,10 +1,10 @@
 'use client'
 
 import { generateOAuthState } from '@/shared/lib/utils'
-import { useCreateSite } from '@/modules/logme/hooks/site/useCreateSite'
-import { useFetchTemplates } from '@/modules/logme/hooks/template/useFetchTemplates'
-import { useAuthStore } from '@/modules/logme/stores/authStore'
-import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { useCreateSite } from '@/modules/logme/features/site/hooks/useCreateSite'
+import { useFetchTemplates } from '@/modules/logme/features/template/hooks/useFetchTemplates'
+import { useAuthStore } from '@/shared/stores'
+import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 import { Button } from '@/shared/components/ui/button'
 import { Card } from '@/shared/components/ui/card'
 

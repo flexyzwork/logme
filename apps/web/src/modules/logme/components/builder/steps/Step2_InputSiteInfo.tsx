@@ -1,14 +1,14 @@
 'use client'
 
 import logger from '@/shared/lib/logger'
-import { SiteInfoForm } from '@/modules/logme/components/SiteInfoForm'
-import { RESERVED_SUBDOMAINS } from '@/modules/logme/constants/reserved'
-import { useSiteBuilderUI } from '@/modules/logme/hooks/site/useSiteBuilderUI'
-import { useUpdateSite } from '@/modules/logme/hooks/site/useUpdateSite'
-import { useDeploymentActions } from '@/modules/logme/services/deployment'
-import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { SiteInfoForm } from '@/modules/logme/components/builder/forms/SiteInfoForm'
+import { RESERVED_SUBDOMAINS } from '@/modules/logme/features/site/constants/reserved'
+import { useSiteBuilderUI } from '@/modules/logme/features/site/hooks/useSiteBuilderUI'
+import { useUpdateSite } from '@/modules/logme/features/site/hooks/useUpdateSite'
+import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import { useDeploymentActions } from '@/modules/logme/features/deployment/hooks/useDeploymentActions'
 
 export default function Step2_InputSiteInfo() {
   const { mutateAsync: updateSiteDB } = useUpdateSite()

@@ -7,8 +7,8 @@ import {
   DropdownMenuItem,
 } from '@/shared/components/ui/dropdown-menu'
 import Image from 'next/image'
-import { LogoutButton } from '@/shared/components/LogoutButton'
-import ThemeToggle from '@/shared/components/ThemeToggle'
+import { LogoutButton } from '@/shared/components/auth-ui/LogoutButton'
+import ThemeToggle from '@/shared/components/theme/ThemeToggle'
 
 export async function Header() {
   const session = await getAuthSession()

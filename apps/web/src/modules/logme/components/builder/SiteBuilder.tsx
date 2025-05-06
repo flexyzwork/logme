@@ -10,10 +10,10 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import logger from '@/shared/lib/logger'
 import { cn } from '@/shared/lib/utils'
-import { useFetchProviderExtended } from '@/modules/logme/hooks/provider/useFetchProviderExtended'
-import { useSiteBuilderUI } from '@/modules/logme/hooks/site/useSiteBuilderUI'
-import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { useFetchProviderExtended } from '@/modules/logme/features/provider/hooks/useFetchProviderExtended'
+import { useSiteBuilderUI } from '@/modules/logme/features/site/hooks/useSiteBuilderUI'
 import { Card, CardHeader, CardTitle, CardContent } from '@/shared/components/ui/card'
+import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 
 export default function SiteBuilder() {
   const { isDeploying } = useSiteBuilderUI()

@@ -1,6 +1,5 @@
-import Landing from "@/modules/logme/components/Landing";
-import BrowserCheckRedirect from "@/shared/components/BrowserCheckRedirect";
-
+import Landing from '@/modules/logme/components/landing/Landing'
+import BrowserCheckRedirect from '@/shared/components/system/BrowserCheckRedirect'
 
 export default function LandingPage() {
   return (

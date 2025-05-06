@@ -1,7 +1,7 @@
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthSession } from '@/shared/lib/auth'
-import { handleGithub, handleNotion, handleVercel } from '@/modules/logme/services/providers'
+import { handleGithub, handleNotion, handleVercel } from '@/modules/logme/features/provider/services/providers'
 import logger from '@/shared/lib/logger'
 
 const providerLocks = new Map<string, boolean>()

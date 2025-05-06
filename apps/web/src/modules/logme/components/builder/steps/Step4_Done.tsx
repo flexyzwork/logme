@@ -1,8 +1,8 @@
 'use client'
 
 import ShareButton from '@/modules/logme/components/common/ShareButton'
-import { useTemplatePageOpener } from '@/modules/logme/hooks/template/useTemplatePageOpener'
-import { useBuilderStore } from '@/modules/logme/stores/builderStore'
+import { useTemplatePageOpener } from '@/modules/logme/features/template/hooks/useTemplatePageOpener'
+import { useBuilderStore } from '@/modules/logme/features/site/stores/builderStore'
 import { Button } from '@/shared/components/ui/button'
 import { useRouter } from 'next/router'
 

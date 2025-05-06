@@ -1,6 +1,6 @@
-import { ServerBetterStackStrategy } from './strategies/better-stack/ServerBetterStackStrategy'
-import { ServerSlackStrategy } from './strategies/slack/ServerSlackStrategy'
-import { ServerSentryStrategy } from './strategies/sentry/ServerSentryStrategy'
+import { ServerBetterStackStrategy } from './strategies/impl/BetterStack'
+import { ServerSlackStrategy } from './strategies/impl/Slack'
+import { ServerSentryStrategy } from './strategies/impl/Sentry'
 import { Logger } from '@/shared/lib/logger/Logger'
 
 const strategies = []

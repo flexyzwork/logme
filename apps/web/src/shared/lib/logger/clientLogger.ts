@@ -1,7 +1,7 @@
 import { Logger } from '@/shared/lib/logger/Logger'
-import { ClientBetterStackStrategy } from '@/shared/lib/logger/strategies/better-stack/ClientBetterStackStrategy'
-import { ClientSentryStrategy } from '@/shared/lib/logger/strategies/sentry/ClientSentryStrategy'
-import { ClientSlackStrategy } from '@/shared/lib/logger/strategies/slack/ClientSlackStrategy'
+import { ClientBetterStackStrategy } from '@/shared/lib/logger/strategies/impl/BetterStack'
+import { ClientSentryStrategy } from '@/shared/lib/logger/strategies/impl/Sentry'
+import { ClientSlackStrategy } from '@/shared/lib/logger/strategies/impl/Slack'
 
 const strategies = []
 
