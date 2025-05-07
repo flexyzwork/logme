@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN!
 const CLOUDFLARE_ZONE_ID = process.env.CLOUDFLARE_ZONE_ID!
 const VERCEL_API_URL = 'https://api.vercel.com/v9'
+const API_URL = process.env.API_URL
 
 export async function POST(req: NextRequest) {
   try {
@@ -153,7 +154,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Enqueue background verification job via API
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/jobs/check-domain`, {
+    await fetch(`${API_URL}/check-domain`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
