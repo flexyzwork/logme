@@ -11,8 +11,8 @@ export abstract class ClientBaseAPIStrategy implements LoggerStrategy {
 
   async log(level: LogLevel, message: string, meta?: Record<string, any>, forceSlack = false) {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
-      await fetch(`${baseUrl}/api/logs`, {
+      const baseUrl = process.env.BASE_URL || ''
+      await fetch(`${baseUrl}/api/log`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -113,7 +113,7 @@ export const useDeployExecutor = () => {
       }
     } catch (error) {
       logger.log('error', '❌ Deployment request error:', { error })
-      alert('배포 중 오류가 발생했습니다.')
+      // alert('배포 중 오류가 발생했습니다.')
     }
   }
 

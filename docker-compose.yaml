@@ -34,7 +34,7 @@ services:
       - app-network
 
   worker:
-    container_name: worker-${ACTIVE:-green}
+    container_name: worker
     image: kix.ocir.io/axunckhvyv1v/logme-worker:${ACTIVE:-green}
     restart: always
     env_file:
@@ -44,7 +44,7 @@ services:
       - app-network
 
   api:
-    container_name: api-${ACTIVE:-green}
+    container_name: api
     image: kix.ocir.io/axunckhvyv1v/logme-api:${ACTIVE:-green}
     restart: always
     env_file:
