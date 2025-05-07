@@ -192,7 +192,7 @@ jobs:
           if docker ps --format '{{.Names}}' | grep -q "nginx"; then
               echo "Nginx is running! Performing application health check..."
               sleep 10
-              if curl -k http://localhost:3000/api/health | grep -q '"status":"ok"'; then
+              if curl -k https://logme.dev/api/health | grep -q '"status":"ok"'; then
                   echo "App health check passed!"
               else
                   echo "❌ App health check failed! Performing rollback"
