@@ -57,6 +57,6 @@ export const checkDeploymentStatus = async (
     }
   } catch (error) {
     logger.log('error', '❌ Error while checking deployment status:', { error })
-    alert('배포 상태 확인 중 오류가 발생했습니다.')
+    // alert('배포 상태 확인 중 오류가 발생했습니다.')
   }
 }
