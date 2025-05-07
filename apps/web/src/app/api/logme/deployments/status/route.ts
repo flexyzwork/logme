@@ -4,7 +4,7 @@ import logger from '@/shared/lib/logger'
 import { db } from '@repo/db'
 import { NextRequest, NextResponse } from 'next/server'
 
-const VERCEL_API_BASE_URL = 'https://api.vercel.com'
+const VERCEL_API_URL = 'https://api.vercel.com'
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     }
     const vercelToken = decrypt(encryptedVercelTokenData)
 
-    const res = await fetch(`${VERCEL_API_BASE_URL}/v13/deployments/${deploymentId}`, {
+    const res = await fetch(`${VERCEL_API_URL}/v13/deployments/${deploymentId}`, {
       headers: {
         Authorization: `Bearer ${vercelToken}`,
       },
