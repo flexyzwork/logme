@@ -48,7 +48,5 @@ const sentryConfig = withSentryConfig(nextConfig, {
   automaticVercelMonitors: true,
 })
 
+// Use proper ES module exports for TypeScript config
 export default withBetterStack(sentryConfig)
-// export default withBetterStack(nextConfig)
-
-module.exports = nextConfig

@@ -1,11 +1,24 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: '.env.test' })
 
-// React Testing Library ud655uc7a5 ub9e4ucc98 uc124uc815
+// React Testing Library 확장 매처 설정
 import '@testing-library/jest-dom'
 
-// uae00ub85cubc8c fetch ubaa8ud0b9 uc124uc815
-global.fetch = jest.fn()
+// 테스트 환경에서만 fetch 모킹 적용
+if (process.env.NODE_ENV === 'test') {
+  // 원본 fetch 저장
+  const originalFetch = global.fetch
+  
+  // fetch 모킹 설정
+  global.fetch = jest.fn()
+  
+  // 테스트 후 원복을 위한 설정
+  afterAll(() => {
+    if (originalFetch) {
+      global.fetch = originalFetch
+    }
+  })
+}
 
-// uae30ubcf8 ud0c0uc784uc544uc6c3 uc124uc815
+// 기본 타임아웃 설정
 jest.setTimeout(10000)

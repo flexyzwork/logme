@@ -7,10 +7,15 @@ import React from 'react'
 global.fetch = jest.fn()
 
 describe('useFetchTemplates', () => {
+  // QueryClient 초기화
   let queryClient: QueryClient
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  
+  // wrapper 함수 타입 수정 - React Query v5 호환성 문제 해결
+  const wrapper = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    )
+  }
 
   beforeEach(() => {
     // ud14cuc2a4ud2b8ub9c8ub2e4 uc0c8ub85cuc6b4 QueryClient uc0dduc131
