@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Step0_SelectTemplate from './Step0_SelectTemplate'
 import * as builderStore from '@/modules/logme/features/site/stores/builderStore'
@@ -132,6 +134,7 @@ describe('Step0_SelectTemplate', () => {
     jest.spyOn(useFetchTemplates, 'useFetchTemplates').mockReturnValue({
       data: mockTemplates,
       isLoading: false
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     
     render(<Step0_SelectTemplate />)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { renderHook } from '@testing-library/react'
 import { useTemplatePageOpener } from './useTemplatePageOpener'
 import * as builderStore from '@/modules/logme/features/site/stores/builderStore'
