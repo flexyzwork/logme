@@ -19,8 +19,12 @@ export const useTemplateCopyWatcher = ({
     if (!enabled || !notionPageId) return
 
     let timeoutId: NodeJS.Timeout
+    let attemptCount = 0
 
     const checkCopyStatus = async () => {
+      if (attemptCount >= 10) return
+      attemptCount++
+
       try {
         const response = await fetch(`/api/logme/templates/check-copy`, {
           method: 'POST',
@@ -34,7 +38,7 @@ export const useTemplateCopyWatcher = ({
         if (data.isCopied) {
           onComplete?.()
         } else {
-          timeoutId = setTimeout(checkCopyStatus, 2000)
+          timeoutId = setTimeout(checkCopyStatus, 5000)
         }
       } catch (error) {
         logger.log('error', '❌ Error while checking template copy status:', { error })
@@ -42,7 +46,7 @@ export const useTemplateCopyWatcher = ({
       }
     }
 
-    checkCopyStatus()
+    timeoutId = setTimeout(checkCopyStatus, 5000)
 
     return () => clearTimeout(timeoutId)
   }, [enabled, notionPageId, onComplete, onError, userId, templateId])
