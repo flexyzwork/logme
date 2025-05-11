@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - deploy
+      - refactoring
 
 concurrency:
-  group: deploy
+  group: refactoring
   cancel-in-progress: true
 
 jobs:
