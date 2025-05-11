@@ -53,7 +53,7 @@ export default function ContactPage() {
       </p>
       <div className="space-y-4 text-sm">
         <p>
-          📧 이메일:{' '}
+          📧 Email:{' '}
           <a href="mailto:contact@logme.dev" className="underline">
             contact@logme.dev
           </a>
@@ -70,7 +70,7 @@ export default function ContactPage() {
           </a>
         </p>
         <p>
-          ☕ 지원:{' '}
+          ☕ Support:{' '}
           <a
             href="https://buymeacoffee.com/flexyzwork"
             target="_blank"

@@ -14,6 +14,17 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['lh3.googleusercontent.com', 'files.readme.io'],
   },
+  // Next.js 15.3.1 관련 기본 설정
+  // Sentry를 위한 필수 설정
+  serverExternalPackages: ['@sentry/nextjs'],
+
+  // 실험적 기능 - 최소한으로 유지
+  experimental: {
+    // 서버 코드 최소화 활성화
+    serverMinification: true,
+  },
+
+
 }
 
 const sentryConfig = withSentryConfig(nextConfig, {
