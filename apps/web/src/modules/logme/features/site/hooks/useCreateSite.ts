@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Site } from '@prisma/client'
+import { Site } from '@repo/db'
 
 // CREATE
 export function useCreateSite() {

@@ -1,5 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { DeployTarget } from '@prisma/client'
+
+// Define the interface based on the Prisma schema
+interface DeployTarget {
+  id: string
+  name: string
+  provider: string
+  targetId: string
+  targetUrl?: string | null
+  createdAt: Date
+  updatedAt: Date
+}
 
 // CREATE
 export function useCreateDeployTarget() {

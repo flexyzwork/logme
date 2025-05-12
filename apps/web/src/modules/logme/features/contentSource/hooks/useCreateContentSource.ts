@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ContentSource } from '@prisma/client'
+import { ContentSource } from '@repo/db'
 
 // CREATE
 export function useCreateContentSource() {

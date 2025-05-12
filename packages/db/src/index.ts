@@ -15,3 +15,14 @@ export {
   RepoType,
   TargetType,
 } from '@prisma/client'
+export type {
+  ContentSource,
+  DeployTarget,
+  Deployment,
+  Template,
+  TemplateApp,
+  Site,
+  Repo,
+  Provider,
+  ProviderExtended,
+} from '@prisma/client'

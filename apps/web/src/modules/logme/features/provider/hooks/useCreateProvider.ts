@@ -1,9 +1,10 @@
-import { ProviderUser } from '@/modules/logme/features/provider/types/types'
+import { Provider } from '@repo/db'
+
 import { useMutation } from '@tanstack/react-query'
 
 export function useCreateProvider() {
   return useMutation({
-    mutationFn: async (providerUser: ProviderUser) => {
+    mutationFn: async (providerUser: Partial<Provider>) => {
       const res = await fetch('/api/logme/providers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

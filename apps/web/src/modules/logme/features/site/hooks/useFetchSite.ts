@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Site } from '@prisma/client'
+import { Site } from '@repo/db'
 
 export function useFetchSite(siteId: string) {
   return useQuery<Site>({

@@ -9,6 +9,7 @@ import { encrypt } from '@/shared/lib/crypto'
 import { trackEvent } from '@/shared/lib/tracking'
 import logger from '@/shared/lib/logger'
 import { useCreateProvider } from '@/modules/logme/features/provider/hooks/useCreateProvider'
+import { ProviderType } from '@repo/types'
 import { useCreateContentSource } from '@/modules/logme/features/contentSource/hooks/useCreateContentSource'
 import { useCreateProviderExtended } from '@/modules/logme/features/provider/hooks/useCreateProviderExtended'
 import { useUpdateSite } from '@/modules/logme/features/site/hooks/useUpdateSite'
@@ -91,11 +92,11 @@ export default function NotionCallbackPage() {
           const accessToken = data.access_token
 
           const providerUser = {
-            providerType: 'notion',
+            providerType: ProviderType.notion,
             providerUserId: data.owner?.user?.id ?? '',
             name: data.owner?.user?.name ?? 'Unknown',
             email: data.owner?.user?.person?.email ?? '',
-            avatar_url: data.owner?.user?.avatar_url ?? '',
+            avatarUrl: data.owner?.user?.avatar_url ?? '',
             userId: currentUserId,
           }
 

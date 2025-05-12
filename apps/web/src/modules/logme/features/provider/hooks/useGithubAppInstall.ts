@@ -2,6 +2,7 @@ import { useCreateProviderExtended } from '@/modules/logme/features/provider/hoo
 import { fetchGithubInstallationToken } from '@/modules/logme/features/repo/services/githubService'
 import logger from '@/shared/lib/logger'
 import { useEffect, useState, useRef } from 'react'
+import { ProviderType } from '@repo/db'
 
 export const useGithubAppInstall = () => {
   const storeProviderExtended = useCreateProviderExtended()
@@ -47,7 +48,7 @@ export const useGithubAppInstall = () => {
         if (app === 'vercel') {
           setInstalledVercel(true)
           const providerExtended = {
-            providerType: 'github',
+            providerType: ProviderType.github,
             extendedKey: 'vercelInstallation',
             extendedValue: 'true',
           }
@@ -73,7 +74,7 @@ export const useGithubAppInstall = () => {
 
         try {
           const providerExtended = {
-            providerType: 'github',
+            providerType: ProviderType.github,
             extendedKey: 'logmeInstallationId',
             extendedValue: installationId,
           }

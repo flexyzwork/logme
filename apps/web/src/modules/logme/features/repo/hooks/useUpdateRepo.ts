@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Repo } from '@prisma/client'
+import { Repo } from '@repo/db'
 
 // UPDATE
 export function useUpdateRepo() {

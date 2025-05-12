@@ -1,9 +1,9 @@
-import { ProviderExtended } from '@/modules/logme/features/provider/types/types'
+import { ProviderExtended } from '@repo/db'
 import { useMutation } from '@tanstack/react-query'
 
 export function useCreateProviderExtended() {
   return useMutation({
-    mutationFn: async (providerExtended: ProviderExtended) => {
+    mutationFn: async (providerExtended: Partial<ProviderExtended>) => {
       const res = await fetch('/api/logme/providers/extended', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import ConnectionStatus from '@/modules/logme/components/account/ConnectionStatus'
+import { ProviderType } from '@repo/db'
 
 // Query key constants
 const providerKeys = {
@@ -93,21 +94,25 @@ export default function AccountPage() {
     const { user } = await fetchUser(vercelTokenInput)
 
     const providerUser = {
-      providerType: 'vercel',
-      providerUserId: user.uid,
+      providerType: ProviderType.vercel,
+      providerUserId: String(user.uid),
       name: user.username || '',
-      email: user.email,
-      image: user.avatar || '',
-      userId: session.user.id,
+      email: user.email || null,
+      avatarUrl: user.avatar || null,
+      userId: session.user.id
     }
 
-    await storeProviderUser.mutateAsync(providerUser)
+    const providerResponse = await storeProviderUser.mutateAsync(providerUser)
 
-    await storeProviderExtended.mutateAsync({
-      providerType: 'vercel',
+    const providerExtended = {
+      providerId: providerResponse.id,
+      providerType: ProviderType.vercel,
       extendedKey: 'token',
       extendedValue: encrypt(vercelTokenInput),
-    })
+      templateId: null
+    }
+    
+    await storeProviderExtended.mutateAsync(providerExtended)
 
     await invalidateAll()
 

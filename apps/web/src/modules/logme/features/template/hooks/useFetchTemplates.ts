@@ -1,4 +1,4 @@
-import { Template, TemplateApp } from '@prisma/client'
+import { Template, TemplateApp } from '@repo/db'
 import { useQuery } from '@tanstack/react-query'
 
 type TemplateWithApp = Template & {

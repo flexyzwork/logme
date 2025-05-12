@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Site } from '@prisma/client'
+import { Site } from '@repo/db'
 
 // UPDATE
 export function useUpdateSite() {
@@ -16,7 +16,9 @@ export function useUpdateSite() {
     },
     onSuccess: (updatedSite) => {
       queryClient.setQueryData(['sites'], (old: Site[] | undefined) =>
-        old ? old.map(site => site.id === updatedSite.id ? { ...site, ...updatedSite } : site) : []
+        old
+          ? old.map((site) => (site.id === updatedSite.id ? { ...site, ...updatedSite } : site))
+          : []
       )
       queryClient.invalidateQueries({ queryKey: ['sites'] }) // optional fallback
     },

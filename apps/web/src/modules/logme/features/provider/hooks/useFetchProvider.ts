@@ -1,5 +1,5 @@
-import { ProviderType } from '@/modules/logme/features/provider/types/types'
-import { Provider } from '@prisma/client'
+// import { ProviderType } from '@/modules/logme/features/provider/types/types'
+import { Provider, ProviderType } from '@repo/db'
 import { useQuery } from '@tanstack/react-query'
 
 // READ

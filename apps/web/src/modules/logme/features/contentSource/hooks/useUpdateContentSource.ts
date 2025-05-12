@@ -1,5 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ContentSource } from '@prisma/client'
+
+// Define the interface based on the Prisma schema
+interface ContentSource {
+  id: string
+  sourceType: 'notion'
+  sourceId: string
+  sourceUrl?: string | null
+  createdAt: Date
+  updatedAt: Date
+}
 
 // UPDATE
 export function useUpdateContentSource() {

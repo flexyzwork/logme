@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { DeployTarget } from '@prisma/client'
+import { DeployTarget } from '@repo/db'
 
 // READ
 export function useFetchDeployTarget(targetId: string) {
