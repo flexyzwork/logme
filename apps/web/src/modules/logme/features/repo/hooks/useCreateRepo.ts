@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Repo } from '@repo/db'
+import type { Repo } from '@repo/db'
 
 // CREATE
 export function useCreateRepo() {

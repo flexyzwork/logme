@@ -6,7 +6,6 @@ import {
   setVercelEnvs,
   triggerVercelDeployment,
 } from '@/modules/logme/features/deployTarget/services/vercelService'
-// import { useCreateDeployTarget } from '@/modules/logme/features/deployTarget/hooks/useCreateDeployTarget'
 
 export async function deployToVercel({
   notionPageId,

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Deployment } from '@repo/db'
+import type { Deployment } from '@repo/db'
 
 // READ
 export function useFetchDeployment(id: string) {

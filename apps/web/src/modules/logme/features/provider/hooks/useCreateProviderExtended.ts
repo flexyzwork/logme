@@ -1,4 +1,4 @@
-import { ProviderExtended } from '@repo/db'
+import type { ProviderExtended } from '@repo/db'
 import { useMutation } from '@tanstack/react-query'
 
 export function useCreateProviderExtended() {

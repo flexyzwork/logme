@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Repo } from '@repo/db'
+import type { Repo } from '@repo/db'
 
 export function useFetchRepo(repoId: string) {
   return useQuery<Repo>({

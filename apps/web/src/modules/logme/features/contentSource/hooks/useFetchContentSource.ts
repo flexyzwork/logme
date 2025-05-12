@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ContentSource } from '@repo/db'
+import type { ContentSource } from '@repo/db'
 
 // READ
 export function useFetchContentSource(sourceId: string) {

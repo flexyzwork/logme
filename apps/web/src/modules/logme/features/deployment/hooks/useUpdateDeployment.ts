@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Deployment } from '@repo/db'
+import type { Deployment } from '@repo/db'
 
 // UPDATE
 export function useUpdateDeployment() {

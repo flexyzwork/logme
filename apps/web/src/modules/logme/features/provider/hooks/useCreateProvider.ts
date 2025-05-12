@@ -1,4 +1,4 @@
-import { Provider } from '@repo/db'
+import type { Provider } from '@repo/db'
 
 import { useMutation } from '@tanstack/react-query'
 
