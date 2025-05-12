@@ -2,7 +2,7 @@ import { useCreateProviderExtended } from '@/modules/logme/features/provider/hoo
 import { fetchGithubInstallationToken } from '@/modules/logme/features/repo/services/githubService'
 import logger from '@/shared/lib/logger'
 import { useEffect, useState, useRef } from 'react'
-import { ProviderType } from '@repo/db'
+import { ProviderType } from '@repo/types'
 
 export const useGithubAppInstall = () => {
   const storeProviderExtended = useCreateProviderExtended()

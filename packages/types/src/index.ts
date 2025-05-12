@@ -1,5 +1,3 @@
-// src/prisma-types.ts
-
 // 템플릿 타입
 export enum TemplateType {
   blog = 'blog',

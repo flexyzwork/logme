@@ -1,5 +1,5 @@
 import logger from '@/shared/lib/logger'
-import { ProviderType } from '@repo/db'
+import { ProviderType } from '@repo/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 

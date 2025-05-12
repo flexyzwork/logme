@@ -18,15 +18,15 @@
     "push": "prisma db push"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.15.17",
     "@repo/eslint-config": "workspace:^",
     "@repo/typescript-config": "workspace:^",
-    "prisma": "^6.5.0",
+    "prisma": "^6.7.0",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.5.0",
+    "@prisma/client": "^6.7.0",
     "nanoid": "^5.1.5"
   }
 }

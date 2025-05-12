@@ -1,6 +1,6 @@
 export { Prisma, PrismaClient } from '@prisma/client'
 export { db } from './db'
-export {
+export type {
   ProviderType,
   TemplateType,
   SiteType,
@@ -14,8 +14,6 @@ export {
   DeployStatus,
   RepoType,
   TargetType,
-} from '@prisma/client'
-export type {
   ContentSource,
   DeployTarget,
   Deployment,

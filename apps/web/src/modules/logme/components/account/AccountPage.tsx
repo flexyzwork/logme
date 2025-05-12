@@ -17,7 +17,7 @@ import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import ConnectionStatus from '@/modules/logme/components/account/ConnectionStatus'
-import { ProviderType } from '@repo/db'
+import { ProviderType } from '@repo/types'
 
 // Query key constants
 const providerKeys = {
@@ -52,17 +52,17 @@ export default function AccountPage() {
     'logmeInstallationId'
   )
   const { data: vercelInstallation } = useFetchProviderExtended('github', 'vercelInstallation')
-  const { mutate: notionDelete, isPending: notionDeletePending } = useDeleteProvider('notion', {
+  const { mutate: notionDelete, isPending: notionDeletePending } = useDeleteProvider(ProviderType.notion, {
     onSuccess: invalidateAll,
   })
-  const { mutate: githubDelete, isPending: githubDeletePending } = useDeleteProvider('github', {
+  const { mutate: githubDelete, isPending: githubDeletePending } = useDeleteProvider(ProviderType.github, {
     onSuccess: () => {
       invalidateAll()
       setIsLogmeAppInstalled(false)
       setInstalledVercel(false)
     },
   })
-  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDeleteProvider('vercel', {
+  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDeleteProvider(ProviderType.vercel, {
     onSuccess: () => {
       invalidateAll()
       setVercelTokenInput('')
