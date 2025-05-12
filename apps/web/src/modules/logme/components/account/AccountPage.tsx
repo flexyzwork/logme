@@ -52,22 +52,31 @@ export default function AccountPage() {
     'logmeInstallationId'
   )
   const { data: vercelInstallation } = useFetchProviderExtended('github', 'vercelInstallation')
-  const { mutate: notionDelete, isPending: notionDeletePending } = useDeleteProvider(ProviderType.notion, {
-    onSuccess: invalidateAll,
-  })
-  const { mutate: githubDelete, isPending: githubDeletePending } = useDeleteProvider(ProviderType.github, {
-    onSuccess: () => {
-      invalidateAll()
-      setIsLogmeAppInstalled(false)
-      setInstalledVercel(false)
-    },
-  })
-  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDeleteProvider(ProviderType.vercel, {
-    onSuccess: () => {
-      invalidateAll()
-      setVercelTokenInput('')
-    },
-  })
+  const { mutate: notionDelete, isPending: notionDeletePending } = useDeleteProvider(
+    ProviderType.notion,
+    {
+      onSuccess: invalidateAll,
+    }
+  )
+  const { mutate: githubDelete, isPending: githubDeletePending } = useDeleteProvider(
+    ProviderType.github,
+    {
+      onSuccess: () => {
+        invalidateAll()
+        setIsLogmeAppInstalled(false)
+        setInstalledVercel(false)
+      },
+    }
+  )
+  const { mutate: vercelDelete, isPending: vercelDeletePending } = useDeleteProvider(
+    ProviderType.vercel,
+    {
+      onSuccess: () => {
+        invalidateAll()
+        setVercelTokenInput('')
+      },
+    }
+  )
 
   const {
     handleAppInstall,
@@ -99,7 +108,7 @@ export default function AccountPage() {
       name: user.username || '',
       email: user.email || null,
       avatarUrl: user.avatar || null,
-      userId: session.user.id
+      userId: session.user.id,
     }
 
     const providerResponse = await storeProviderUser.mutateAsync(providerUser)
@@ -109,9 +118,9 @@ export default function AccountPage() {
       providerType: ProviderType.vercel,
       extendedKey: 'token',
       extendedValue: encrypt(vercelTokenInput),
-      templateId: null
+      templateId: null,
     }
-    
+
     await storeProviderExtended.mutateAsync(providerExtended)
 
     await invalidateAll()
@@ -134,8 +143,8 @@ export default function AccountPage() {
         </div>
         {/* 가이드 버튼 */}
         <div className="flex gap-2">
-          <GuideDialogTriggerButton path="/guide/join" label="Sign Up Guide" />
-          <GuideDialogTriggerButton path="/guide/connect" label="Connect Services" />
+          <GuideDialogTriggerButton path="/join" label="Sign Up Guide" />
+          <GuideDialogTriggerButton path="/connect" label="Connect Services" />
         </div>
       </div>
       <div className="bg-muted/50 border border-border rounded-xl p-4 text-sm text-muted-foreground space-y-2">
@@ -158,7 +167,7 @@ export default function AccountPage() {
         </CardHeader>
         <CardContent>
           {!notionData ? (
-            <GuideDialogTriggerButton path="/guide/join#notion" label="🔗 Sign up for Notion" />
+            <GuideDialogTriggerButton path="/join#notion" label="🔗 Sign up for Notion" />
           ) : (
             <Button variant="outline" onClick={() => notionDelete()} disabled={notionDeletePending}>
               ❌ Disconnect
@@ -192,10 +201,7 @@ export default function AccountPage() {
           <br />
           <div className="flex gap-2 items-center">
             {!vercelTokenData ? (
-              <GuideDialogTriggerButton
-                path="/guide/connect#vercel"
-                label="Generate Vercel Token"
-              />
+              <GuideDialogTriggerButton path="/connect#vercel" label="Generate Vercel Token" />
             ) : (
               <Button
                 variant="outline"
@@ -218,7 +224,7 @@ export default function AccountPage() {
         <CardContent className="flex flex-col gap-1">
           {!isLogmeAppInstalled ? (
             <div className="flex items-center gap-2">
-              <GuideDialogTriggerButton path="/guide/connect#github-1" label="Connection Guide" />
+              <GuideDialogTriggerButton path="/connect#github-1" label="Connection Guide" />
               <Button onClick={() => handleAppInstall('logme')} variant="outline">
                 Connect Logme App
               </Button>
@@ -231,7 +237,7 @@ export default function AccountPage() {
           {!installedVercel ? (
             <div className="flex-col items-center gap-2">
               <div className="flex items-center gap-3">
-                <GuideDialogTriggerButton path="/guide/connect#github-2" label="Connection Guide" />
+                <GuideDialogTriggerButton path="/connect#github-2" label="Connection Guide" />
                 <Button
                   onClick={() => {
                     if (!isLogmeAppInstalled) {

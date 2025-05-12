@@ -8,7 +8,7 @@ export interface GuideDialogTriggerButtonProps {
 let guideWindow: Window | null = null
 
 export function GuideDialogTriggerButton({
-  path = '/guide/join',
+  path = '/join',
   label = 'Sign Up Guide',
 }: GuideDialogTriggerButtonProps) {
   const handleClick = () => {
