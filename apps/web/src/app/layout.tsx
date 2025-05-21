@@ -3,6 +3,26 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Providers from '@/app/providers'
 import { GATracker } from '@/shared/components/tracking/GATracker'
+import { generateSeoMetadata } from '@/shared/utils/seo'
+
+// Favicon 및 앱 아이콘 설정
+export const viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+}
+
+// 앱 아이콘과 링크 설정
+export const icons = {
+  icon: [
+    { url: '/favicon.ico', sizes: 'any' },
+    { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+  ],
+  apple: [
+    { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+  ],
+  shortcut: '/favicon.ico',
+}
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -14,21 +34,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Logme',
-    template: '%s | Logme',
-  },
-  description: 'Create a stunning blog, portfolio, or team site with Notion',
-  metadataBase: new URL('https://logme.dev'),
-  openGraph: {
-    title: 'Logme',
-    description: 'Create a stunning blog, portfolio, or team site with Notion',
-    url: 'https://logme.dev',
-    siteName: 'Logme',
-    type: 'website',
-  },
-}
+export const metadata: Metadata = generateSeoMetadata({
+  description: '당신의 Notion 페이지로 멋진 블로그나 포트폴리오, 팀 사이트를 만들어보세요.',
+  keywords: ['notion', 'blog', 'website', 'portfolio', 'team site', 'logme', '웹사이트', '블로그', '노션'],
+})
 export default function RootLayout({
   children,
 }: Readonly<{
