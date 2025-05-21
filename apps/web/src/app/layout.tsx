@@ -4,6 +4,7 @@ import './globals.css'
 import Providers from '@/app/providers'
 import { GATracker } from '@/shared/components/tracking/GATracker'
 import { generateSeoMetadata } from '@/shared/utils/seo'
+import AdSenseScript from '@/shared/components/ads/AdSenseScript'
 
 // Favicon 및 앱 아이콘 설정
 export const viewport = {
@@ -64,13 +65,7 @@ export default function RootLayout({
             `,
           }}
         />
-        {process.env.NEXT_PUBLIC_ADSENSE_ENABLED === 'true' && process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* AdSense 스크립트는 클라이언트에서만 로드 */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <script
@@ -95,6 +90,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <GATracker />
+          <AdSenseScript />
           {children}
         </Providers>
       </body>
