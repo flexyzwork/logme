@@ -4,6 +4,7 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/components/ui/tooltip'
+import AdSense from '@/shared/components/ads/AdSense'
 
 export default function Landing() {
   const getCurrentYear = () => {
@@ -26,6 +27,16 @@ export default function Landing() {
         <Button asChild>
           <Link href="/logme">Create your blog now</Link>
         </Button>
+      </section>
+
+      {/* Ad Section after Hero */}
+      <section className="mb-20">
+        <AdSense
+          slot="1234567890"
+          format="horizontal"
+          className="py-4 flex justify-center"
+          style={{ minHeight: "90px" }}
+        />
       </section>
 
       {/* Process Section */}
@@ -78,6 +89,16 @@ export default function Landing() {
           </div>
         </div>
       </section>
+      {/* Ad Section after Template Preview */}
+      <section className="mb-20">
+        <AdSense
+          slot="2345678901"
+          format="rectangle"
+          className="py-4 flex justify-center"
+          style={{ minHeight: "250px", minWidth: "300px" }}
+        />
+      </section>
+
       {/* Features Section */}
       <section className="mb-32 text-center">
         <h2 className="text-xl font-semibold mb-6">🚀 Key Features</h2>
@@ -149,6 +170,16 @@ export default function Landing() {
         <p className="text-base text-muted-foreground">
           We&apos;re currently in beta — you can use it completely free of charge!
         </p>
+      </section>
+
+      {/* Ad Section after Pricing */}
+      <section className="mb-20">
+        <AdSense
+          slot="3456789012"
+          format="horizontal"
+          className="py-4 flex justify-center"
+          style={{ minHeight: "90px" }}
+        />
       </section>
 
       {/* Coffee Support Section */}

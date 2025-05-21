@@ -4,6 +4,7 @@ import { useBuilderStore } from '@/modules/logme/features/site/stores/builderSto
 import { Button } from '@/shared/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import AdSense from '@/shared/components/ads/AdSense'
 
 export default function Home() {
   const { setBuilderStep } = useBuilderStore()
@@ -11,6 +12,15 @@ export default function Home() {
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
+      {/* 페이지 상단 광고 */}
+      <div className="w-full max-w-4xl mb-8">
+        <AdSense
+          slot="4567890123"
+          format="horizontal"
+          className="py-4 flex justify-center"
+          style={{ minHeight: "90px" }}
+        />
+      </div>
       <p className="text-lg text-gray-600 max-w-xl mb-12 text-center"></p>
       <div className="flex flex-col md:flex-row items-center justify-center gap-20 md:gap-12 lg:gap-16 w-full max-w-6xl px-4 py-16">
         {/* Step 1 */}
@@ -64,6 +74,16 @@ export default function Home() {
             Dashboard
           </Button>
         </div>
+      </div>
+      
+      {/* 페이지 하단 광고 */}
+      <div className="w-full max-w-4xl mt-8">
+        <AdSense
+          slot="5678901234"
+          format="rectangle"
+          className="py-4 flex justify-center"
+          style={{ minHeight: "250px", minWidth: "300px" }}
+        />
       </div>
     </main>
   )
