@@ -6,11 +6,30 @@
 
 ## 🛠️ 시작하기 전에
 ### 0️⃣ 환경 변수 설정
+
+**⚠️ 중요: 환경 변수 파일들은 보안상 Git에서 제외되어 있습니다.**
+
+각 애플리케이션마다 환경 변수 파일을 생성해주세요:
+
 ```sh
-cp .env.example .env 
+# 루트 디렉토리
+cp .env.example .env
+
+# 웹 애플리케이션
+cp apps/web/.env.example apps/web/.env.local
+
+# API 서버
+cp apps/api/.env.example apps/api/.env
+
+# Worker
+cp apps/worker/.env.example apps/worker/.env
 ```
-- `.env`: 로컬 개발용 환경 설정  
-- `.env.cicd`: CI/CD용 환경 설정
+
+각 파일의 템플릿에서 `your-*` 부분을 실제 값으로 교체해주세요:
+- GitHub OAuth 설정 (GitHub Developer Settings)
+- Google OAuth 설정 (Google Cloud Console)
+- 데이터베이스 연결 정보
+- 각종 API 토큰들
 
 ---
 
