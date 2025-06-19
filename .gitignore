@@ -67,3 +67,4 @@ scripts/*
 
 docs
 infra/certs/logme.dev.key
+README-dev.md
