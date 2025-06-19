@@ -242,7 +242,7 @@ pnpm infra:down
 ## 🔗 **프로젝트 링크**
 
 - **🐙 GitHub**: [Repository](https://github.com/flexyzwork/logme)
-- **📹 기술 소개 영상**: [YouTube Playlist](https://www.youtube.com/playlist?list=PLhj0lww8svhBIM75YkGVFbAFkFshEI5Co)
+- **📹 데모 영상**: [YouTube Playlist](https://www.youtube.com/playlist?list=PLhj0lww8svhBIM75YkGVFbAFkFshEI5Co)
 
 ---
 
