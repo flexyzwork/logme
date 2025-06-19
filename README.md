@@ -1,7 +1,7 @@
 # Logme SaaS - Notion 기반 자동 블로그 생성 플랫폼
 
-> **🚀 핵심 가치**: Notion 계정 연동만으로 개인 블로그가 자동 생성되는 SaaS 서비스  
-> **📅 개발 기간**: 2025.02 - 2025.03  
+> **🚀 핵심 가치**: Notion 계정 연동만으로 개인 블로그가 자동 생성되는 SaaS 서비스
+> **📅 개발 기간**: 2025.02 - 2025.03
 > **🏗️ 아키텍처**: Turbo 모노레포 + Pulumi IaC + 블루-그린 배포
 
 Notion 계정 연동 3단계만으로 개인 블로그가 자동 생성되는 SaaS 서비스입니다. Next.js 기반 빠른 MVP 개발과 Pulumi IaC를 통한 블루-그린 배포 자동화, 그리고 현대적인 모니터링 시스템을 구축하여 안정적인 서비스 운영을 실현했습니다.
@@ -15,7 +15,7 @@ Notion 계정 연동 3단계만으로 개인 블로그가 자동 생성되는 Sa
 - **SSG/ISR 최적화**: 블로그 특성상 정적 생성과 점진적 재생성으로 성능 최적화
 - **SEO 친화적**: 메타데이터 자동 생성 및 OG 이미지 동적 생성
 
-### **Pulumi를 선택한 이유** 
+### **Pulumi를 선택한 이유**
 - **TypeScript 기반 IaC**: Terraform 대신 개발자 친화적 언어로 인프라 코드 작성
 - **상태 관리 자동화**: 복잡한 상태 파일 관리 없이 인프라 버전 관리
 - **원클릭 배포**: `pnpm infra:up/down`으로 전체 인프라 생성/삭제 가능
@@ -33,7 +33,7 @@ Notion 계정 연동 3단계만으로 개인 블로그가 자동 생성되는 Sa
 ```
 apps/
 ├── web/          # Next.js 프론트엔드 (포트 3000)
-├── api/          # NestJS 백엔드 (포트 4000)  
+├── api/          # NestJS 백엔드 (포트 4000)
 ├── worker/       # BullMQ 워커
 └── nginx/        # 리버스 프록시
 
@@ -94,7 +94,7 @@ export function onRequestError(error: unknown, request: RequestInfo, errorContex
 }
 ```
 - **BetterStack**: 서버 상태 실시간 모니터링
-- **Sentry**: 애플리케이션 에러 추적 및 성능 분석  
+- **Sentry**: 애플리케이션 에러 추적 및 성능 분석
 - **Slack 알림**: 장애 발생 시 5분 내 팀 알림
 
 ### **비동기 작업 처리로 성능 보장**
@@ -174,7 +174,7 @@ export async function enqueueAndWait<T extends JobType>(type: T, data: JobData[T
 
 ### **핵심 기능**
 - ✅ Notion API 연동으로 콘텐츠 자동 동기화
-- ✅ GitHub/Google 소셜 로그인 
+- ✅ GitHub/Google 소셜 로그인
 - ✅ Next.js 블로그 자동 생성
 - ✅ 도메인 연결 및 SSL 인증서 자동 발급
 - ✅ 반응형 템플릿 시스템
@@ -242,16 +242,14 @@ pnpm infra:down
 ## 🔗 **프로젝트 링크**
 
 - **🐙 GitHub**: [Repository](https://github.com/flexyzwork/logme)
-- **📱 Live Demo**: [https://logme.dev](https://logme.dev)
 - **📹 기술 소개 영상**: [YouTube Playlist](https://www.youtube.com/playlist?list=PLhj0lww8svhBIM75YkGVFbAFkFshEI5Co)
-- **📊 모니터링 대시보드**: [BetterStack](https://uptime.betterstack.com)
 
 ---
 
 ## 🎯 **프로젝트의 가치**
 
-이 프로젝트는 단순히 "동작하는 코드"를 넘어서 "실제 운영 가능한 시스템"을 구축하는 경험을 제공합니다. 
+이 프로젝트는 단순히 "동작하는 코드"를 넘어서 "실제 운영 가능한 시스템"을 구축하는 경험을 제공합니다.
 
-**Notion 계정 연동 3단계**만으로 개인 블로그가 생성되는 사용자 경험 뒤에는, 복잡한 인프라 자동화와 모니터링 시스템, 그리고 무중단 배포 파이프라인이 숨어있습니다. 
+**Notion 계정 연동 3단계**만으로 개인 블로그가 생성되는 사용자 경험 뒤에는, 복잡한 인프라 자동화와 모니터링 시스템, 그리고 무중단 배포 파이프라인이 숨어있습니다.
 
 이러한 **기술적 복잡성을 사용자에게는 단순함으로** 제공하는 것이 이 프로젝트의 핵심 가치입니다.
